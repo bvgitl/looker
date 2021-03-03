@@ -935,8 +935,8 @@ select * from `bv-prod.ods.tf_vente_corr`
     fields: [
       cd_magasin,
       nom,
-      ca_ht,
       dte_vente_date,
+      ca_ht,
       marge_brute
     ]
   }
