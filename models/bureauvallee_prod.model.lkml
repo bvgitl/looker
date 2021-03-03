@@ -2,6 +2,7 @@ connection: "bigquery_prod"
 
 # include all the views
 include: "/views/**/*.view"
+# include: "dashboards/*.dashboard.lookml"
 fiscal_month_offset: 3
 
 datagroup: bureauvallee_dev_default_datagroup {
