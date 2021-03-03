@@ -18,7 +18,7 @@ view: table_update {
       on v.ID_MAGASIN = m.ID_MAGASIN
       group by 1,2,3,4,5,6,7
 UNION ALL
-select * from `bureauvallee.ods.tf_vente_corr`
+select * from `bv-prod.ods.tf_vente_corr`
  ;;
   }
 
