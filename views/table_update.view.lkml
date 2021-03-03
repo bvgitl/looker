@@ -33,6 +33,7 @@ select * from `bv-prod.ods.tf_vente_corr`
     type: count_distinct
     sql: ${TABLE}.CD_MAGASIN ;;
     filters: [ca_ht: "0"]
+    drill_fields: [data*]
   }
 
   measure: nb_lignes_negatif {
@@ -41,6 +42,7 @@ select * from `bv-prod.ods.tf_vente_corr`
     type: count_distinct
     sql: ${TABLE}.CD_MAGASIN ;;
     filters: [ca_ht: "<0"]
+    drill_fields: [data*]
   }
 
   dimension: cd_magasin {
@@ -927,6 +929,15 @@ select * from `bv-prod.ods.tf_vente_corr`
       nb_clts,
       qtite,
       couts
+    ]
+  }
+
+  set: data {
+    fields: [
+      cd_magasin,
+      nom,
+      ca_ht,
+      marge_brute
     ]
   }
 }
