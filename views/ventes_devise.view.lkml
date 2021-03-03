@@ -1,9 +1,7 @@
 view: ventes_devise {
-  sql_table_name: `ods.ventes_devise`
-    ;;
+  sql_table_name: `ods.ventes_devise`;;
 
-
-  dimension_group: date_devise {
+  dimension_group: date {
     type: time
     timeframes: [
       raw,
@@ -52,6 +50,22 @@ view: ventes_devise {
     type: count
     drill_fields: []
   }
+
+  dimension_group: date_devise {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.date ;;
+  }
+
 
 
   ########################## Calcul global des KPIs ################################
@@ -787,5 +801,6 @@ view: ventes_devise {
     type: number
     sql: 1.0 * (${marge_par_client_select_filter_N2}-${marge_par_client_select_filter_N3})/NULLIF(${marge_par_client_select_filter_N3},0);;
   }
+
 
 }

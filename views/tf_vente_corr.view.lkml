@@ -4,6 +4,7 @@ view: tf_vente_corr {
 
     ;;
 
+
   dimension: ca_ht {
     type: number
     sql: ${TABLE}.ca_ht ;;
