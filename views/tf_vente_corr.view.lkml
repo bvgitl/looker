@@ -1,5 +1,7 @@
 view: tf_vente_corr {
+
   sql_table_name: `ods.tf_vente_corr`
+
     ;;
 
   dimension: ca_ht {
