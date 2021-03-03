@@ -183,7 +183,6 @@ view: dv_vente {
   ########################## Calcul global des KPIs ################################
 
   measure: sum_ca_ht {
-    hidden: yes
     type: sum
     value_format_name: eur
     drill_fields: [detail*]
@@ -198,8 +197,6 @@ view: dv_vente {
   }
 
   measure: tot_tx_marge_brute {
-    hidden: yes
-    type:  number
     value_format_name: percent_2
     sql:  1.0 * ${sum_marge_brute}/NULLIF(${sum_ca_ht},0) ;;
   }
