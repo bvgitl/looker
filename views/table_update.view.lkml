@@ -236,7 +236,6 @@ select * from `bv-prod.ods.tf_vente_corr`
   }
 
   measure: tot_tx_marge_brute {
-    hidden: yes
     type:  number
     value_format_name: percent_2
     sql:  1.0 * ${sum_marge_brute}/NULLIF(${sum_ca_ht},0) ;;
@@ -937,6 +936,7 @@ select * from `bv-prod.ods.tf_vente_corr`
       cd_magasin,
       nom,
       ca_ht,
+      dte_vente_date,
       marge_brute
     ]
   }
