@@ -1,21 +1,6 @@
 view: ventes_devise {
   sql_table_name: `ods.ventes_devise`;;
 
-  dimension_group: date {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.date ;;
-  }
-
   dimension: devise {
     type: string
     sql: ${TABLE}.devise ;;
