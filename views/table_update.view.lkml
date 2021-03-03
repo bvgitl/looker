@@ -27,6 +27,22 @@ select * from `bureauvallee.ods.tf_vente_corr`
     drill_fields: [detail*]
   }
 
+  measure: nb_lignes_null {
+    label:"Nombre de lignes à zéro"
+    value_format_name: decimal_0
+    type: count_distinct
+    sql: ${TABLE}.CD_MAGASIN ;;
+    filters: [ca_ht: "0"]
+  }
+
+  measure: nb_lignes_negatif {
+    label:"Nombre de lignes négatives"
+    value_format_name: decimal_0
+    type: count_distinct
+    sql: ${TABLE}.CD_MAGASIN ;;
+    filters: [ca_ht: "<0"]
+  }
+
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.CD_MAGASIN ;;
