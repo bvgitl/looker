@@ -107,6 +107,25 @@ view: vte_mag {
     sql: ${TABLE}.couts ;;
   }
 
+  filter: date_filter_3 {
+    label: "Période n-3"
+    type: date
+  }
+
+  dimension: categorie {
+    label: "Catégorie"
+    sql:
+        CASE
+          WHEN ${typ_mag} = "S" THEN "P. non comparable"
+          ELSE (
+            CASE
+              WHEN ${date_ouv_date} < CAST ({% date_start date_filter_3 %} AS TIMESTAMP) THEN "P.Comparable"
+              ELSE "P.Comparable"
+            END )
+        END
+     ;;
+  }
+
   set: detail {
     fields: [
       cd_magasin,
