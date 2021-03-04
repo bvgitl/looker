@@ -106,6 +106,26 @@ view: dv_vente {
           END ;;
   }
 
+  dimension_group: filter_start_date_3 {
+    type: time
+    timeframes: [raw,date]
+    sql: CASE
+          WHEN {% date_start date_filter_3 %} IS NULL THEN '2017-01-01'
+          ELSE CAST({% date_start date_filter_3 %} AS DATE)
+        END;
+  }
+
+
+
+  dimension_group: filter_end_date {
+    type: time
+    timeframes: [raw,date]
+    sql: CASE
+          WHEN {% date_end date_filter %} IS NULL THEN CURRENT_DATE
+          ELSE CAST({% date_end date_filter %} AS DATE)
+        END;;
+  }
+
   measure: max_filter_date {
     type:  date
     sql:  max(${filter_date_raw}) ;;
@@ -153,7 +173,7 @@ view: dv_vente {
           WHEN ${typ_vente} = "0" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN ${magasin.date_ouv_date} < {% date_start date_filter_3 %} THEN "P.Comparable"
+              WHEN CAST (${magasin.date_ouv_date} AS DATE) < {% date_start date_filter_3 %} THEN "P.Comparable"
               ELSE "P.Comparable"
             END )
         END

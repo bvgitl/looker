@@ -57,7 +57,6 @@ view: magasin {
       quarter,
       year
     ]
-    datatype: date
     sql: ${TABLE}.DATE_OUV ;;
   }
 
