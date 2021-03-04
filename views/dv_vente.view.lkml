@@ -130,15 +130,15 @@ view: dv_vente {
     convert_tz: no
   }
 
-  measure: diff_date {
-    type: number
-    sql: DATE_DIFF(${max_filter_date}, ${min_date_ouv_date}, YEAR) ;;
-  }
-
-  #dimension: diff_date {
+  #measure: diff_date {
   #  type: number
-  #  sql: DATE_DIFF(${filter_date_date}, ${magasin.date_ouv_date}, YEAR) ;;
+  #  sql: DATE_DIFF(${max_filter_date}, ${min_date_ouv_date}, YEAR) ;;
   #}
+
+  dimension: diff_date {
+    type: number
+    sql: DATE_DIFF({% date_end date_filter %}, ${magasin.date_ouv_date}, YEAR) ;;
+  }
 
 
   filter: date_filter_3 {
@@ -161,7 +161,7 @@ view: dv_vente {
   }
 
 
-  measure: anciennete {
+  dimension: anciennete {
     label: "Ancienneté"
     sql:
         CASE
