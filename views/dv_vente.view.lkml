@@ -141,7 +141,7 @@ view: dv_vente {
   #}
 
 
-  filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+  filter: date_filter_3 {
     label: "Période n-3"
     type: date
   }
