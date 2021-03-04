@@ -150,10 +150,10 @@ view: dv_vente {
     label: "Catégorie"
     sql:
         CASE
-          WHEN ${typ_vente} = "S" THEN "P. non comparable"
+          WHEN ${typ_vente} = "0" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN ${magasin.date_ouv_date} <  {% date_start date_filter_3 %} then "P.Comparable"
+              WHEN ${magasin.date_ouv_date} < {% date_start date_filter_3 %} THEN "P.Comparable"
               ELSE "P.Comparable"
             END )
         END
