@@ -119,7 +119,7 @@ view: vte_mag {
 
   dimension: diff_date {
     type: number
-    sql: DATE_DIFF({% date_end date_filter %}, CAST(${date_ouv_raw} AS DATE), YEAR) ;;
+    sql: DATE_DIFF({% date_end date_filter %}, CAST(${date_ouv_date} AS DATE), YEAR) ;;
   }
 
 
