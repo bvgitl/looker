@@ -107,10 +107,21 @@ view: vte_mag {
     sql: ${TABLE}.couts ;;
   }
 
+  filter: date_filter {
+    label: "Période"
+    type: date
+  }
+
   filter: date_filter_3 {
     label: "Période n-3"
     type: date
   }
+
+  dimension: diff_date {
+    type: number
+    sql: DATE_DIFF({% date_end date_filter %}, ${date_ouv_raw}, YEAR) ;;
+  }
+
 
   dimension: categorie {
     label: "Catégorie"
@@ -119,7 +130,7 @@ view: vte_mag {
           WHEN ${typ_mag} = "S" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN ${date_ouv_date} < CAST({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
+              WHEN ${date_ouv_raw} < CAST({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
               ELSE "P. non Comparable"
             END )
         END
