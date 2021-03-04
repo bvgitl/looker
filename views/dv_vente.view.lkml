@@ -137,7 +137,7 @@ view: dv_vente {
 
   dimension: diff_date {
     type: number
-    sql: DATE_DIFF({% date_end date_filter %}, ${magasin.date_ouv_date}) ;;
+    sql: DATE_DIFF({% date_end date_filter %}, ${magasin.date_ouv_date}, YEAR) ;;
   }
 
 
