@@ -119,7 +119,7 @@ view: vte_mag {
           WHEN ${typ_mag} = "S" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN ${date_ouv_date} < CAST ({% date_start date_filter_3 %} AS TIMESTAMP) THEN "P.Comparable"
+              WHEN ${date_ouv_date} < CAST({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
               ELSE "P.Comparable"
             END )
         END
