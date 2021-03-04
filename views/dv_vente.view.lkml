@@ -173,7 +173,7 @@ view: dv_vente {
           WHEN ${typ_vente} = "0" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN CAST (${magasin.date_ouv_date} AS DATE) < {% date_start date_filter_3 %} THEN "P.Comparable"
+              WHEN ${magasin.date_ouv_date} < CAST ({% date_start date_filter_3 %} AS DATE) THEN "P.Comparable"
               ELSE "P.Comparable"
             END )
         END
