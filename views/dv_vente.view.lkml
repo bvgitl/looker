@@ -84,10 +84,7 @@ view: dv_vente {
     type: date
   }
 
-  filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n-3"
-    type: date
-  }
+
 
   dimension_group: filter_date {
     type: time
@@ -143,15 +140,26 @@ view: dv_vente {
   #  sql: DATE_DIFF(${filter_date_date}, ${magasin.date_ouv_date}, YEAR) ;;
   #}
 
-  measure: categorie {
+
+  filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+    label: "Période n-3"
+    type: date
+  }
+
+  dimension: categorie {
     label: "Catégorie"
     sql:
         CASE
-          WHEN  ${min_date_ouv_date} <= ${min_filter_date_3} AND ${max_dte_vente} >= ${max_filter_date} THEN "P. comparable"
-          ELSE "P.non comparable"
+          WHEN ${typ_vente} = "S" THEN "P. non comparable"
+          ELSE (
+            CASE
+              WHEN ${magasin.date_ouv_date} <  {% date_start date_filter_3 %}, then "P.Comparable"
+              ELSE "P.Comparable"
+            END )
         END
-      ;;
+     ;;
   }
+
 
   measure: anciennete {
     label: "Ancienneté"
