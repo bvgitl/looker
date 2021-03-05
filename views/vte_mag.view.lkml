@@ -126,7 +126,7 @@ view: vte_mag {
     type: duration
     intervals: [year]
     sql_start: ${date_ouv_date::datetime} ;;
-    sql_end: CAST({% date_end date_filter %} AS DATETIME) ;;
+    sql_end: {% date_end date_filter %} ;;
   }
 
 
