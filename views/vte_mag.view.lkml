@@ -150,6 +150,46 @@ view: vte_mag {
       ;;
   }
 
+  measure: sum_ca_ht {
+    type: sum
+    sql: ${ca_ht} ;;
+  }
+
+  measure: sum_marge_brute {
+    type: sum
+    sql: ${marge_brute} ;;
+  }
+
+  dimension: tot_tx_marge_brute {
+    type: number
+    value_format_name: percent_2
+    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
+  }
+
+  measure: count_id_tf_vente {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [ca_ht: "0"]
+  }
+
+  measure: count_CD_MAG {
+    type: count_distinct
+    sql: ${TABLE}.CD_MAGASIN ;;
+    filters: [ca_ht: "0"]
+  }
+
+  measure: count_CD_MAG_negatif {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [marge_brute: "<0"]
+  }
+
+  measure: count_article_marge_errone {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [tot_tx_marge_brute: ">100"]
+  }
+
   set: detail {
     fields: [
       cd_magasin,

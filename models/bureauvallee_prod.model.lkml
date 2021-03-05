@@ -37,6 +37,8 @@ explore: tf_vente_update {
   }
 }
 
+explore: google_sheet {}
+
 explore: vte_mag {
   join: dv_web {
     type: left_outer

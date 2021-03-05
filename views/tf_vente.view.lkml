@@ -94,6 +94,7 @@ view: tf_vente {
 
   dimension: id_tf_vte {
     type: number
+    primary_key: yes
     sql: ${TABLE}.ID_TF_VTE ;;
   }
 
@@ -170,5 +171,35 @@ view: tf_vente {
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  dimension: tot_tx_marge_brute {
+    type: number
+    value_format_name: percent_2
+    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
+  }
+
+  measure: count_id_tf_vente {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [ca_ht: "0"]
+  }
+
+  measure: count_CD_MAG {
+    type: count_distinct
+    sql: ${TABLE}.CD_MAGASIN ;;
+    filters: [ca_ht: "0"]
+  }
+
+  measure: count_CD_MAG_negatif {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [marge_brute: "<0"]
+  }
+
+  measure: count_article_marge_errone {
+    type: count_distinct
+    sql: ${TABLE}.id_tf_vte ;;
+    filters: [tot_tx_marge_brute: ">100"]
   }
 }
