@@ -187,7 +187,7 @@ view: tf_vente {
 
   measure: count_CD_MAG {
     type: count_distinct
-    sql: ${TABLE}.CD_MAGASIN ;;
+    sql: ${TABLE}.ID_MAGASIN ;;
     filters: [ca_ht: "0"]
   }
 
