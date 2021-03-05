@@ -40,4 +40,10 @@ view: dv_web {
     type: number
     sql: ${TABLE}.total_ht ;;
   }
+
+  measure: sum_total_ht {
+    type: sum
+    sql_distinct_key: ${code_magasin} ;;
+    sql: ${total_ht}  ;;
+  }
 }
