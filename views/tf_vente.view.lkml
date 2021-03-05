@@ -193,7 +193,7 @@ view: tf_vente {
 
   measure: count_CD_MAG_negatif {
     type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
+    sql: ${TABLE}.ID_MAGASIN ;;
     filters: [marge_brute: "<0"]
   }
 
