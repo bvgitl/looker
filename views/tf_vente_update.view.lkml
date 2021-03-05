@@ -935,11 +935,7 @@ select * FROM ods.google_sheet
 
   ################################# Indicateurs qualité de données ####################################
 
-  measure: count_id_tf_vente {
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
-    filters: [ca_ht: "0"]
-  }
+
 
   measure: count_CD_MAG {
     type: count_distinct
@@ -947,17 +943,6 @@ select * FROM ods.google_sheet
     filters: [ca_ht: "0"]
   }
 
-  measure: count_CD_MAG_negatif {
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
-    filters: [marge_brute: "<0"]
-  }
-
-  measure: count_article_marge_errone {
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
-    filters: [tot_tx_marge_brute: ">100"]
-  }
 
   set: detail {
     fields: [
