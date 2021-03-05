@@ -29,7 +29,13 @@ explore: dv_vente {
 
 explore: table_update {}
 
-explore: tf_vente_update {}
+explore: tf_vente_update {
+  join: dv_web {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
+  }
+}
 
 explore: vte_mag {
   join: dv_web {

@@ -84,6 +84,11 @@ view: dv_vente {
     type: date
   }
 
+  filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+    label: "Période n-3"
+    type: date
+  }
+
 
 
   dimension_group: filter_date {
@@ -104,26 +109,6 @@ view: dv_vente {
             WHEN {% condition date_filter_3 %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vente_date}
           END ;;
-  }
-
-  dimension_group: filter_start_date_3 {
-    type: time
-    timeframes: [raw,date]
-    sql: CASE
-          WHEN {% date_start date_filter_3 %} IS NULL THEN '2017-01-01'
-          ELSE CAST({% date_start date_filter_3 %} AS DATE)
-        END;
-  }
-
-
-
-  dimension_group: filter_end_date {
-    type: time
-    timeframes: [raw,date]
-    sql: CASE
-          WHEN {% date_end date_filter %} IS NULL THEN CURRENT_DATE
-          ELSE CAST({% date_end date_filter %} AS DATE)
-        END;;
   }
 
   measure: max_filter_date {
@@ -150,20 +135,9 @@ view: dv_vente {
     convert_tz: no
   }
 
-  #measure: diff_date {
-  #  type: number
-  #  sql: DATE_DIFF(${max_filter_date}, ${min_date_ouv_date}, YEAR) ;;
-  #}
-
-  dimension: diff_date {
+  measure: diff_date {
     type: number
-    sql: DATE_DIFF({% date_end date_filter %}, ${magasin.date_ouv_date}, YEAR) ;;
-  }
-
-
-  filter: date_filter_3 {
-    label: "Période n-3"
-    type: date
+    sql: DATE_DIFF(${max_filter_date}, ${min_date_ouv_date}, YEAR) ;;
   }
 
   dimension: categorie {
@@ -181,7 +155,7 @@ view: dv_vente {
   }
 
 
-  dimension: anciennete {
+  measure: anciennete {
     label: "Ancienneté"
     sql:
         CASE
