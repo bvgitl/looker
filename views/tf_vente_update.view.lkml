@@ -167,6 +167,25 @@ select * FROM ods.google_sheet
       ;;
   }
 
+  parameter: select {
+    type: unquoted
+    allowed_value: {
+      label: "France Métropole  (Hors Dom)"
+      value: "FR"
+    }
+    allowed_value: {
+      label: "L'international"
+      value: "cost"
+    }
+  }
+
+  dimension: select_region {
+    sql: CASE
+          WHEN ${cd_pays} = "FR" THEN "France"
+          ELSE "International"
+        END ;;
+}
+
 
 ########################## Calcul global des KPIs ################################
 
