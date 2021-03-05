@@ -29,6 +29,8 @@ explore: dv_vente {
 
 explore: table_update {}
 
+explore: tf_vente_update {}
+
 explore: vte_mag {
   join: dv_web {
     type: left_outer
