@@ -125,7 +125,7 @@ view: vte_mag {
   dimension_group: diff {
     type: duration
     intervals: [year]
-    sql_start: ${date_ouv_date::date} ;;
+    sql_start: ${date_ouv_date::datetime} ;;
     sql_end: {% date_end date_filter %} ;;
   }
 
