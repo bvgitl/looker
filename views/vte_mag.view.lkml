@@ -117,19 +117,12 @@ view: vte_mag {
     type: date
   }
 
-  dimension: diff_date {
-    type: number
-    sql: DATE_DIFF({% date_end date_filter %}, CAST(${date_ouv_raw} AS DATE), YEAR) ;;
-  }
-
-  dimension_group: diff {
+  dimension_group: diff_date {
     type: duration
     intervals: [year]
     sql_start: ${date_ouv_date::datetime} ;;
     sql_end: {% date_end date_filter %} ;;
   }
-
-
 
   dimension: categorie {
     label: "Catégorie"
@@ -143,6 +136,18 @@ view: vte_mag {
             END )
         END
      ;;
+  }
+
+  dimension: anciennete {
+    label: "Ancienneté"
+    sql:
+        CASE
+          WHEN  ${years_diff_date} <= 2 THEN "A≤2 ans"
+          WHEN  ${years_diff_date}  <= 5 AND ${years_diff_date} > 2 THEN "2 ans<A≤ 5 ans"
+          WHEN  ${years_diff_date}  <= 10 AND ${years_diff_date}  > 5 THEN "5 ans<A≤10 ans"
+          WHEN  ${years_diff_date}  > 10 THEN "A>10 ans"
+        END
+      ;;
   }
 
   set: detail {
