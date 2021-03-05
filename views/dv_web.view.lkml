@@ -3,7 +3,8 @@ view: dv_web {
     sql: select
         code_magasin,
         date_de_commande,
-        sum(total_ht) as total_ht
+        sum(total_ht) as total_ht,
+        row_number() OVER(ORDER BY code_magasin) AS prim_key
         from  ods.dig_commandes
         group by 1,2
  ;;
@@ -18,10 +19,11 @@ view: dv_web {
   #  sql: ${TABLE}.id_magasin ;;
   #}
 
-  #dimension: magasin {
-  #  type: number
-  #  sql: ${TABLE}.nom ;;
-  #}
+  dimension: prim_key {
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.prim_key ;;
+  }
 
   dimension: code_magasin {
   #  primary_key: yes
@@ -42,8 +44,7 @@ view: dv_web {
   }
 
   measure: sum_total_ht {
-    type: sum_distinct
-    sql_distinct_key: ${code_magasin} ;;
+    type: sum
     sql: ${total_ht}  ;;
   }
 }
