@@ -303,7 +303,7 @@ select * FROM ods.google_sheet
     value_format_name: eur
     label: "CA Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${dv_web.date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dv_web.total_ht}
           END ;;
   }
