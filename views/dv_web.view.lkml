@@ -50,17 +50,17 @@ view: dv_web {
 
   filter: filter_date {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n"
-    type: date
+    type: date_time
   }
 
   filter: filter_date_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n-1"
-    type: date
+    type: date_time
   }
 
   filter: filter_date_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n-2"
-    type: date
+    type: date_time
   }
 
   measure: sum_CA_drive {
