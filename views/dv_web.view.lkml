@@ -1,34 +1,42 @@
 view: dv_web {
   derived_table: {
     sql: select
-        code_magasin,
-        date_de_commande,
-        sum(total_ht) as total_ht,
-        row_number() OVER(ORDER BY code_magasin) AS prim_key
-        from  ods.dig_commandes
-        group by 1,2
- ;;
+        c.code_commande,
+          c.code_magasin,
+          c.date_de_commande,
+          sum(c.total_ht) as total_ht,
+          sum(p.Quantite_commandee) as Quantite_commandee
+          from ods.dig_commandes c
+          left join ods.dig_produits_commandes p
+          on c.code_commande=p.code_commande
+          group by 1,2,3
+       ;;
   }
 
   measure: count {
     type: count
+    drill_fields: [detail*]
   }
 
-  #dimension: id_magasin {
-  #  type: number
-  #  sql: ${TABLE}.id_magasin ;;
-  #}
-
-  dimension: prim_key {
+  dimension: code_commande {
     type: number
     primary_key: yes
-    sql: ${TABLE}.prim_key ;;
+    sql: ${TABLE}.code_commande ;;
   }
 
   dimension: code_magasin {
-  #  primary_key: yes
     type: string
     sql: ${TABLE}.code_magasin ;;
+  }
+
+  dimension: total_ht {
+    type: number
+    sql: ${TABLE}.total_ht ;;
+  }
+
+  dimension: quantite_commandee {
+    type: number
+    sql: ${TABLE}.Quantite_commandee ;;
   }
 
   dimension_group: date_de_commande {
@@ -38,28 +46,28 @@ view: dv_web {
     sql: ${TABLE}.date_de_commande ;;
   }
 
-  dimension: total_ht {
-    type: number
-    sql: ${TABLE}.total_ht ;;
-  }
-
   measure: sum_total_ht {
     type: sum
     sql: ${total_ht}  ;;
   }
 
+  measure: sum_quantite_commandee {
+    type: sum
+    sql: ${quantite_commandee}  ;;
+  }
+
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n"
+    label: "Période drive n"
     type: date
   }
 
   filter: date_filter_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n-1"
+    label: "Période drive n-1"
     type: date
   }
 
   filter: date_filter_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n-2"
+    label: "Période drive n-2"
     type: date
   }
 
@@ -93,12 +101,12 @@ view: dv_web {
           END ;;
   }
 
-  #measure: panier_moyen_drive_select_mois {
-  #  label: "PM Drive"
-  #  value_format_name: decimal_2
-  #  type: number
-  #  sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
-  #}
+  measure: panier_moyen_drive {
+    label: "PM Drive"
+    value_format_name: decimal_2
+    type: number
+    sql:  ${sum_CA_drive}/NULLIF(${sum_quantite_commandee},0) ;;
+  }
 
   measure: prog_CA_drive {
     label: "prog CA Drive"
@@ -124,5 +132,9 @@ view: dv_web {
   #  sql: 1.0 * (${sum_CA_drive_select_mois_N2}-${sum_CA_drive_select_mois_N3})/NULLIF(${sum_CA_drive_select_mois_N3},0);;
   #}
 
+
+  set: detail {
+    fields: [code_commande, code_magasin, total_ht, quantite_commandee]
+  }
 
 }
