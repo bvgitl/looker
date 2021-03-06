@@ -48,6 +48,7 @@ select
 
   dimension: prim_key {
     type: number
+    primary_key: yes
     sql: ${TABLE}.prim_key ;;
   }
 
