@@ -1,15 +1,12 @@
 view: dv_web {
   derived_table: {
     sql: select
-        c.code_commande,
-          c.code_magasin,
-          c.date_de_commande,
-          sum(c.total_ht) as total_ht,
-          sum(p.Quantite_commandee) as Quantite_commandee
-          from ods.dig_commandes c
-          left join ods.dig_produits_commandes p
-          on c.code_commande=p.code_commande
-          group by 1,2,3
+        code_commande,
+        code_magasin,
+        date_de_commande,
+          sum(c.total_ht) as total_ht
+          from ods.dig_commandes
+          group by 1,2
        ;;
   }
 
@@ -34,10 +31,10 @@ view: dv_web {
     sql: ${TABLE}.total_ht ;;
   }
 
-  dimension: quantite_commandee {
-    type: number
-    sql: ${TABLE}.Quantite_commandee ;;
-  }
+  #dimension: quantite_commandee {
+  #  type: number
+  #  sql: ${TABLE}.Quantite_commandee ;;
+  #}
 
   dimension_group: date_de_commande {
     type: time
@@ -76,13 +73,13 @@ view: dv_web {
           END ;;
   }
 
-  measure: sum_quantite_commandee {
-    type: sum
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${quantite_commandee}
-          END ;;
-  }
+  #measure: sum_quantite_commandee {
+  #  type: sum
+  #  sql: CASE
+  #          WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
+  #          THEN ${quantite_commandee}
+  #        END ;;
+  #}
 
   measure: sum_CA_drive_N1 {
     type: sum
@@ -104,12 +101,12 @@ view: dv_web {
           END ;;
   }
 
-  measure: panier_moyen_drive {
-    label: "PM Drive"
-    value_format_name: decimal_2
-    type: number
-    sql:  ${sum_CA_drive}/NULLIF(${sum_quantite_commandee},0) ;;
-  }
+  #measure: panier_moyen_drive {
+  #  label: "PM Drive"
+  #  value_format_name: decimal_2
+  #  type: number
+  #  sql:  ${sum_CA_drive}/NULLIF(${sum_quantite_commandee},0) ;;
+  #}
 
   measure: prog_CA_drive {
     label: "prog CA Drive"
@@ -137,7 +134,7 @@ view: dv_web {
 
 
   set: detail {
-    fields: [code_commande, code_magasin, total_ht, quantite_commandee]
+    fields: [code_commande, code_magasin, total_ht]
   }
 
 }
