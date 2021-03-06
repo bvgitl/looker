@@ -51,11 +51,6 @@ view: dv_web {
     sql: ${total_ht}  ;;
   }
 
-  measure: sum_quantite_commandee {
-    type: sum
-    sql: ${quantite_commandee}  ;;
-  }
-
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n"
     type: date
@@ -78,6 +73,14 @@ view: dv_web {
     sql: CASE
             WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
+          END ;;
+  }
+
+  measure: sum_quantite_commandee {
+    type: sum
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${quantite_commandee}
           END ;;
   }
 
