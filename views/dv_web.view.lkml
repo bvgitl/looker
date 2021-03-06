@@ -71,7 +71,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %}   ${date_de_commande_date}  {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
@@ -79,7 +79,7 @@ view: dv_web {
   measure: sum_quantite_commandee {
     type: sum
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} ${date_de_commande_date}   {% endcondition %}
             THEN ${quantite_commandee}
           END ;;
   }
@@ -89,7 +89,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_1 %} ${date_de_commande_date}   {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
@@ -99,7 +99,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_2 %} ${date_de_commande_date}  {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
