@@ -16,14 +16,39 @@ view: tf_vente_update {
       sum(v.QTITE) as QTITE,
       sum(v.CA_HT) as CA_HT,
       sum(v.MARGE_BRUTE) as MARGE_BRUTE,
-      sum(v.NB_TICKET) as NB_TICKET
+      sum(v.NB_TICKET) as NB_TICKET,
+      row_number() OVER(ORDER BY CD_MAGASIN) AS prim_key
       from ods.tf_vente v
       left join magasin m
       on v.ID_MAGASIN = m.ID_MAGASIN
       group by 1,2,3,4,5,6,7,8,9,10,11
 UNION ALL
-select * FROM ods.google_sheet
+select
+      CD_MAGASIN,
+      NOM,
+      TYP_MAG,
+      DATE_OUV,
+      SURF_VTE,
+      CD_PAYS,
+      ID_ARTICLE,
+      DTE_VENTE,
+      STATUT_ARTICLE,
+      TYP_ARTICLE,
+      TYP_VENTE,
+      sum(VAL_ACHAT_GBL) as VAL_ACHAT_GBL,
+      sum(QTITE) as QTITE,
+      sum(CA_HT) as CA_HT,
+      sum(MARGE_BRUTE) as MARGE_BRUTE,
+      sum(NB_TICKET) as NB_TICKET,
+      row_number() OVER(ORDER BY CD_MAGASIN) AS prim_key
+      FROM ods.google_sheet
+      group by 1,2,3,4,5,6,7,8,9,10,11
  ;;
+  }
+
+  dimension: prim_key {
+    type: number
+    sql: ${TABLE}.prim_key ;;
   }
 
   measure: count {
