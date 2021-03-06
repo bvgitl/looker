@@ -6,7 +6,7 @@ view: dv_web {
         date_de_commande,
           sum(total_ht) as total_ht
           from ods.dig_commandes
-          group by 1,2
+          group by 1,2,3
        ;;
   }
 
