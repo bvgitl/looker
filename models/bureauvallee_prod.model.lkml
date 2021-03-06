@@ -35,6 +35,11 @@ explore: tf_vente_update {
     relationship: many_to_many
     sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
   }
+  join: dig_produits_commandes {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${dv_web.code_magasin}=${dig_produits_commandes.code_commande} ;;
+  }
 }
 
 explore: google_sheet {}
