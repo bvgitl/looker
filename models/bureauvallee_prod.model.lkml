@@ -32,7 +32,7 @@ explore: table_update {}
 explore: tf_vente_update {
   join: dv_web {
     type: left_outer
-    relationship: many_to_one
+    relationship: many_to_many
     sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
   }
 }
