@@ -48,17 +48,17 @@ view: dv_web {
     sql: ${total_ht}  ;;
   }
 
-  filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
+  filter: filter_date {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n"
     type: date
   }
 
-  filter: date_filter_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+  filter: filter_date_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n-1"
     type: date
   }
 
-  filter: date_filter_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+  filter: filter_date_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période drive n-2"
     type: date
   }
@@ -68,7 +68,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive"
     sql: CASE
-            WHEN {% condition date_filter %}  CAST(${date_de_commande_date} AS TIMESTAMP) {% endcondition %}
+            WHEN {% condition filter_date %}  CAST(${date_de_commande_date} AS TIMESTAMP) {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
@@ -86,7 +86,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
+            WHEN {% condition filter_date_1 %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
@@ -96,7 +96,7 @@ view: dv_web {
     value_format_name: eur
     label: "CA Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition filter_date_2 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
   }
