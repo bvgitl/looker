@@ -102,12 +102,24 @@ view: google_sheet {
   }
 
   measure: count {
+    label: "nbre de lignes corrigées"
     type: count
-    drill_fields: []
+    drill_fields: [details*]
   }
 
   measure: sum_ca_ht {
+    label: "CA manquant"
     type: sum
     sql: ${ca_ht} ;;
+    drill_fields: [details*]
+  }
+
+  set: details {
+    fields: [
+      cd_magasin,
+      dte_vente_date,
+      ca_ht,
+      marge_brute
+    ]
   }
 }

@@ -180,26 +180,37 @@ view: tf_vente {
   }
 
   measure: count_id_tf_vente {
+    label: "nbre de lignes ca=0"
     type: count_distinct
     sql: ${TABLE}.id_tf_vte ;;
     filters: [ca_ht: "0"]
-  }
-
-  measure: count_CD_MAG {
-    type: count_distinct
-    sql: ${TABLE}.ID_MAGASIN ;;
-    filters: [ca_ht: "0"]
+    drill_fields: [details*]
   }
 
   measure: count_CD_MAG_negatif {
+    label: "nbre de lignes marge<0"
     type: count_distinct
-    sql: ${TABLE}.ID_MAGASIN ;;
+    sql: ${TABLE}.id_tf_vte;;
     filters: [marge_brute: "<0"]
+    drill_fields: [details*]
   }
 
   measure: count_article_marge_errone {
+    label: "nbre de lignes tx marge>100"
     type: count_distinct
     sql: ${TABLE}.id_tf_vte ;;
     filters: [tot_tx_marge_brute: ">100"]
+    drill_fields: [details*]
+  }
+
+  set: details {
+    fields: [
+      id_magasin,
+      id_article,
+      typ_vente,
+      dte_vente_date,
+      ca_ht,
+      marge_brute
+    ]
   }
 }
