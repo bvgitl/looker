@@ -130,14 +130,14 @@ view: google_sheet {
   measure: count_id_tf_vente {
     label: "nbre de lignes ca corrigé"
     type: count
-    filters: [ca_ht: ">0"]
+    filters: [ca_ht: "<0 AND >0"]
     drill_fields: [details*]
   }
 
   measure: count_CD_MAG_negatif {
     label: "nbre de lignes marge corrigé"
     type: count
-    filters: [google_sheet.marge_brute: "NULL"]
+    filters: [google_sheet.marge_brute: "<0 AND >0"]
     drill_fields: [details*]
   }
 
