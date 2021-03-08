@@ -135,7 +135,7 @@ view: google_sheet {
   measure: count_CD_MAG_negatif {
     label: "nbre de lignes marge corrigé"
     type: count
-    filters: [marge_brute: "<0 AND >0"]
+    filters: [marge_brute: "NULL"]
     drill_fields: [details*]
   }
 
