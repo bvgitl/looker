@@ -107,6 +107,7 @@ view: google_sheet {
     sql: ${TABLE}.VAL_ACHAT_GBL ;;
   }
 
+
   measure: count {
     label: "nbre de lignes corrigées"
     type: count
