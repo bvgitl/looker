@@ -1,12 +1,12 @@
 view: dv_web {
   derived_table: {
     sql: select
-        code_commande,
-        code_magasin,
-        date_de_commande,
-          sum(total_ht) as total_ht
-          from ods.dig_commandes
-          group by 1,2,3
+              code_commande,
+              code_magasin,
+              date_de_commande,
+              sum(total_ht) as total_ht
+              from ods.dig_commandes
+              group by 1,2,3
        ;;
   }
 
