@@ -16,7 +16,8 @@ view: tf_vente_update {
       sum(v.QTITE) as QTITE,
       sum(v.CA_HT) as CA_HT,
       sum(v.MARGE_BRUTE) as MARGE_BRUTE,
-      sum(v.NB_TICKET) as NB_TICKET
+      sum(v.NB_TICKET) as NB_TICKET,
+      row_number() OVER(ORDER BY m.CD_MAGASIN) AS prim_key
       from ods.tf_vente v
       left join magasin m
       on v.ID_MAGASIN = m.ID_MAGASIN
@@ -38,17 +39,18 @@ select
       sum(QTITE) as QTITE,
       sum(CA_HT) as CA_HT,
       sum(MARGE_BRUTE) as MARGE_BRUTE,
-      sum(NB_TICKET) as NB_TICKET
+      sum(NB_TICKET) as NB_TICKET,
+      row_number() OVER(ORDER BY m.CD_MAGASIN) AS prim_key
       FROM ods.google_sheet
       group by 1,2,3,4,5,6,7,8,9,10,11
  ;;
   }
 
-  #dimension: prim_key {
-  #  type: number
-  #  primary_key: yes
-  #  sql: ${TABLE}.prim_key ;;
-  #}
+  dimension: prim_key {
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.prim_key ;;
+  }
 
   measure: count {
     type: count
