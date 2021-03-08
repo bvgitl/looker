@@ -63,15 +63,15 @@ view: dv_web {
     type: date
   }
 
-  measure: sum_CA_drive {
-    type: sum
-    value_format_name: eur
-    label: "CA Drive"
-    sql: CASE
-            WHEN {% condition filter_date %}  CAST(${date_de_commande_date} AS TIMESTAMP) {% endcondition %}
-            THEN ${total_ht}
-          END ;;
-  }
+  #measure: sum_CA_drive {
+  #  type: sum
+  #  value_format_name: eur
+  #  label: "CA Drive"
+  #  sql: CASE
+  #          WHEN {% condition filter_date %}  CAST(${date_de_commande_date} AS TIMESTAMP) {% endcondition %}
+  #          THEN ${total_ht}
+  #        END ;;
+  #}
 
   #measure: sum_quantite_commandee {
   #  type: sum
@@ -81,25 +81,25 @@ view: dv_web {
   #        END ;;
   #}
 
-  measure: sum_CA_drive_N1 {
-    type: sum
-    value_format_name: eur
-    label: "CA Drive n-1"
-    sql: CASE
-            WHEN {% condition filter_date_1 %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${total_ht}
-          END ;;
-  }
+  #measure: sum_CA_drive_N1 {
+  #  type: sum
+  #  value_format_name: eur
+  #  label: "CA Drive n-1"
+  #  sql: CASE
+  #          WHEN {% condition filter_date_1 %} CAST(${date_de_commande_date} AS TIMESTAMP)   {% endcondition %}
+  #          THEN ${total_ht}
+  #        END ;;
+  #}
 
-  measure: sum_CA_drive_N2 {
-    type: sum
-    value_format_name: eur
-    label: "CA Drive n-2"
-    sql: CASE
-            WHEN {% condition filter_date_2 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${total_ht}
-          END ;;
-  }
+  #measure: sum_CA_drive_N2 {
+  #  type: sum
+  #  value_format_name: eur
+  #  label: "CA Drive n-2"
+  #  sql: CASE
+  #          WHEN {% condition filter_date_2 %} CAST(${date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+  #          THEN ${total_ht}
+  #        END ;;
+  #}
 
   #measure: panier_moyen_drive {
   #  label: "PM Drive"
@@ -108,12 +108,12 @@ view: dv_web {
   #  sql:  ${sum_CA_drive}/NULLIF(${sum_quantite_commandee},0) ;;
   #}
 
-  measure: prog_CA_drive {
-    label: "prog CA Drive"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_CA_drive}-${sum_CA_drive_N1})/NULLIF(${sum_CA_drive_N1},0);;
-  }
+  #measure: prog_CA_drive {
+  #  label: "prog CA Drive"
+  #  value_format_name: percent_2
+  #  type: number
+  #  sql: 1.0 * (${sum_CA_drive}-${sum_CA_drive_N1})/NULLIF(${sum_CA_drive_N1},0);;
+  #}
 
   #measure: sum_CA_drive_select_mois_N1 {
   #  type: sum

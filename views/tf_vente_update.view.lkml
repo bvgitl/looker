@@ -322,15 +322,15 @@ select
           END ;;
   }
 
-  #measure: sum_CA_drive_select_mois {
-  #  type: sum
-  #  value_format_name: eur
-  #  label: "CA Drive"
-  #  sql: CASE
-  #          WHEN {% condition date_filter %} CAST(${dv_web.date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
-  #          THEN ${dv_web.total_ht}
-  #        END ;;
-  #}
+  measure: sum_CA_drive_select_mois {
+    type: sum
+    value_format_name: eur
+    label: "CA Drive"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dv_web.date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${dv_web.total_ht}
+          END ;;
+  }
 
   measure: ecarts_jour_select_mois {
     label: "écart jr"
