@@ -130,21 +130,21 @@ view: google_sheet {
   measure: count_id_tf_vente {
     label: "nbre de lignes ca corrigé"
     type: count
-    filters: [ca_ht: ">0 AND <0"]
+    filters: [ca_ht: "NOT NULL"]
     drill_fields: [details*]
   }
 
   measure: count_CD_MAG_negatif {
     label: "nbre de lignes marge corrigé"
     type: count
-    filters: [google_sheet.marge_brute: "<0 AND >0"]
+    filters: [google_sheet.marge_brute: "NOT NULL"]
     drill_fields: [details*]
   }
 
   measure: count_article_marge_errone {
     label: "nbre de lignes tx marge corrigé"
     type: count
-    filters: [google_sheet.tot_tx_marge_brute: "<0 AND >0"]
+    filters: [google_sheet.tot_tx_marge_brute: "NOT NULL"]
     drill_fields: [details*]
   }
 
