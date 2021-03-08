@@ -117,6 +117,7 @@ view: google_sheet {
   measure: sum_ca_ht {
     label: "CA manquant"
     type: sum
+    sql: ${ca_ht} ;;
     drill_fields: [details*]
   }
 
@@ -129,7 +130,7 @@ view: google_sheet {
   measure: count_id_tf_vente {
     label: "nbre de lignes ca corrigé"
     type: count
-    filters: [google_sheet.ca_ht: "<0 AND >0"]
+    filters: [ca_ht: ">0"]
     drill_fields: [details*]
   }
 
