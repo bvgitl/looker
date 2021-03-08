@@ -1,7 +1,7 @@
 view: tf_vente_update {
   derived_table: {
     sql: select
-      m.CD_MAGASIN,
+      m.CD_MAGASIN as CD_MAGASIN,
       m.NOM,
       m.TYP_MAG,
       m.DATE_OUV,
@@ -17,14 +17,14 @@ view: tf_vente_update {
       sum(v.CA_HT) as CA_HT,
       sum(v.MARGE_BRUTE) as MARGE_BRUTE,
       sum(v.NB_TICKET) as NB_TICKET,
-      row_number() OVER(ORDER BY m.CD_MAGASIN) AS prim_key
+      row_number() OVER(ORDER BY CD_MAGASIN) AS prim_key
       from ods.tf_vente v
       left join magasin m
       on v.ID_MAGASIN = m.ID_MAGASIN
       group by 1,2,3,4,5,6,7,8,9,10,11
 UNION ALL
 select
-      CD_MAGASIN,
+      CD_MAGASIN as CD_MAGASIN,
       NOM,
       TYP_MAG,
       DATE_OUV,
@@ -40,7 +40,7 @@ select
       sum(CA_HT) as CA_HT,
       sum(MARGE_BRUTE) as MARGE_BRUTE,
       sum(NB_TICKET) as NB_TICKET,
-      row_number() OVER(ORDER BY m.CD_MAGASIN) AS prim_key
+      row_number() OVER(ORDER BY CD_MAGASIN) AS prim_key
       FROM ods.google_sheet
       group by 1,2,3,4,5,6,7,8,9,10,11
  ;;
