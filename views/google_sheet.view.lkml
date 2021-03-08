@@ -139,7 +139,7 @@ view: google_sheet {
     label: "nbre de lignes marge corrigé"
     type: count_distinct
     sql:  ${id_tf_vte};;
-    filters: [marge_brute: ">0"]
+    filters: [marge_brute: "<0 AND >0"]
     drill_fields: [details*]
   }
 
