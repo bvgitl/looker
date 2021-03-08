@@ -1,7 +1,8 @@
 view: tf_vente_update {
   derived_table: {
     sql: select
-      m.CD_MAGASIN as CD_MAGASIN,
+      id_tf_vte,
+      m.CD_MAGASIN,
       m.NOM,
       m.TYP_MAG,
       m.DATE_OUV,
@@ -20,10 +21,11 @@ view: tf_vente_update {
       from ods.tf_vente v
       left join magasin m
       on v.ID_MAGASIN = m.ID_MAGASIN
-      group by 1,2,3,4,5,6,7,8,9,10,11
+      group by 1,2,3,4,5,6,7,8,9,10,11,12
 UNION ALL
 select
-      CD_MAGASIN as CD_MAGASIN,
+      id_tf_vte,
+      CD_MAGASIN,
       NOM,
       TYP_MAG,
       DATE_OUV,
@@ -40,7 +42,7 @@ select
       sum(MARGE_BRUTE) as MARGE_BRUTE,
       sum(NB_TICKET) as NB_TICKET
       FROM ods.google_sheet
-      group by 1,2,3,4,5,6,7,8,9,10,11
+      group by 1,2,3,4,5,6,7,8,9,10,11,12
  ;;
   }
 
@@ -89,6 +91,12 @@ select
   dimension: id_article {
     type: number
     sql: ${TABLE}.ID_ARTICLE ;;
+  }
+
+  dimension: id_tf_vte {
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.ID_TF_VTE ;;
   }
 
   dimension_group: dte_vente {

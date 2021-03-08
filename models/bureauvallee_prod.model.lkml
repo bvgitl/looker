@@ -121,4 +121,10 @@ explore: patch_abe {}
 
 explore: tb_optim_vente {}
 
-explore: tf_vente {}
+explore: tf_vente {
+  join: google_sheet {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:  ${tf_vente.id_tf_vte}=${google_sheet.id_tf_vte};;
+  }
+}
