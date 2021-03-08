@@ -191,17 +191,17 @@ select
       ;;
   }
 
-  parameter: select {
-    type: unquoted
-    allowed_value: {
-      label: "France Métropole  (Hors Dom)"
-      value: "FR"
-    }
-    allowed_value: {
-      label: "L'international"
-      value: "cost"
-    }
-  }
+  #parameter: select {
+  #  type: unquoted
+  #  allowed_value: {
+  #    label: "France Métropole  (Hors Dom)"
+  #    value: "FR"
+  #  }
+  #  allowed_value: {
+  #    label: "L'international"
+  #    value: "cost"
+  #  }
+  #}
 
   dimension: select_region {
     sql: CASE
