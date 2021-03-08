@@ -130,7 +130,7 @@ view: google_sheet {
   measure: count_id_tf_vente {
     label: "nbre de lignes ca corrigé"
     type: count
-    filters: [ca_ht: "<0 AND >0"]
+    filters: [ca_ht: ">0 AND <0"]
     drill_fields: [details*]
   }
 
