@@ -109,15 +109,13 @@ view: google_sheet {
 
   measure: count {
     label: "nbre de lignes corrigées"
-    type: count_distinct
-    sql: ${id_tf_vte} ;;
+    type: count
     drill_fields: [details*]
   }
 
   measure: sum_ca_ht {
     label: "CA manquant"
     type: sum
-    sql: ${ca_ht} ;;
     drill_fields: [details*]
   }
 
@@ -129,24 +127,21 @@ view: google_sheet {
 
   measure: count_id_tf_vente {
     label: "nbre de lignes ca corrigé"
-    type: count_distinct
-    sql: ${id_tf_vte}  ;;
+    type: count
     filters: [ca_ht: "<0 AND >0"]
     drill_fields: [details*]
   }
 
   measure: count_CD_MAG_negatif {
     label: "nbre de lignes marge corrigé"
-    type: count_distinct
-    sql:  ${id_tf_vte};;
+    type: count
     filters: [marge_brute: "<0 AND >0"]
     drill_fields: [details*]
   }
 
   measure: count_article_marge_errone {
     label: "nbre de lignes tx marge corrigé"
-    type: count_distinct
-    sql: ${id_tf_vte} ;;
+    type: count
     filters: [tot_tx_marge_brute: "<0 AND >0"]
     drill_fields: [details*]
   }
