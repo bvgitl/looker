@@ -203,6 +203,18 @@ view: tf_vente {
     drill_fields: [details*]
   }
 
+  measure: prog_correct_ca {
+    type: number
+    value_format_name: decimal_2
+    sql: 1.0 * ${google_sheet.count_id_tf_vente} / NULLIF(${count_id_tf_vente},0)  ;;
+  }
+
+  measure: prog_correct_marge {
+    type: number
+    value_format_name: decimal_2
+    sql: 1.0 * ${google_sheet.count_CD_MAG_negatif} / NULLIF(${count_CD_MAG_negatif},0)  ;;
+  }
+
   set: details {
     fields: [
       id_magasin,
