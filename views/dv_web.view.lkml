@@ -8,6 +8,7 @@ view: dv_web {
               from ods.dig_commandes
               group by 1,2,3
        ;;
+      datagroup_trigger: bureauvallee_dev_default_datagroup
   }
 
   measure: count {

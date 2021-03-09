@@ -44,6 +44,7 @@ select
       FROM ods.google_sheet
       group by 1,2,3,4,5,6,7,8,9,10,11,12
  ;;
+datagroup_trigger: bureauvallee_dev_default_datagroup
 }
 
   measure: count {
@@ -602,12 +603,12 @@ select
     sql:  ${sum_CA_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
   }
 
-  #measure: panier_moyen_drive_select_mois {
-  #  label: "PM Drive"
-  #  value_format_name: decimal_2
-  #  type: number
-  #  sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
-  #}
+  measure: panier_moyen_drive_select_mois {
+    label: "PM Drive"
+    value_format_name: decimal_2
+    type: number
+    sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
+  }
 
   measure: marge_par_client_select_mois {
     label: "marge / clts"
