@@ -44,7 +44,6 @@ select
       FROM ods.google_sheet
       group by 1,2,3,4,5,6,7,8,9,10,11,12
  ;;
- persist_for: "10 hour"
 }
 
   measure: count {
