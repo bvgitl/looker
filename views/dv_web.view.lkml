@@ -43,25 +43,25 @@ view: dv_web {
     sql: ${TABLE}.date_de_commande ;;
   }
 
-  measure: sum_total_ht {
-    type: sum
-    sql: ${total_ht}  ;;
-  }
+  #measure: sum_total_ht {
+  #  type: sum
+  #  sql: ${total_ht}  ;;
+  #}
 
-  filter: filter_date {                 ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période drive n"
-    type: date
-  }
+  #filter: filter_date {                 ### Choisir la période qu'on souhaite obtenir les résultats###
+  #  label: "Période drive n"
+  #  type: date
+  #}
 
-  filter: filter_date_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période drive n-1"
-    type: date
-  }
+  #filter: filter_date_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+  #  label: "Période drive n-1"
+  #  type: date
+  #}
 
-  filter: filter_date_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période drive n-2"
-    type: date
-  }
+  #filter: filter_date_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+  #  label: "Période drive n-2"
+  #  type: date
+  #}
 
   #measure: sum_CA_drive {
   #  type: sum

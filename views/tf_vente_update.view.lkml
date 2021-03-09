@@ -410,15 +410,15 @@ select
           END ;;
   }
 
-  #measure: sum_CA_drive_select_mois_N1 {
-  #  type: sum
-  #  value_format_name: eur
-  #  label: "CA Drive n-1"
-  #  sql: CASE
-  #          WHEN {% condition date_filter_1 %} CAST(${dv_web.date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
-  #          THEN ${dv_web.total_ht}
-  #        END ;;
-  #}
+  measure: sum_CA_drive_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    label: "CA Drive n-1"
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dv_web.date_de_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${dv_web.total_ht}
+          END ;;
+  }
 
 
 
