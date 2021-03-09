@@ -603,12 +603,12 @@ datagroup_trigger: bureauvallee_dev_default_datagroup
     sql:  ${sum_CA_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
   }
 
-  measure: panier_moyen_drive_select_mois {
-    label: "PM Drive"
-    value_format_name: decimal_2
-    type: number
-    sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
-  }
+  #measure: panier_moyen_drive_select_mois {
+  #  label: "PM Drive"
+  #  value_format_name: decimal_2
+  #  type: number
+  #  sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
+  #}
 
   measure: marge_par_client_select_mois {
     label: "marge / clts"
@@ -774,12 +774,12 @@ datagroup_trigger: bureauvallee_dev_default_datagroup
     sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
   }
 
-  #measure: prog_CA_drive_select_mois {
-  #  label: "prog CA Drive"
-  #  value_format_name: percent_2
-  #  type: number
-  #  sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
-  #}
+  measure: prog_CA_drive_select_mois {
+    label: "prog CA Drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
+  }
 
   measure: prog_taux_marge_select_mois {
     label: "prog %marge"
