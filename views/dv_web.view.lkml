@@ -8,7 +8,7 @@ view: dv_web {
               from ods.dig_commandes
               group by 1,2,3
        ;;
-      persist_for: "10 hour"
+      persist_for: "20 minutes"
   }
 
   measure: count {
