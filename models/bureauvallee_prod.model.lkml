@@ -21,7 +21,7 @@ explore: dv_vente {
 
   join: dv_web {
     type: left_outer
-    relationship: many_to_one
+    relationship: one_to_one
     sql_on: ${magasin.cd_magasin}=${dv_web.code_magasin} ;;
   }
 }
@@ -32,7 +32,7 @@ explore: table_update {}
 explore: tf_vente_update {
   join: dv_web {
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
   }
 }
