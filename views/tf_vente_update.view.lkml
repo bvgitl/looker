@@ -44,14 +44,8 @@ select
       FROM ods.google_sheet
       group by 1,2,3,4,5,6,7,8,9,10,11,12
  ;;
-datagroup_trigger: bureauvallee_dev_default_datagroup
-  }
-
-  #dimension: prim_key {
-  #  type: number
-  #  primary_key: yes
-  #  sql: ${TABLE}.prim_key ;;
-  #}
+ persist_for: "10 hour"
+}
 
   measure: count {
     type: count
