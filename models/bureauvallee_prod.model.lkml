@@ -6,7 +6,7 @@ include: "/views/**/*.view"
 fiscal_month_offset: 3
 
 datagroup: bureauvallee_dev_default_datagroup {
-  # sql_trigger: SELECT MAX(id) FROM etl_log;;
+   sql_trigger: SELECT count(*) FROM tf_vente ;;
   max_cache_age: "24 hour"
 }
 
