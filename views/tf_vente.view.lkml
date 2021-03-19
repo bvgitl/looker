@@ -215,6 +215,14 @@ view: tf_vente {
     sql: 1.0 * ${google_sheet.count_CD_MAG_negatif} / NULLIF(${count_CD_MAG_negatif},0)  ;;
   }
 
+  measure: total_ca_ht {
+    label: "Total CA HT"
+    description: "Ceci est la somme du Chiffre d'Affaire par article"
+    type: sum
+    value_format_name: eur_0
+    sql: ${ca_ht} ;;
+  }
+
   set: details {
     fields: [
       id_magasin,

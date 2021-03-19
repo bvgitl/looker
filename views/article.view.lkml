@@ -2,6 +2,12 @@ view: article {
   sql_table_name: `ods.article`
     ;;
 
+  dimension: id_article {
+    primary_key: yes
+    type: number
+    sql: ${TABLE}.ID_ARTICLE ;;
+  }
+
   dimension: att_val_f {
     type: string
     sql: ${TABLE}.ATT_VAL_F ;;
@@ -272,11 +278,6 @@ view: article {
     sql: ${TABLE}.GENCOD ;;
   }
 
-  dimension: id_article {
-    type: number
-    sql: ${TABLE}.ID_ARTICLE ;;
-  }
-
   dimension: id_division {
     type: number
     sql: ${TABLE}.ID_DIVISION ;;
@@ -420,5 +421,12 @@ view: article {
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  measure: count_references {
+    label: "Total Réferences"
+    type: count_distinct
+    sql: ${cd_article} ;;
+    value_format_name: decimal_0
   }
 }

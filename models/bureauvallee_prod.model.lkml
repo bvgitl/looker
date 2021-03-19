@@ -26,105 +26,123 @@ explore: dv_vente {
   }
 }
 
+explore: pdt_commandes_union {
+  group_label: "Bureau Vallée"
+  label: "Analyse Achats"
+  view_label: "Ventes"
 
-explore: table_update {}
-
-explore: tf_vente_update {
-  join: dv_web {
+  join: article {
+    view_label: "Articles"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
+    sql_on: ${article.cd_article} = ${pdt_commandes_union.cd_article} ;;
   }
-}
 
-explore: google_sheet {}
-
-explore: vte_mag {
-  join: dv_web {
+  join: fournisseur {
+    view_label: "Fournisseurs"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${vte_mag.cd_magasin}=${dv_web.code_magasin} ;;
+    sql_on: ${article.id_fourn} = ${fournisseur.id_fourn} ;;
   }
+
+
+  # join: google_sheet {
+  #   type: left_outer
+  #   relationship: one_to_one
+  #   sql_on:  ${tf_vente.id_tf_vte}=${google_sheet.id_tf_vte};;
+  # }
 }
 
-explore: dv_web {}
+# explore: table_update {}
 
-explore: ventes_devise {}
+# explore: tf_vente_update {
+#   join: dv_web {
+#     type: left_outer
+#     relationship: many_to_one
+#     sql_on: ${tf_vente_update.cd_magasin}=${dv_web.code_magasin} ;;
+#   }
+# }
 
-explore: tf_vente_corr {}
+# explore: google_sheet {}
 
-explore: all_emails {}
+# explore: vte_mag {
+#   join: dv_web {
+#     type: left_outer
+#     relationship: many_to_one
+#     sql_on: ${vte_mag.cd_magasin}=${dv_web.code_magasin} ;;
+#   }
+# }
 
-explore: arbo {}
+# explore: dv_web {}
 
-explore: article {}
+# explore: ventes_devise {}
 
-explore: article_arbo {}
+# explore: tf_vente_corr {}
 
-explore: clients {}
+# explore: all_emails {}
 
-explore: clients_ca {}
+# explore: arbo {}
 
-explore: clients_ca_str {}
+# explore: article {}
 
-explore: clients_retail {}
+# explore: article_arbo {}
 
-explore: dataquality_tf_vente2020 {
-  join: magasin {
-    type: inner
-    relationship: many_to_one
-    sql_on: ${magasin.id_magasin}=${dataquality_tf_vente2020.id_magasin} ;;
-  }
-}
+# explore: clients {}
 
-explore: dataquality_tf_vente2020_donnees_remontees {}
+# explore: clients_ca {}
 
-explore: dig_campagne_20200802 {}
+# explore: clients_ca_str {}
 
-explore: dig_campagne_20200901 {}
+# explore: clients_retail {}
 
-explore: dig_clients {}
+# explore: dataquality_tf_vente2020 {
+#   join: magasin {
+#     type: inner
+#     relationship: many_to_one
+#     sql_on: ${magasin.id_magasin}=${dataquality_tf_vente2020.id_magasin} ;;
+#   }
+# }
 
-explore: dig_clients_connexions {}
+# explore: dataquality_tf_vente2020_donnees_remontees {}
 
-explore: dig_commandes {
-  join: dig_clients {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${dig_commandes.code_client} = cast(${dig_clients.code_client} as string);;
-  }
+# explore: dig_campagne_20200802 {}
 
-  join: dig_nos_magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${dig_commandes.code_magasin} = ${dig_nos_magasins.code_magasin};;
-  }
-}
+# explore: dig_campagne_20200901 {}
 
-explore: dig_nos_magasins {}
+# explore: dig_clients {}
 
-explore: dig_produits_commandes {}
+# explore: dig_clients_connexions {}
 
-explore: magasin {}
+# explore: dig_commandes {
+#   join: dig_clients {
+#     type: left_outer
+#     relationship: many_to_one
+#     sql_on: ${dig_commandes.code_client} = cast(${dig_clients.code_client} as string);;
+#   }
 
-explore: marque {}
+#   join: dig_nos_magasins {
+#     type: left_outer
+#     relationship: many_to_one
+#     sql_on: ${dig_commandes.code_magasin} = ${dig_nos_magasins.code_magasin};;
+#   }
+# }
 
-explore: n1_division {}
+# explore: dig_nos_magasins {}
 
-explore: n2_famille {}
+# explore: dig_produits_commandes {}
 
-explore: n3_ss_famille {}
+# explore: magasin {}
 
-explore: n4 {}
+# explore: marque {}
 
-explore: patch_abe {}
+# explore: n1_division {}
 
-explore: tb_optim_vente {}
+# explore: n2_famille {}
 
-explore: tf_vente {
-  join: google_sheet {
-    type: left_outer
-    relationship: one_to_one
-    sql_on:  ${tf_vente.id_tf_vte}=${google_sheet.id_tf_vte};;
-  }
-}
+# explore: n3_ss_famille {}
+
+# explore: n4 {}
+
+# explore: patch_abe {}
+
+# explore: tb_optim_vente {}
