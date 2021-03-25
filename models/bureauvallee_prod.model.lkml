@@ -6,12 +6,12 @@ include: "/views/**/*.view"
 fiscal_month_offset: 3
 
 datagroup: bv_vente_datagroup {
-#  sql_trigger: SELECT count(*) FROM tf_vente ;;
+  sql_trigger: SELECT count(*) FROM tf_vente ;;
   max_cache_age: "24 hour"
 }
 
 datagroup: bv_vente_digitale_datagroup {
- #  sql_trigger: SELECT count(*) FROM commandes ;;
+   sql_trigger: SELECT count(*) FROM commandes ;;
   max_cache_age: "24 hour"
 }
 
