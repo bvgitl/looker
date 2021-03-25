@@ -1,5 +1,5 @@
 view: google_sheet {
-  sql_table_name: `bv-prod.ods.google_sheet`
+  sql_table_name: `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
     ;;
 
   dimension: ca_ht {
@@ -7,28 +7,9 @@ view: google_sheet {
     sql: ${TABLE}.CA_HT ;;
   }
 
-  dimension: cd_magasin {
+  dimension: cd_site_ext {
     type: string
-    sql: ${TABLE}.CD_MAGASIN ;;
-  }
-
-  dimension: cd_pays {
-    type: string
-    sql: ${TABLE}.CD_PAYS ;;
-  }
-
-  dimension_group: date_ouv {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.DATE_OUV ;;
+    sql: ${TABLE}.CD_SITE_EXT ;;
   }
 
   dimension_group: dte_vente {
@@ -47,14 +28,8 @@ view: google_sheet {
   }
 
   dimension: id_article {
-    type: number
+    type: string
     sql: ${TABLE}.ID_ARTICLE ;;
-  }
-
-  dimension: id_tf_vte {
-    type: number
-    primary_key: yes
-    sql: ${TABLE}.ID_TF_VTE ;;
   }
 
   dimension: marge_brute {
@@ -67,34 +42,9 @@ view: google_sheet {
     sql: ${TABLE}.NB_TICKET ;;
   }
 
-  dimension: nom {
-    type: string
-    sql: ${TABLE}.NOM ;;
-  }
-
   dimension: qtite {
     type: number
     sql: ${TABLE}.QTITE ;;
-  }
-
-  dimension: statut_article {
-    type: string
-    sql: ${TABLE}.STATUT_ARTICLE ;;
-  }
-
-  dimension: surf_vte {
-    type: number
-    sql: ${TABLE}.SURF_VTE ;;
-  }
-
-  dimension: typ_article {
-    type: string
-    sql: ${TABLE}.TYP_ARTICLE ;;
-  }
-
-  dimension: typ_mag {
-    type: string
-    sql: ${TABLE}.TYP_MAG ;;
   }
 
   dimension: typ_vente {
@@ -107,53 +57,8 @@ view: google_sheet {
     sql: ${TABLE}.VAL_ACHAT_GBL ;;
   }
 
-
   measure: count {
-    label: "nbre de lignes corrigées"
     type: count
-    drill_fields: [details*]
-  }
-
-  measure: sum_ca_ht {
-    label: "CA manquant"
-    type: sum
-    sql: ${ca_ht} ;;
-    drill_fields: [details*]
-  }
-
-  dimension: tot_tx_marge_brute {
-    type: number
-    value_format_name: percent_2
-    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
-  }
-
-  measure: count_id_tf_vente {
-    label: "nbre de lignes ca corrigé"
-    type: count
-    filters: [ca_ht: "NOT NULL"]
-    drill_fields: [details*]
-  }
-
-  measure: count_CD_MAG_negatif {
-    label: "nbre de lignes marge corrigé"
-    type: count
-    filters: [google_sheet.marge_brute: "NOT NULL"]
-    drill_fields: [details*]
-  }
-
-  measure: count_article_marge_errone {
-    label: "nbre de lignes tx marge corrigé"
-    type: count
-    filters: [google_sheet.tot_tx_marge_brute: "NOT NULL"]
-    drill_fields: [details*]
-  }
-
-  set: details {
-    fields: [
-      cd_magasin,
-      dte_vente_date,
-      ca_ht,
-      marge_brute
-    ]
+    drill_fields: []
   }
 }

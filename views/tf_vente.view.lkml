@@ -1,55 +1,60 @@
 view: tf_vente {
-  sql_table_name: `ods.tf_vente`
+  sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE`
     ;;
 
   dimension: an_sem {
     type: string
-    sql: ${TABLE}.AN_SEM ;;
+    sql: ${TABLE}.An_Sem ;;
   }
 
   dimension: annee {
     type: string
-    sql: ${TABLE}.ANNEE ;;
+    sql: ${TABLE}.Annee ;;
   }
 
   dimension: ca_ht {
     type: number
-    sql: ${TABLE}.CA_HT ;;
+    sql: ${TABLE}.ca_ht ;;
   }
 
   dimension: ca_net {
     type: number
-    sql: ${TABLE}.CA_NET ;;
+    sql: ${TABLE}.ca_net ;;
   }
 
-  dimension: cd_niv1 {
+  dimension: cd_article {
     type: string
-    sql: ${TABLE}.CD_NIV1 ;;
+    sql: ${TABLE}.CD_Article ;;
   }
 
-  dimension: cd_niv2 {
+  dimension: cd_magasin {
     type: string
-    sql: ${TABLE}.CD_NIV2 ;;
+    sql: ${TABLE}.CD_Magasin ;;
   }
 
-  dimension: cd_niv3 {
+  dimension: cd_niv_1 {
     type: string
-    sql: ${TABLE}.CD_NIV3 ;;
+    sql: ${TABLE}.CD_Niv_1 ;;
+  }
+
+  dimension: cd_niv_2 {
+    type: string
+    sql: ${TABLE}.CD_Niv_2 ;;
+  }
+
+  dimension: cd_niv_3 {
+    type: string
+    sql: ${TABLE}.CD_Niv_3 ;;
   }
 
   dimension: cd_pays {
     type: string
-    sql: ${TABLE}.CD_PAYS ;;
+    sql: ${TABLE}.CD_Pays ;;
   }
 
   dimension: cd_site_ext {
     type: string
-    sql: ${TABLE}.CD_SITE_EXT ;;
-  }
-
-  dimension: desc_article {
-    type: string
-    sql: ${TABLE}.DESC_ARTICLE ;;
+    sql: ${TABLE}.CD_Site_Ext ;;
   }
 
   dimension_group: dte_creat {
@@ -64,10 +69,10 @@ view: tf_vente {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.DTE_CREAT ;;
+    sql: ${TABLE}.Dte_creat ;;
   }
 
-  dimension_group: dte_vente {
+  dimension_group: dte_vte {
     type: time
     timeframes: [
       raw,
@@ -79,150 +84,81 @@ view: tf_vente {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.DTE_VENTE ;;
-  }
-
-  dimension: id_article {
-    type: number
-    sql: ${TABLE}.ID_ARTICLE ;;
-  }
-
-  dimension: id_magasin {
-    type: number
-    sql: ${TABLE}.ID_MAGASIN ;;
-  }
-
-  dimension: id_tf_vte {
-    type: number
-    primary_key: yes
-    sql: ${TABLE}.ID_TF_VTE ;;
+    sql: ${TABLE}.Dte_Vte ;;
   }
 
   dimension: jour {
     type: string
-    sql: ${TABLE}.JOUR ;;
+    sql: ${TABLE}.Jour ;;
   }
 
   dimension: marge_brute {
     type: number
-    sql: ${TABLE}.MARGE_BRUTE ;;
+    sql: ${TABLE}.marge_brute ;;
   }
 
   dimension: mois {
     type: string
-    sql: ${TABLE}.MOIS ;;
+    sql: ${TABLE}.Mois ;;
   }
 
   dimension: nb_ticket {
     type: number
-    sql: ${TABLE}.NB_TICKET ;;
+    sql: ${TABLE}.nb_ticket ;;
   }
 
   dimension: num_jour {
     type: string
-    sql: ${TABLE}.NUM_JOUR ;;
+    sql: ${TABLE}.Num_Jour ;;
   }
 
-  dimension: num_niv1 {
+  dimension: num_niv_1 {
     type: string
-    sql: ${TABLE}.NUM_NIV1 ;;
+    sql: ${TABLE}.Num_Niv_1 ;;
   }
 
-  dimension: num_niv2 {
+  dimension: num_niv_2 {
     type: string
-    sql: ${TABLE}.NUM_NIV2 ;;
+    sql: ${TABLE}.Num_Niv_2 ;;
   }
 
-  dimension: num_niv3 {
+  dimension: num_niv_3 {
     type: string
-    sql: ${TABLE}.NUM_NIV3 ;;
+    sql: ${TABLE}.Num_Niv_3 ;;
   }
 
   dimension: qtite {
     type: number
-    sql: ${TABLE}.QTITE ;;
+    sql: ${TABLE}.Qtite ;;
   }
 
   dimension: qtite_uvc {
     type: number
-    sql: ${TABLE}.QTITE_UVC ;;
+    sql: ${TABLE}.Qtite_uvc ;;
   }
 
   dimension: statut_article {
     type: string
-    sql: ${TABLE}.STATUT_ARTICLE ;;
+    sql: ${TABLE}.Statut_Article ;;
   }
 
   dimension: typ_article {
     type: string
-    sql: ${TABLE}.TYP_ARTICLE ;;
+    sql: ${TABLE}.Typ_Article ;;
   }
 
   dimension: typ_vente {
     type: number
-    sql: ${TABLE}.TYP_VENTE ;;
+    sql: ${TABLE}.Typ_Vente ;;
   }
 
   dimension: val_achat_gbl {
     type: number
-    sql: ${TABLE}.VAL_ACHAT_GBL ;;
+    sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
   measure: count {
     type: count
     drill_fields: []
-  }
-
-  dimension: tot_tx_marge_brute {
-    type: number
-    value_format_name: percent_2
-    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
-  }
-
-  measure: count_id_tf_vente {
-    label: "nbre de lignes ca=0"
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
-    filters: [ca_ht: "0"]
-    drill_fields: [details*]
-  }
-
-  measure: count_CD_MAG_negatif {
-    label: "nbre de lignes marge<0"
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte;;
-    filters: [marge_brute: "<0"]
-    drill_fields: [details*]
-  }
-
-  measure: count_article_marge_errone {
-    label: "nbre de lignes tx marge>100"
-    type: count_distinct
-    sql: ${TABLE}.id_tf_vte ;;
-    filters: [tot_tx_marge_brute: ">100"]
-    drill_fields: [details*]
-  }
-
-  measure: prog_correct_ca {
-    type: number
-    value_format_name: decimal_2
-    sql: 1.0 * ${google_sheet.count_id_tf_vente} / NULLIF(${count_id_tf_vente},0)  ;;
-  }
-
-  measure: prog_correct_marge {
-    type: number
-    value_format_name: decimal_2
-    sql: 1.0 * ${google_sheet.count_CD_MAG_negatif} / NULLIF(${count_CD_MAG_negatif},0)  ;;
-  }
-
-  set: details {
-    fields: [
-      id_magasin,
-      id_article,
-      typ_vente,
-      dte_vente_date,
-      ca_ht,
-      marge_brute
-    ]
   }
 }

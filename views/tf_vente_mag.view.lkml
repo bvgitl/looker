@@ -1,15 +1,15 @@
-view: tb_optim_vente {
-  sql_table_name: `ods.tb_optim_vente`
+view: tf_vente_mag {
+  sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
     ;;
 
   dimension: an_sem {
     type: string
-    sql: ${TABLE}.an_sem ;;
+    sql: ${TABLE}.An_Sem ;;
   }
 
   dimension: annee {
     type: string
-    sql: ${TABLE}.annee ;;
+    sql: ${TABLE}.Annee ;;
   }
 
   dimension: ca_ht {
@@ -22,12 +22,22 @@ view: tb_optim_vente {
     sql: ${TABLE}.ca_net ;;
   }
 
-  dimension: cd_pays {
+  dimension: cd_magasin {
     type: string
-    sql: ${TABLE}.cd_pays ;;
+    sql: ${TABLE}.CD_Magasin ;;
   }
 
-  dimension_group: dte_vente {
+  dimension: cd_pays {
+    type: string
+    sql: ${TABLE}.CD_Pays ;;
+  }
+
+  dimension: cd_site_ext {
+    type: string
+    sql: ${TABLE}.CD_Site_Ext ;;
+  }
+
+  dimension_group: dte_creat {
     type: time
     timeframes: [
       raw,
@@ -39,17 +49,27 @@ view: tb_optim_vente {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.dte_vente ;;
+    sql: ${TABLE}.Dte_creat ;;
   }
 
-  dimension: id_magasin {
-    type: number
-    sql: ${TABLE}.id_magasin ;;
+  dimension_group: dte_vte {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Vte ;;
   }
 
   dimension: jour {
     type: string
-    sql: ${TABLE}.jour ;;
+    sql: ${TABLE}.Jour ;;
   }
 
   dimension: marge_brute {
@@ -59,7 +79,7 @@ view: tb_optim_vente {
 
   dimension: mois {
     type: string
-    sql: ${TABLE}.mois ;;
+    sql: ${TABLE}.Mois ;;
   }
 
   dimension: nb_ticket {
@@ -69,27 +89,32 @@ view: tb_optim_vente {
 
   dimension: num_jour {
     type: string
-    sql: ${TABLE}.num_jour ;;
+    sql: ${TABLE}.Num_Jour ;;
   }
 
   dimension: qtite {
     type: number
-    sql: ${TABLE}.qtite ;;
+    sql: ${TABLE}.Qtite ;;
   }
 
   dimension: qtite_uvc {
     type: number
-    sql: ${TABLE}.qtite_uvc ;;
+    sql: ${TABLE}.Qtite_uvc ;;
+  }
+
+  dimension: typ_article {
+    type: string
+    sql: ${TABLE}.Typ_Article ;;
   }
 
   dimension: typ_vente {
     type: number
-    sql: ${TABLE}.typ_vente ;;
+    sql: ${TABLE}.Typ_Vente ;;
   }
 
   dimension: val_achat_gbl {
     type: number
-    sql: ${TABLE}.val_achat_gbl ;;
+    sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
   measure: count {
