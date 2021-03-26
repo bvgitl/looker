@@ -14,7 +14,7 @@ view: pdt_commandes_digitales {
 
   ON pc.cd_commande = c.cd_commande
  ;;
-    #  datagroup_trigger: bv_vente_digitale_datagroup
+      datagroup_trigger: bv_vente_digitale_datagroup
     }
 
     dimension: primary_key {
