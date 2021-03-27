@@ -5,7 +5,7 @@ view: pdt_commandes_digitales {
         c.cd_magasin AS cd_magasin ,
         CAST(DATETIME_TRUNC(c.dte_commande, DAY) AS DATE) AS dte_commande ,
         pc.Quantite_commandee AS Quantite_commandee ,
-        pc.Tarif_Produit_HT AS Tarif_Produit_HT ,
+        c.Total_HT AS Total_HT ,
         row_number() OVER(ORDER BY c.cd_magasin, c.dte_commande) AS primary_key
 
   from `bv-prod.Matillion_Perm_Table.produit_commande` AS pc
@@ -41,14 +41,14 @@ view: pdt_commandes_digitales {
       sql: ${TABLE}.Quantite_commandee ;;
     }
 
-    dimension: tarif_produit_ht {
-      type: number
-      sql: ${TABLE}.Tarif_Produit_HT ;;
-    }
+  dimension: total_ht {
+    type: number
+    sql: ${TABLE}.Total_HT ;;
+  }
 
 
     set: detail {
-      fields: [cd_magasin, quantite_commandee, tarif_produit_ht, primary_key]
+      fields: [cd_magasin, quantite_commandee, total_ht, primary_key]
     }
 
 }
