@@ -171,7 +171,7 @@ view: tf_vente {
   }
 
 
-  ########################### KPIs #######################
+  ########################### KPIs Data Quality #######################
 
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n"
@@ -247,8 +247,9 @@ view: tf_vente {
   }
 
   measure: Nb_Lignes_CA_Null {
-    label: "Nbre de lignes CA=0"
+    label: "Nbre de lignes CA = 0"
     type: count_distinct
+    value_format_name: decimal_0
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${compound_primary_key}
@@ -260,6 +261,7 @@ view: tf_vente {
   measure: Nb_Lignes_tx_Marge {
     label: "Nbre de lignes tx Marge >1"
     type: count_distinct
+    value_format_name: decimal_0
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${compound_primary_key}
@@ -268,11 +270,23 @@ view: tf_vente {
     drill_fields: [sheet*]
   }
 
-    set: sheet_diff {
-      fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, Ecarts_CA, Ecarts_Marge_Brute]
-    }
+  measure: Nb_Lignes_Marge_Negatif {
+    label: "Nbre de lignes Marge <01"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${compound_primary_key}
+          END ;;
+    filters: [marge_brute: "<0"]
+    drill_fields: [sheet*]
+  }
 
-    set: sheet {
-      fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht, marge_brute]
-    }
+  set: sheet_diff {
+    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, Ecarts_CA, Ecarts_Marge_Brute]
+  }
+
+  set: sheet {
+    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht, marge_brute]
+  }
 }
