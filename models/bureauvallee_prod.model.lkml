@@ -42,7 +42,6 @@ explore: tf_vente {
     type: left_outer
     relationship: many_to_one
     sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
-    fields: []
   }
 }
 
