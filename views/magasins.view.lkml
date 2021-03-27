@@ -49,6 +49,7 @@ view: magasins {
 
   dimension: cd_magasin {
     type: string
+    primary_key: yes
     sql: ${TABLE}.CD_Magasin ;;
   }
 

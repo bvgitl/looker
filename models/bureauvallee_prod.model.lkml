@@ -36,6 +36,14 @@ explore: pdt_commandes_digitales {
   persist_with: bv_vente_digitale_datagroup
 }
 
+explore: tf_vente {
+  join: tf_vente_mag {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
+  }
+}
+
 explore: tf_vente_mag {}
 
 explore: ventes_devise {}
