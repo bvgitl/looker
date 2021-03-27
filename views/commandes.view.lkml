@@ -9,6 +9,7 @@ view: commandes {
 
   dimension: cd_commande {
     type: string
+    primary_key: yes
     sql: ${TABLE}.cd_commande ;;
   }
 

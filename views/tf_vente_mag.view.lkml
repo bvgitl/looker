@@ -2,6 +2,13 @@ view: tf_vente_mag {
   sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
     ;;
 
+  dimension: compound_primary_key {
+    primary_key: yes
+    hidden: yes
+    type: string
+    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
+  }
+
   dimension: an_sem {
     type: string
     sql: ${TABLE}.An_Sem ;;

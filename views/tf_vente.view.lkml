@@ -2,6 +2,14 @@ view: tf_vente {
   sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE`
     ;;
 
+  dimension: compound_primary_key {
+    primary_key: yes
+    hidden: yes
+    type: string
+    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}, ' ',${cd_article}) ;;
+  }
+
+
   dimension: an_sem {
     type: string
     sql: ${TABLE}.An_Sem ;;
