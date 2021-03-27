@@ -198,13 +198,6 @@ view: tf_vente {
           END ;;
   }
 
-  measure: tot_tx_marge_brute_article {
-    label: "% marge articles"
-    type: number
-    value_format_name: percent_2
-    sql:  1.0 * ${sum_marge_brute_article}/NULLIF(${sum_ca_ht_article},0) ;;
-  }
-
     measure: sum_ca_ht_mag {
       label: "ca_ht mag"
       type: sum
@@ -223,13 +216,6 @@ view: tf_vente {
             WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tf_vente_mag.marge_brute}
           END ;;
-    }
-
-    measure: tot_tx_marge_brute_mag {
-      label: "% marge mag"
-      type: number
-      value_format_name: percent_2
-      sql:  1.0 * ${sum_marge_brute_mag}/NULLIF(${sum_ca_ht_mag},0) ;;
     }
 
     measure: Ecarts_CA {
