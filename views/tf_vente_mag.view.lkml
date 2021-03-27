@@ -124,8 +124,47 @@ view: tf_vente_mag {
     sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: []
+########################### KPIs #######################
+
+  measure: sum_ca_ht_mag {
+    label: "ca_ht mag"
+    type: sum
+    value_format_name: eur
+    sql: ${ca_ht} ;;
+  }
+
+  dimension: tot_tx_marge_brute_mag {
+    label: "% marge mag"
+    type: number
+    value_format_name: percent_2
+    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
+  }
+
+  measure: sum_marge_brute_mag {
+    label: "marge_brute mag"
+    value_format_name: eur
+    type: sum
+    sql: ${marge_brute} ;;
+  }
+
+  measure: sum_nb_ticket_mag {
+    value_format_name: decimal_0
+    hidden: yes
+    type: sum
+    sql: ${nb_ticket} ;;
+  }
+
+  measure: sum_qtite_mag {
+    value_format_name: decimal_0
+    hidden: yes
+    type: sum
+    sql: ${qtite};;
+  }
+
+  measure: sum_val_achat_gbl_mag {
+    value_format_name: eur
+    hidden: yes
+    type: sum
+    sql: ${val_achat_gbl} ;;
   }
 }

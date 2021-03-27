@@ -165,8 +165,114 @@ view: tf_vente {
     sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: []
+  dimension: tx_marge_brute {
+    type: number
+    sql: ${marge_brute}/${ca_ht} ;;
   }
+
+
+  ########################### KPIs #######################
+
+  filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
+    label: "Période n"
+    type: date
+  }
+
+  measure: sum_ca_ht_article {
+    label: "ca_ht articles"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ht}
+          END ;;
+  }
+
+  measure: sum_marge_brute_article {
+    label: "marge_brute articles"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${marge_brute}
+          END ;;
+  }
+
+  measure: tot_tx_marge_brute_article {
+    label: "% marge articles"
+    type: number
+    value_format_name: percent_2
+    sql:  1.0 * ${sum_marge_brute_article}/NULLIF(${sum_ca_ht_article},0) ;;
+  }
+
+    measure: sum_ca_ht_mag {
+      label: "ca_ht mag"
+      type: sum
+      value_format_name: eur
+      sql: CASE
+            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tf_vente_mag.ca_ht}
+          END ;;
+    }
+
+    measure: sum_marge_brute_mag {
+      label: "marge_brute mag"
+      type: sum
+      value_format_name: eur
+      sql: CASE
+            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tf_vente_mag.marge_brute}
+          END ;;
+    }
+
+    measure: tot_tx_marge_brute_mag {
+      label: "% marge mag"
+      type: number
+      value_format_name: percent_2
+      sql:  1.0 * ${sum_marge_brute_mag}/NULLIF(${sum_ca_ht_mag},0) ;;
+    }
+
+    measure: Ecarts_CA {
+      type: number
+      value_format_name: eur
+      sql: ${sum_ca_ht_mag}-${sum_ca_ht_article} ;;
+      drill_fields: [sheet_diff*]
+    }
+
+  measure: Ecarts_Marge_Brute {
+    type: number
+    value_format_name: eur
+    sql: ${sum_marge_brute_mag}-${sum_marge_brute_article} ;;
+    drill_fields: [sheet_diff*]
+  }
+
+  measure: Nb_Lignes_CA_Null {
+    label: "Nbre de lignes CA=0"
+    type: count_distinct
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${compound_primary_key}
+          END ;;
+    filters: [ca_ht: "0"]
+    drill_fields: [sheet*]
+  }
+
+  measure: Nb_Lignes_tx_Marge {
+    label: "Nbre de lignes tx Marge >1"
+    type: count_distinct
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${compound_primary_key}
+          END ;;
+    filters: [tx_marge_brute: ">1"]
+    drill_fields: [sheet*]
+  }
+
+    set: sheet_diff {
+      fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, Ecarts_CA, Ecarts_Marge_Brute]
+    }
+
+    set: sheet {
+      fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht, marge_brute]
+    }
 }
