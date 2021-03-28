@@ -27,8 +27,9 @@ view: pdt_data_quality {
         row_number() OVER(ORDER BY Dte_Vte) AS primary_key ,
         'Magasins' AS Origine
     from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-
  ;;
+
+    datagroup_trigger: bv_vente_datagroup
   }
 
   dimension: primary_key {
