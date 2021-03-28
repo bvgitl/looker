@@ -258,7 +258,7 @@ view: tf_vente {
   }
 
   measure: Nb_Lignes_Marge_Negatif {
-    label: "Nbre de lignes Marge <01"
+    label: "Nbre de lignes Marge <0"
     type: count_distinct
     value_format_name: decimal_0
     sql: CASE
