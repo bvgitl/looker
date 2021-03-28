@@ -4,6 +4,7 @@ view: tf_vente_mag {
 
   dimension: compound_primary_key {
     primary_key: yes
+    hidden: yes
     type: string
     sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
   }
@@ -125,45 +126,45 @@ view: tf_vente_mag {
 
 ########################### KPIs #######################
 
-  measure: sum_ca_ht_mag {
-    label: "ca_ht mag"
-    type: sum
-    value_format_name: eur
-    sql: ${ca_ht} ;;
-  }
+  # measure: sum_ca_ht_mag {
+  #   label: "ca_ht mag"
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: ${ca_ht} ;;
+  # }
 
-  dimension: tot_tx_marge_brute_mag {
-    label: "% marge mag"
-    type: number
-    value_format_name: percent_2
-    sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
-  }
+  # dimension: tot_tx_marge_brute_mag {
+  #   label: "% marge mag"
+  #   type: number
+  #   value_format_name: percent_2
+  #   sql:  1.0 * ${marge_brute}/NULLIF(${ca_ht},0) ;;
+  # }
 
-  measure: sum_marge_brute_mag {
-    label: "marge_brute mag"
-    value_format_name: eur
-    type: sum
-    sql: ${marge_brute} ;;
-  }
+  # measure: sum_marge_brute_mag {
+  #   label: "marge_brute mag"
+  #   value_format_name: eur
+  #   type: sum
+  #   sql: ${marge_brute} ;;
+  # }
 
-  measure: sum_nb_ticket_mag {
-    value_format_name: decimal_0
-    hidden: yes
-    type: sum
-    sql: ${nb_ticket} ;;
-  }
+  # measure: sum_nb_ticket_mag {
+  #   value_format_name: decimal_0
+  #   hidden: yes
+  #   type: sum
+  #   sql: ${nb_ticket} ;;
+  # }
 
-  measure: sum_qtite_mag {
-    value_format_name: decimal_0
-    hidden: yes
-    type: sum
-    sql: ${qtite};;
-  }
+  # measure: sum_qtite_mag {
+  #   value_format_name: decimal_0
+  #   hidden: yes
+  #   type: sum
+  #   sql: ${qtite};;
+  # }
 
-  measure: sum_val_achat_gbl_mag {
-    value_format_name: eur
-    hidden: yes
-    type: sum
-    sql: ${val_achat_gbl} ;;
-  }
+  # measure: sum_val_achat_gbl_mag {
+  #   value_format_name: eur
+  #   hidden: yes
+  #   type: sum
+  #   sql: ${val_achat_gbl} ;;
+  # }
 }
