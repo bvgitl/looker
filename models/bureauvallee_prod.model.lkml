@@ -23,7 +23,6 @@ explore: pdt_vente {
     type: left_outer
     relationship: many_to_one
     sql_on: ${pdt_vente.cd_site_ext}=${magasins.cd_comptable} ;;
-    fields: [magasins.cd_magasin, magasins.nom, magasins.region, magasins.animateur, magasins.franchise, magasins.typ_mag, magasins.date_ouv_date, magasins.surf_vte]
   }
   join: pdt_commandes_digitales {
     type: left_outer
