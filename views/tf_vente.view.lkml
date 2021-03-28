@@ -208,7 +208,7 @@ view: tf_vente {
       value_format_name: eur
       sql: CASE
             WHEN EXTRACT(DAY FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(DAY FROM ${tf_vente_mag.dte_vte_date})
-            AND EXTRACT(MONTH FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
+            WHEN EXTRACT(MONTH FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
             AND EXTRACT(YEAR FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(YEAR FROM ${tf_vente_mag.dte_vte_date})
             THEN ${tf_vente_mag.ca_ht}
           END ;;
