@@ -4,7 +4,6 @@ view: tf_vente_mag {
 
   dimension: compound_primary_key {
     primary_key: yes
-    hidden: yes
     type: string
     sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
   }
