@@ -45,6 +45,8 @@ explore: tf_vente {
   }
 }
 
+explore: pdt_data_quality {}
+
 explore: tf_vente_mag {}
 
 explore: ventes_devise {}
