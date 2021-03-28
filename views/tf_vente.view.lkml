@@ -167,7 +167,7 @@ view: tf_vente {
 
   dimension: tx_marge_brute {
     type: number
-    sql: ${marge_brute}/${ca_ht} ;;
+    sql: ${marge_brute}/NULLIF(${ca_ht},0) ;;
   }
 
 
