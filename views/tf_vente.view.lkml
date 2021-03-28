@@ -198,17 +198,23 @@ view: tf_vente {
           END ;;
   }
 
-    measure: sum_ca_ht_mag {
+  measure: sum_ca_ht_mag {
       label: "ca_ht mag"
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tf_vente_mag.ca_ht}
           END ;;
-    }
+  }
 
-    measure: sum_marge_brute_mag {
+  measure: tot_ca_ht_mag {
+    type: sum
+    value_format_name: eur
+    sql: ${tf_vente_mag.ca_ht} ;;
+  }
+
+  measure: sum_marge_brute_mag {
       label: "marge_brute mag"
       type: sum
       value_format_name: eur
@@ -216,14 +222,14 @@ view: tf_vente {
             WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tf_vente_mag.marge_brute}
           END ;;
-    }
+  }
 
-    measure: Ecarts_CA {
+  measure: Ecarts_CA {
       type: number
       value_format_name: eur
       sql: ${sum_ca_ht_mag}-${sum_ca_ht_article} ;;
       drill_fields: [sheet_diff*]
-    }
+  }
 
   measure: Ecarts_Marge_Brute {
     type: number
