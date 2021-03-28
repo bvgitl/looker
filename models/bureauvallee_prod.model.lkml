@@ -38,9 +38,10 @@ explore: pdt_commandes_digitales {
 
 explore: tf_vente {
   label: "Data Quality"
+  sql_always_where: ${tf_vente_mag.dte_vte_date} >= '2021-01-01' ;;
   join: tf_vente_mag {
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
   }
 }
