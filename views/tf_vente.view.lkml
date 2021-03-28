@@ -173,12 +173,7 @@ view: tf_vente {
 
   ########################### KPIs Data Quality #######################
 
-  filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n"
-    type: date
-  }
-
-  parameter: filter {
+  parameter: date_filter {
     type: date
   }
 
@@ -187,7 +182,9 @@ view: tf_vente {
     type: sum
     value_format_name: eur
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${dte_vte_date})
             THEN ${ca_ht}
           END ;;
   }
@@ -197,7 +194,9 @@ view: tf_vente {
     type: sum
     value_format_name: eur
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${dte_vte_date})
             THEN ${marge_brute}
           END ;;
   }
@@ -207,9 +206,9 @@ view: tf_vente {
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN EXTRACT(DAY FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(DAY FROM ${tf_vente_mag.dte_vte_date})
-            AND EXTRACT(MONTH FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
-            AND EXTRACT(YEAR FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(YEAR FROM ${tf_vente_mag.dte_vte_date})
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${tf_vente_mag.dte_vte_date})
             THEN ${tf_vente_mag.ca_ht}
           END ;;
   }
@@ -220,7 +219,9 @@ view: tf_vente {
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_raw} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${tf_vente_mag.dte_vte_date})
             THEN ${tf_vente_mag.marge_brute}
           END ;;
   }
@@ -244,7 +245,9 @@ view: tf_vente {
     type: count_distinct
     value_format_name: decimal_0
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${dte_vte_date})
             THEN ${compound_primary_key}
           END ;;
     filters: [ca_ht: "0"]
@@ -256,7 +259,9 @@ view: tf_vente {
     type: count_distinct
     value_format_name: decimal_0
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${dte_vte_date})
             THEN ${compound_primary_key}
           END ;;
     filters: [tx_marge_brute: ">1"]
@@ -268,7 +273,9 @@ view: tf_vente {
     type: count_distinct
     value_format_name: decimal_0
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(DAY FROM ${dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(MONTH FROM ${dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter date_filter %} AS DATE)) = EXTRACT(YEAR FROM ${dte_vte_date})
             THEN ${compound_primary_key}
           END ;;
     filters: [marge_brute: "<0"]
