@@ -96,7 +96,7 @@ view: pdt_data_quality {
     type: sum
     value_format_name: eur
     sql: ${ca_ht} ;;
-    filters: [origine: "Aricles"]
+    filters: [origine: "Articles"]
   }
 
   measure: sum_marge_brute_article {
