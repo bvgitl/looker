@@ -203,7 +203,7 @@ view: tf_vente {
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_raw} AS TIMESTAMP)  {% endcondition %}
             THEN ${tf_vente_mag.ca_ht}
           END ;;
   }
@@ -214,7 +214,7 @@ view: tf_vente {
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_raw} AS TIMESTAMP)  {% endcondition %}
             THEN ${tf_vente_mag.marge_brute}
           END ;;
   }

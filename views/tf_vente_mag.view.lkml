@@ -167,4 +167,6 @@ view: tf_vente_mag {
   #   type: sum
   #   sql: ${val_achat_gbl} ;;
   # }
+
+
 }
