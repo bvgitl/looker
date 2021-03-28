@@ -178,6 +178,10 @@ view: tf_vente {
     type: date
   }
 
+  parameter: filter {
+    type: date
+  }
+
   measure: sum_ca_ht_article {
     label: "ca_ht articles"
     type: sum
@@ -203,7 +207,9 @@ view: tf_vente {
       type: sum
       value_format_name: eur
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_raw} AS TIMESTAMP)  {% endcondition %}
+            WHEN EXTRACT(DAY FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(DAY FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(MONTH FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(MONTH FROM ${tf_vente_mag.dte_vte_date})
+            AND EXTRACT(YEAR FROM CAST({% parameter filter %} AS DATE)) = EXTRACT(YEAR FROM ${tf_vente_mag.dte_vte_date})
             THEN ${tf_vente_mag.ca_ht}
           END ;;
   }
