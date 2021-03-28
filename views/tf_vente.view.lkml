@@ -208,11 +208,6 @@ view: tf_vente {
           END ;;
   }
 
-  measure: tot_ca_ht_mag {
-    type: sum
-    value_format_name: eur
-    sql: ${tf_vente_mag.ca_ht} ;;
-  }
 
   measure: sum_marge_brute_mag {
       label: "marge_brute mag"
