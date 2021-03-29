@@ -4,8 +4,8 @@ view: pdt_commandes_digitales {
     sql: select
         c.cd_magasin AS cd_magasin ,
         CAST(DATETIME_TRUNC(c.dte_commande, DAY) AS DATE) AS dte_commande ,
-        pc.Quantite_commandee AS Quantite_commandee ,
-        c.Total_HT AS Total_HT ,
+        sum(pc.Quantite_commandee) AS Quantite_commandee ,
+        sum(c.Total_HT) AS Total_HT ,
         row_number() OVER(ORDER BY c.cd_magasin, c.dte_commande) AS primary_key
 
   from `bv-prod.Matillion_Perm_Table.produit_commande` AS pc
@@ -13,6 +13,8 @@ view: pdt_commandes_digitales {
   LEFT JOIN  `bv-prod.Matillion_Perm_Table.commandes` AS c
 
   ON pc.cd_commande = c.cd_commande
+
+  Group by 1,2
  ;;
       datagroup_trigger: bv_vente_digitale_datagroup
     }
