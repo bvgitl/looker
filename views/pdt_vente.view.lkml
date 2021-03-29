@@ -260,18 +260,18 @@ view: pdt_vente {
     value_format_name: eur
     label: "CA Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${pdt_commandes_digitales.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes_digitales.total_ht}
+            WHEN {% condition date_filter %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.total_ht}
           END ;;
   }
 
   measure: sum_Nb_cde_drive_select_mois {
-    type: sum
+    type: count_distinct
     value_format_name: decimal_0
     label: "Commande Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${pdt_commandes_digitales.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes_digitales.quantite_commandee}
+            WHEN {% condition date_filter %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.compound_primary_key}
           END ;;
   }
 
@@ -346,11 +346,20 @@ view: pdt_vente {
     value_format_name: eur
     label: "CA Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${pdt_commandes_digitales.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes_digitales.total_ht}
+            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.total_ht}
           END ;;
   }
 
+  measure: sum_Nb_cde_drive_select_mois_N1 {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "Commande Drive n-1"
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.compound_primary_key}
+          END ;;
+  }
 
     ############## calcul des KPIs à n-2 de la période sélectionnée au niveau du filtre ##############
 
@@ -404,6 +413,26 @@ view: pdt_vente {
             THEN ${val_achat_gbl}
           END ;;
     }
+
+  measure: sum_CA_drive_select_mois_N2 {
+    type: sum
+    value_format_name: eur
+    label: "CA Drive n-2"
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.total_ht}
+          END ;;
+  }
+
+  measure: sum_Nb_cde_drive_select_mois_N2 {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "Commande Drive n-2"
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${commandes.compound_primary_key}
+          END ;;
+  }
 
 
     ############ calcul des KPIs à n-3 de la période sélectionnée au niveau du filtre ###############

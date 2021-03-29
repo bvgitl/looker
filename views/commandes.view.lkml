@@ -2,6 +2,14 @@ view: commandes {
   sql_table_name: `bv-prod.Matillion_Perm_Table.commandes`
     ;;
 
+
+  dimension: compound_primary_key {
+    primary_key: yes
+    hidden: yes
+    type: string
+    sql: CONCAT(${cd_commande}, ' ',${cd_magasin}, ' ',${customer_id}, ' ',${dte_commande_date}) ;;
+  }
+
   dimension: canal_commande {
     type: string
     sql: ${TABLE}.Canal_commande ;;
@@ -9,7 +17,7 @@ view: commandes {
 
   dimension: cd_commande {
     type: string
-    primary_key: yes
+ #   primary_key: yes
     sql: ${TABLE}.cd_commande ;;
   }
 
