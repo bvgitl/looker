@@ -22,7 +22,7 @@ explore: pdt_vente {
   join: magasins {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${pdt_vente.cd_magasin}=${magasins.cd_comptable} ;;
+    sql_on: ${pdt_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
   join: commandes {
     type: left_outer
@@ -52,7 +52,7 @@ explore: ventes_devise {
   join: magasins {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_comptable} ;;
+    sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_logiciel} ;;
   }
 }
 

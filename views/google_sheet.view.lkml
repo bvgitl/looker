@@ -7,9 +7,9 @@ view: google_sheet {
     sql: ${TABLE}.CA_HT ;;
   }
 
-  dimension: cd_magasin {
+  dimension: cd_site_ext {
     type: string
-    sql: ${TABLE}.CD_Magasin ;;
+    sql: ${TABLE}.CD_SITE_EXT ;;
   }
 
   dimension_group: dte_vente {

@@ -2,7 +2,7 @@ view: pdt_vente {
 
   derived_table: {
     sql: select
-        CD_Magasin ,
+        CD_Site_Ext ,
         Dte_Vte ,
         CD_Article ,
         Typ_Vente ,
@@ -31,7 +31,7 @@ view: pdt_vente {
       sql: ${TABLE}.primary_key ;;
     }
 
-    dimension: cd_magasin {
+    dimension: cd_site_ext {
       type: string
     }
 
@@ -79,7 +79,7 @@ view: pdt_vente {
 
     set: detail {
       fields: [
-        cd_magasin,
+        cd_site_ext,
         cd_article,
         typ_vente,
         val_achat_gbl,
