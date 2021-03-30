@@ -2,7 +2,7 @@ view: pdt_vente {
 
   derived_table: {
     sql: select
-        CD_Site_Ext ,
+        CD_Magasin ,
         Dte_Vte ,
         CD_Article ,
         Typ_Vente ,
@@ -11,17 +11,17 @@ view: pdt_vente {
         ca_ht ,
         marge_brute ,
         nb_ticket,
-        row_number() OVER(ORDER BY CD_Site_Ext, Dte_Vte, CD_Article, Typ_Vente) AS primary_key
+        row_number() OVER(ORDER BY Dte_Vte) AS primary_key
   from `bv-prod.Matillion_Perm_Table.TF_VENTE`
 
   UNION ALL
 
   select
         *,
-        row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, ID_ARTICLE, TYP_VENTE) AS primary_key
+        row_number() OVER(ORDER BY DTE_VENTE) AS primary_key
   from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
  ;;
-      datagroup_trigger: bv_vente_datagroup
+    #  datagroup_trigger: bv_vente_datagroup
     }
 
     dimension: primary_key {
@@ -31,7 +31,7 @@ view: pdt_vente {
       sql: ${TABLE}.primary_key ;;
     }
 
-    dimension: cd_site_ext {
+    dimension: cd_magasin {
       type: string
     }
 
@@ -79,7 +79,7 @@ view: pdt_vente {
 
     set: detail {
       fields: [
-        cd_site_ext,
+        cd_magasin,
         cd_article,
         typ_vente,
         val_achat_gbl,
@@ -271,7 +271,7 @@ view: pdt_vente {
     label: "Commande Drive"
     sql: CASE
             WHEN {% condition date_filter %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.compound_primary_key}
+            THEN ${commandes.cd_commande}
           END ;;
   }
 
@@ -357,7 +357,7 @@ view: pdt_vente {
     label: "Commande Drive n-1"
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.compound_primary_key}
+            THEN ${commandes.cd_commande}
           END ;;
   }
 
@@ -430,7 +430,7 @@ view: pdt_vente {
     label: "Commande Drive n-2"
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${commandes.dte_commande_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.compound_primary_key}
+            THEN ${commandes.cd_commande}
           END ;;
   }
 
