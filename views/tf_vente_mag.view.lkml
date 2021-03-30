@@ -126,6 +126,18 @@ view: tf_vente_mag {
 
 ########################### KPIs #######################
 
+  measure: sum_ca_ht_mag {
+    type: sum
+    value_format_name: eur
+    label: "ca_ht mag"
+    sql:  ${ca_ht} ;;
+  }
 
+  measure: sum_marge_brute_mag {
+    type: sum
+    value_format_name: eur
+    label: "marge_brute mag"
+    sql:  ${marge_brute} ;;
+  }
 
 }
