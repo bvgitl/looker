@@ -38,7 +38,7 @@ explore: pdt_commandes_digitales {
 explore: tf_vente {
   label: "Data Quality"
   join: tf_vente_mag {
-    type: full_outer
+    type: left_outer
     relationship: many_to_one
     sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
   }
