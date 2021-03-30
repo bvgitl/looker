@@ -188,21 +188,6 @@ view: tf_vente {
     sql:  ${marge_brute} ;;
   }
 
-
-  measure: sum_ca_ht_mag {
-    type: sum
-    value_format_name: eur
-    label: "ca_ht mag"
-    sql:  ${tf_vente_mag.ca_ht} ;;
-  }
-
-  measure: sum_marge_brute_mag {
-    type: sum
-    value_format_name: eur
-    label: "marge_brute mag"
-    sql:  ${tf_vente_mag.marge_brute} ;;
-  }
-
   measure: Ecarts_CA {
     type: number
     value_format_name: eur
