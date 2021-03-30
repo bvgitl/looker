@@ -48,7 +48,13 @@ explore: pdt_data_quality {}
 
 explore: tf_vente_mag {}
 
-explore: ventes_devise {}
+explore: ventes_devise {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_comptable} ;;
+  }
+}
 
 explore: commandes {}
 
