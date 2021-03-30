@@ -9,7 +9,7 @@ view: pdt_data_quality {
         ca_ht ,
         marge_brute ,
         nb_ticket,
-        row_number() OVER(ORDER BY Dte_Vte) AS primary_key ,
+        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key ,
         'Articles' AS Origine
   from `bv-prod.Matillion_Perm_Table.TF_VENTE`
 
@@ -24,7 +24,7 @@ view: pdt_data_quality {
         ca_ht ,
         marge_brute ,
         nb_ticket ,
-        row_number() OVER(ORDER BY Dte_Vte) AS primary_key ,
+        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key ,
         'Magasins' AS Origine
     from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
  ;;

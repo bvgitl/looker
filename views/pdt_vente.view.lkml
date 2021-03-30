@@ -11,14 +11,14 @@ view: pdt_vente {
         ca_ht ,
         marge_brute ,
         nb_ticket,
-        row_number() OVER(ORDER BY Dte_Vte) AS primary_key
+        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key
   from `bv-prod.Matillion_Perm_Table.TF_VENTE`
 
   UNION ALL
 
   select
         *,
-        row_number() OVER(ORDER BY DTE_VENTE) AS primary_key
+        row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, TYP_VENTE) AS primary_key
   from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
  ;;
     #  datagroup_trigger: bv_vente_datagroup
