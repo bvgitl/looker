@@ -31,6 +31,19 @@ explore: pdt_vente {
   }
 }
 
+explore: pdt_vente_mag {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pdt_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+  join: commandes {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin}=${commandes.cd_magasin} ;;
+  }
+}
+
 explore: pdt_commandes_digitales {
   persist_with: bv_vente_digitale_datagroup
 }
