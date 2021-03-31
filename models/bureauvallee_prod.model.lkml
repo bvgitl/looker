@@ -21,7 +21,7 @@ persist_with: bv_vente_datagroup
 explore: pdt_vente {
   join: magasins {
     type: left_outer
-    relationship: many_to_one
+    relationship: many_to_many
     sql_on: ${pdt_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
   join: commandes {
@@ -34,7 +34,7 @@ explore: pdt_vente {
 explore: pdt_vente_mag {
   join: magasins {
     type: left_outer
-    relationship: many_to_one
+    relationship: many_to_many
     sql_on: ${pdt_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
   join: commandes {
