@@ -9,8 +9,7 @@ view: pdt_vente_mag {
         Qtite ,
         ca_ht ,
         marge_brute ,
-        nb_ticket,
-        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key
+        nb_ticket
   from `bv-prod.Matillion_Perm_Table.TFVENTEMAG`
 
   UNION ALL
@@ -23,19 +22,12 @@ view: pdt_vente_mag {
         Qtite ,
         ca_ht ,
         marge_brute ,
-        nb_ticket,
-        row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, TYP_VENTE) AS primary_key
+        nb_ticket
   from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
  ;;
     #  datagroup_trigger: bv_vente_datagroup
     }
 
-    dimension: primary_key {
-      type: number
-      primary_key: yes
-      hidden: yes
-      sql: ${TABLE}.primary_key ;;
-    }
 
     dimension: cd_site_ext {
       type: string
