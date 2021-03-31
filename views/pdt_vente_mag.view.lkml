@@ -17,7 +17,7 @@ view: pdt_vente_mag {
 
   select
         CD_Site_Ext ,
-        Dte_Vte ,
+        DTE_VENTE ,
         Typ_Vente ,
         Val_Achat_Gbl ,
         Qtite ,
