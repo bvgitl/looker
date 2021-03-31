@@ -133,11 +133,14 @@ view: tf_vente_mag {
     sql:  ${ca_ht} ;;
   }
 
-  measure: sum_marge_brute_mag {
-    type: sum
-    value_format_name: eur
-    label: "marge_brute mag"
-    sql:  ${marge_brute} ;;
-  }
+  # measure: sum_marge_brute_mag {
+  #   type: sum
+  #   value_format_name: eur
+  #   label: "marge_brute mag"
+  #   sql: CASE
+  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${marge_brute}
+  #         END ;;
+  # }
 
 }
