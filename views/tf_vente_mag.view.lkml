@@ -1,5 +1,5 @@
 view: tf_vente_mag {
-  sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+  sql_table_name: `bv-prod.Matillion_Perm_Table.TFVENTEMAG`
     ;;
 
   dimension: compound_primary_key {
