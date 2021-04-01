@@ -145,12 +145,12 @@ view: pdt_vente {
 
 
 
-    # dimension: select_region {
-    #   sql: CASE
-    #         WHEN ${cd_pays} = "FR" THEN "France"
-    #         ELSE "International"
-    #       END ;;
-    # }
+    dimension: Type_retrocession {
+      sql: CASE
+            WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
+            WHEN ${typ_vente} = 1 THEN "Rétrocession"
+          END ;;
+    }
 
 
 ########################## Calcul global des KPIs ################################
