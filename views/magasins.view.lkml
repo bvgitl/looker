@@ -384,6 +384,14 @@ view: magasins {
     sql: ${TABLE}.Ville ;;
   }
 
+  dimension: groupe_region {
+    sql: CASE
+            WHEN ${region}= "BE", "CAM", "ESP", "TUN", "MAU" , "MAL", "IT", "TOM" then "International"
+            WHEN ${region}= "RNW", "RSW" , "RN" , "RRA", "RSE", "RNE" THEN "France Metro"
+         END
+        ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
