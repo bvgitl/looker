@@ -134,6 +134,7 @@ view: magasins {
   }
 
   dimension: ferme {
+    label: "Type"
     type: string
     sql: ${TABLE}.Ferme ;;
   }
