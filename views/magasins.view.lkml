@@ -386,8 +386,8 @@ view: magasins {
 
   dimension: groupe_region {
     sql: CASE
-            WHEN ${region} IN "BE" , "CAM" , "ESP" , "TUN" , "MAU" , "MAL" , "IT" , "TOM" THEN "International"
-            WHEN ${region} IN "RNW" , "RSW" , "RN" , "RRA" , "RSE" , "RNE" THEN "France Metro"
+            WHEN ${region} IN ('BE' , 'CAM' , 'ESP' , 'TUN' , 'MAU' , 'MAL' , 'IT' , 'TOM') THEN "International"
+            WHEN ${region} IN ('RNW' , 'RSW' , 'RN' , 'RRA' , 'RSE' , 'RNE') THEN "France Metro"
          END
         ;;
   }
