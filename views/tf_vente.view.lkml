@@ -1,5 +1,5 @@
 view: tf_vente {
-  sql_table_name: `bv-prod.Matillion_Perm_Table.TFVENTE`
+  sql_table_name: `bv-prod.Matillion_Perm_Table.TF_VENTE`
     ;;
 
   dimension: compound_primary_key {
