@@ -75,6 +75,8 @@ explore: ventes_devise {
   }
 }
 
+explore: google_sheet {}
+
 explore: commandes {}
 
 explore: magasins {}
