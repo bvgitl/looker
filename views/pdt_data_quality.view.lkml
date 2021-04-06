@@ -186,7 +186,7 @@ view: pdt_data_quality {
 
   measure: Ecarts_magasins {
     type: number
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: ${magasins.Nb_magasins}-${Nb_Mag} ;;
     drill_fields: [sheet_diff*]
   }
@@ -195,7 +195,7 @@ view: pdt_data_quality {
 
 
   set: sheet_diff {
-    fields: [cd_site_ext, dte_vte_date, typ_vente, Nb_Lignes_Ecarts_ca]
+    fields: [cd_site_ext, dte_vte_date, typ_vente, Ecarts_CA]
   }
 
   set: sheet {

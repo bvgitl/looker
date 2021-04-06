@@ -61,4 +61,14 @@ view: google_sheet {
     type: count
     drill_fields: []
   }
+
+  measure: Nb_de_lignes {
+    type: count
+  }
+
+  measure: sum_ca_ht {
+    type: sum
+    value_format_name: eur
+    sql: ${ca_ht} ;;
+  }
 }
