@@ -274,7 +274,7 @@ view: tf_vente {
       type: number
       value_format_name: eur
       sql: ${tf_vente_mag.sum_ca_ht_mag}-${sum_ca_ht_article} ;;
-      drill_fields: [sheet_diff*]
+      drill_fields: [sheet_ca*]
   }
 
   # measure: Ecarts_Marge_Brute {
@@ -293,7 +293,7 @@ view: tf_vente {
             THEN ${compound_primary_key}
           END ;;
     filters: [ca_ht: "0"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_ca*]
   }
 
   measure: Nb_Lignes_tx_Marge {
@@ -305,7 +305,7 @@ view: tf_vente {
             THEN ${compound_primary_key}
           END ;;
     filters: [tx_marge_brute: ">1"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_marge*]
   }
 
   measure: Nb_Lignes_Marge_Negatif {
@@ -317,14 +317,18 @@ view: tf_vente {
             THEN ${compound_primary_key}
           END ;;
     filters: [marge_brute: "<0"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_marge*]
   }
 
   set: sheet_diff {
     fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, Ecarts_CA]
   }
 
-  set: sheet {
-    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht, marge_brute]
+  set: sheet_ca {
+    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht]
+  }
+
+  set: sheet_marge {
+    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, marge_brute]
   }
 }
