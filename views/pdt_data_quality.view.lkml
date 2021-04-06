@@ -166,8 +166,36 @@ view: pdt_data_quality {
     drill_fields: [sheet*]
   }
 
+  measure: Nb_Mag {
+    label: "Nbre de magasins ayant réalisé des ventes"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: ${cd_site_ext} ;;
+    drill_fields: [cd_site_ext]
+  }
+
+
+  measure: Nb_Lignes_Ecarts_ca {
+    label: "Nbre de lignes avec écarts CA"
+    type: number
+    value_format_name: decimal_0
+    sql: ${Ecarts_CA} = "-NULL" ;;
+    drill_fields: [sheet_diff*]
+  }
+
+
+  measure: Ecarts_magasins {
+    type: number
+    value_format_name: eur
+    sql: ${magasins.Nb_magasins}-${Nb_Mag} ;;
+    drill_fields: [sheet_diff*]
+  }
+
+
+
+
   set: sheet_diff {
-    fields: [cd_site_ext, dte_vte_date, typ_vente, Ecarts_CA, Ecarts_Marge_Brute]
+    fields: [cd_site_ext, dte_vte_date, typ_vente, Nb_Lignes_Ecarts_ca]
   }
 
   set: sheet {

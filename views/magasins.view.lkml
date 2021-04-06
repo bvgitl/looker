@@ -396,4 +396,9 @@ view: magasins {
     type: count
     drill_fields: []
   }
+
+  measure: Nb_magasins {
+    type: count_distinct
+    sql: ${cd_logiciel} ;;
+  }
 }

@@ -57,7 +57,13 @@ explore: tf_vente {
   }
 }
 
-explore: pdt_data_quality {}
+explore: pdt_data_quality {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pdt_data_quality.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+}
 
 explore: tf_vente_mag {}
 
