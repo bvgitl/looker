@@ -172,7 +172,7 @@ view: pdt_data_quality {
     label: "Nbre de lignes avec écarts CA"
     type: number
     value_format_name: decimal_0
-    sql: ${Ecarts_CA} = != 0 ;;
+    sql: ${Ecarts_CA} = NOT 0 ;;
     drill_fields: [sheet_diff*]
   }
 
