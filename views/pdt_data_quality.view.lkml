@@ -188,7 +188,7 @@ view: pdt_data_quality {
     type: number
     value_format_name: decimal_0
     sql: ${magasins.Nb_magasins}-${Nb_Mag} ;;
-    drill_fields: [sheet_diff*]
+    drill_fields: [cd_site_ext]
   }
 
 
