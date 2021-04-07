@@ -145,7 +145,7 @@ view: pdt_data_quality {
     sql: ${primary_key} ;;
     value_format_name: decimal_0
     filters: [origine: "Articles", ca_ht: "0"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_ca*]
   }
 
   measure: Nb_Lignes_tx_Marge {
@@ -154,7 +154,7 @@ view: pdt_data_quality {
     value_format_name: decimal_0
     sql: ${primary_key} ;;
     filters: [origine: "Articles", tx_marge_brute: ">1"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_marge*]
   }
 
   measure: Nb_Lignes_Marge_Negatif {
@@ -163,7 +163,7 @@ view: pdt_data_quality {
     value_format_name: decimal_0
     sql: ${primary_key} ;;
     filters: [origine: "Articles" , marge_brute: "<0"]
-    drill_fields: [sheet*]
+    drill_fields: [sheet_marge*]
   }
 
   measure: Nb_Mag {
@@ -188,10 +188,17 @@ view: pdt_data_quality {
     type: number
     value_format_name: decimal_0
     sql: ${magasins.Nb_magasins}-${Nb_Mag} ;;
-    drill_fields: [cd_site_ext]
+    drill_fields: [magasins.cd_magasin, cd_site_ext]
+  }
+
+  set: sheet_ca {
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, typ_vente, ca_ht]
   }
 
 
+  set: sheet_marge {
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, typ_vente, marge_brute]
+  }
 
 
   set: sheet_diff {
