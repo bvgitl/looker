@@ -10,7 +10,7 @@ view: pdt_vente_mag {
         ca_ht ,
         marge_brute ,
         nb_ticket
-  from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+  from `bv-prod.Matillion_Perm_Table.TFVENTEMAG`
 
   UNION ALL
 
