@@ -117,6 +117,11 @@ view: pdt_vente {
       sql_end: {% date_end date_filter %} ;;
     }
 
+    dimension: diff {
+      type: number
+      sql:  DATEDIFF(year, ${magasins.date_ouv_raw}, {% date_end date_filter %}) ;;
+    }
+
     dimension: categorie {
       label: "Catégorie"
       sql:
