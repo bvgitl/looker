@@ -195,10 +195,10 @@ view: pdt_data_quality {
 
 
   set: sheet_diff {
-    fields: [cd_site_ext, dte_vte_date, typ_vente, Ecarts_CA]
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, typ_vente, Ecarts_CA]
   }
 
   set: sheet {
-    fields: [cd_site_ext, dte_vte_date, typ_vente, ca_ht, marge_brute]
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, typ_vente, ca_ht, marge_brute]
   }
 }
