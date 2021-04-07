@@ -132,13 +132,6 @@ view: pdt_data_quality {
     drill_fields: [sheet_diff*]
   }
 
-  measure: Ecarts_Marge_Brute {
-    type: number
-    value_format_name: eur
-    sql: ${sum_marge_brute_mag}-${sum_marge_brute_article} ;;
-    drill_fields: [sheet_diff*]
-  }
-
   measure: Nb_Lignes_CA_Null {
     label: "Nbre de lignes CA = 0"
     type: count_distinct
