@@ -77,7 +77,7 @@ view: ventes_devise {
 
   measure: sum_montant_select_filter {
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     label: "montant"
     description: "pour les magasins en dévises"
     sql: CASE
@@ -90,7 +90,7 @@ view: ventes_devise {
     label: "Marge"
     description: "pour les magasins en dévises"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
           WHEN {% condition date_filter %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
           THEN ${marge}
@@ -141,7 +141,7 @@ view: ventes_devise {
 
   measure: sum_montant_select_filter_N1 {
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     label: "montant n-1"
     description: "pour les magasins en dévises"
     sql: CASE
@@ -154,7 +154,7 @@ view: ventes_devise {
     label: "Marge n-1"
     description: "pour les magasins en dévises"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
           WHEN {% condition date_filter_1 %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
           THEN ${marge}
@@ -201,7 +201,7 @@ view: ventes_devise {
 
   measure: sum_montant_select_filter_N2 {
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     label: "montant n-2"
     description: "pour les magasins en dévises"
     sql: CASE
@@ -214,7 +214,7 @@ view: ventes_devise {
     label: "Marge n-2"
     description: "pour les magasins en dévises"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
           WHEN {% condition date_filter_2 %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
           THEN ${marge}
@@ -260,7 +260,7 @@ view: ventes_devise {
 
   measure: sum_montant_select_filter_N3 {
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     label: "montant n-3"
     description: "pour les magasins en dévises"
     sql: CASE
@@ -273,7 +273,7 @@ view: ventes_devise {
     label: "Marge n-3"
     description: "pour les magasins en dévises"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
           WHEN {% condition date_filter_3 %} CAST(${dte_vente_date} AS TIMESTAMP)  {% endcondition %}
           THEN ${marge}
@@ -327,7 +327,7 @@ view: ventes_devise {
   measure: ca_par_jour_select_filter {
     label: "CA / jour"
     description: "pour les magasins en dévises"
-    value_format_name: eur
+    value_format_name: decimal_0
     type: number
     sql:  ${sum_montant_select_filter}/NULLIF(${sum_nb_jour_select_filter},0) ;;
   }
@@ -370,7 +370,7 @@ view: ventes_devise {
   measure: ca_par_jour_select_filter_N1 {
     label: "CA / jour n-1"
     description: "pour les magasins en dévises"
-    value_format_name: eur
+    value_format_name: decimal_0
     type: number
     sql:  ${sum_montant_select_filter_N1}/NULLIF(${sum_nb_jour_select_filter_N1},0) ;;
   }
@@ -415,7 +415,7 @@ view: ventes_devise {
   measure: ca_par_jour_select_filter_N2 {
     label: "CA / jour n-2"
     description: "pour les magasins en dévises"
-    value_format_name: eur
+    value_format_name: decimal_0
     type: number
     sql:  ${sum_montant_select_filter_N2}/NULLIF(${sum_nb_jour_select_filter_N2},0) ;;
   }
@@ -460,7 +460,7 @@ view: ventes_devise {
   measure: ca_par_jour_select_filter_N3{
     label: "CA / jour n-3"
     description: "pour les magasins en dévises"
-    value_format_name: eur
+    value_format_name: decimal_0
     type: number
     sql:  ${sum_montant_select_filter_N3}/NULLIF(${sum_nb_jour_select_filter_N3},0) ;;
   }
@@ -476,7 +476,7 @@ view: ventes_devise {
   measure: panier_moyen_select_filter_N3{
     label: "PM n-3"
     description: "pour les magasins en dévises"
-    value_format_name: decimal_2
+    value_format_name: decimal_0
     type: number
     sql:  ${sum_montant_select_filter_N3}_select_mois}/NULLIF(${sum_nb_ticket_select_filter_N3},0) ;;
   }
