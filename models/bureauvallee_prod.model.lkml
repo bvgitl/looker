@@ -29,6 +29,14 @@ explore: pdt_vente {
     relationship: one_to_one
     sql_on: ${magasins.cd_magasin}=${commandes.cd_magasin} ;;
   }
+
+  join: ndt_top_n_magasins {
+    type: inner
+    relationship: many_to_one
+    sql_on: ${ndt_top_n_magasins.cd_site_ext} = ${pdt_vente.cd_site_ext} ;;
+  }
+
+  join: parameters {}
 }
 
 # explore: pdt_vente_mag {
