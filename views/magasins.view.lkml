@@ -2,6 +2,12 @@ view: magasins {
   sql_table_name: `bv-prod.Matillion_Perm_Table.Magasins`
     ;;
 
+  dimension: cd_magasin {
+    type: string
+    primary_key: yes
+    sql: ${TABLE}.CD_Magasin ;;
+  }
+
   dimension: adresse {
     type: string
     sql: ${TABLE}.Adresse ;;
@@ -47,11 +53,6 @@ view: magasins {
     sql: ${TABLE}.CD_Logiciel ;;
   }
 
-  dimension: cd_magasin {
-    type: string
-    primary_key: yes
-    sql: ${TABLE}.CD_Magasin ;;
-  }
 
   dimension: click_collect {
     type: string
