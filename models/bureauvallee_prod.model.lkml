@@ -19,6 +19,16 @@ persist_with: bv_vente_datagroup
 
 
 explore: pdt_vente {
+
+  sql_always_where:
+
+
+  {% if parameters.top_n._in_query %} 1=1
+  {% else %} ${pdt_vente.cd_site_ext} = 'PDR'
+  {% endif %}
+
+  ;;
+
   join: magasins {
     type: left_outer
     relationship: many_to_one
