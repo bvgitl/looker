@@ -351,7 +351,7 @@ view: pdt_vente {
     value_format_name: eur
     label: "CA Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_1 %} ${commandes.dte_cde_date}   {% endcondition %}
             THEN ${commandes.total_ht}
           END ;;
   }
@@ -361,7 +361,7 @@ view: pdt_vente {
     value_format_name: decimal_0
     label: "Commande Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_1 %} ${commandes.dte_cde_date}  {% endcondition %}
             THEN ${commandes.numero_commande}
           END ;;
   }
@@ -424,7 +424,7 @@ view: pdt_vente {
     value_format_name: eur
     label: "CA Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_2 %} ${commandes.dte_cde_date}  {% endcondition %}
             THEN ${commandes.total_ht}
           END ;;
   }
@@ -434,7 +434,7 @@ view: pdt_vente {
     value_format_name: decimal_0
     label: "Commande Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_2 %} ${commandes.dte_cde_date}   {% endcondition %}
             THEN ${commandes.numero_commande}
           END ;;
   }
