@@ -9,6 +9,7 @@ view: pdt_commandes {
 FROM `bv-prod.Matillion_Perm_Table.commandes`
 group by 1,2
  ;;
+    datagroup_trigger: bv_vente_digitale_datagroup
   }
 
   dimension: primary_key {
