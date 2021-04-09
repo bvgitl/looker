@@ -26,7 +26,7 @@ explore: pdt_vente {
   }
   join: pdt_commandes {
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_many
     sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
   }
 }
