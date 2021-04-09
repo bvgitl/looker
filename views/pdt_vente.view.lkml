@@ -357,7 +357,7 @@ view: pdt_vente {
   }
 
   measure: sum_Nb_cde_drive_select_mois_N1 {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive n-1"
     sql: CASE
@@ -430,7 +430,7 @@ view: pdt_vente {
   }
 
   measure: sum_Nb_cde_drive_select_mois_N2 {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive n-2"
     sql: CASE
