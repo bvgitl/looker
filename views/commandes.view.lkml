@@ -2,23 +2,9 @@ view: commandes {
   sql_table_name: `bv-prod.Matillion_Perm_Table.commandes`
     ;;
 
-
-  # dimension: compound_primary_key {
-  #   primary_key: yes
-  #   hidden: yes
-  #   type: string
-  #   sql: CONCAT(${cd_commande}, ' ',${cd_magasin}, ' ',${customer_id}, ' ',${dte_commande_date}) ;;
-  # }
-
   dimension: canal_commande {
     type: string
     sql: ${TABLE}.Canal_commande ;;
-  }
-
-  dimension: cd_commande {
-    type: string
-    primary_key: yes
-    sql: ${TABLE}.cd_commande ;;
   }
 
   dimension: cd_magasin {
@@ -27,11 +13,11 @@ view: commandes {
   }
 
   dimension: customer_id {
-    type: string
+    type: number
     sql: ${TABLE}.customer_id ;;
   }
 
-  dimension_group: dte_commande {
+  dimension_group: dte_cde {
     type: time
     timeframes: [
       raw,
@@ -42,12 +28,17 @@ view: commandes {
       quarter,
       year
     ]
-    sql: ${TABLE}.dte_commande ;;
+    sql: ${TABLE}.dte_cde ;;
   }
 
   dimension: methode_livraison {
     type: string
     sql: ${TABLE}.methode_livraison ;;
+  }
+
+  dimension: numero_commande {
+    type: number
+    sql: ${TABLE}.numero_commande ;;
   }
 
   dimension: statut {

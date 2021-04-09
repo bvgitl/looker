@@ -3,8 +3,7 @@ view: produit_commande {
     ;;
 
   dimension: cd_commande {
-    type: string
-    primary_key: yes
+    type: number
     sql: ${TABLE}.cd_commande ;;
   }
 
@@ -19,7 +18,7 @@ view: produit_commande {
   }
 
   dimension: tarif_produit_ht {
-    type: number
+    type: string
     sql: ${TABLE}.Tarif_Produit_HT ;;
   }
 
