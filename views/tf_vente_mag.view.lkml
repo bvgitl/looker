@@ -160,6 +160,11 @@ view: tf_vente_mag {
     sql_end: {% date_end date_filter %} ;;
   }
 
+  dimension: diff {
+    type: number
+    sql:  DATEDIFF(year, ${magasins.date_ouv_raw}, {% date_end date_filter %}) ;;
+  }
+
   dimension: categorie {
     label: "Catégorie"
     sql:
@@ -188,12 +193,12 @@ view: tf_vente_mag {
 
 
 
-  # dimension: select_region {
-  #   sql: CASE
-  #         WHEN ${cd_pays} = "FR" THEN "France"
-  #         ELSE "International"
-  #       END ;;
-  # }
+  dimension: Type_retrocession {
+    sql: CASE
+            WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
+            WHEN ${typ_vente} = 1 THEN "Rétrocession"
+          END ;;
+  }
 
 
 ########################## Calcul global des KPIs ################################
@@ -303,18 +308,18 @@ view: tf_vente_mag {
     value_format_name: eur
     label: "CA Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.total_ht}
+            WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${pdt_commandes.total_ht}
           END ;;
   }
 
   measure: sum_Nb_cde_drive_select_mois {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.numero_commande}
+            WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${pdt_commandes.nbre_commande}
           END ;;
   }
 
@@ -389,18 +394,18 @@ view: tf_vente_mag {
     value_format_name: eur
     label: "CA Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.total_ht}
+            WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
+            THEN ${pdt_commandes.total_ht}
           END ;;
   }
 
   measure: sum_Nb_cde_drive_select_mois_N1 {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive n-1"
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.numero_commande}
+            WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${pdt_commandes.nbre_commande}
           END ;;
   }
 
@@ -462,18 +467,18 @@ view: tf_vente_mag {
     value_format_name: eur
     label: "CA Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.total_ht}
+            WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${pdt_commandes.total_ht}
           END ;;
   }
 
   measure: sum_Nb_cde_drive_select_mois_N2 {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive n-2"
     sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${commandes.numero_commande}
+            WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
+            THEN ${pdt_commandes.nbre_commande}
           END ;;
   }
 
