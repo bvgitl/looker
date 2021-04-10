@@ -79,7 +79,18 @@ explore: pdt_data_quality {
   }
 }
 
-explore: tf_vente_mag {}
+explore: tf_vente_mag {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+  join: pdt_commandes {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
+  }
+}
 
 explore: ventes_devise {
   join: magasins {
