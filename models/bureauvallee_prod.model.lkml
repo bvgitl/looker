@@ -62,14 +62,6 @@ explore: pdt_commandes_digitales {
   persist_with: bv_vente_digitale_datagroup
 }
 
-explore: tf_vente {
-  label: "Data Quality"
-  join: tf_vente_mag {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
-  }
-}
 
 explore: pdt_data_quality {
   join: magasins {
@@ -85,10 +77,10 @@ explore: tf_vente_mag {
     relationship: many_to_one
     sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
-  join: pdt_commandes {
+  join: commandes {
     type: left_outer
     relationship: one_to_one
-    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
+    sql_on: ${magasins.cd_magasin}=${commandes.cd_magasin} ;;
   }
 }
 
