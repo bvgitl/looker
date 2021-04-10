@@ -261,9 +261,10 @@ view: pdt_vente {
     }
 
   measure: sum_CA_drive_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA Drive"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.total_ht}
@@ -274,6 +275,7 @@ view: pdt_vente {
     type: sum
     value_format_name: decimal_0
     label: "Commande Drive"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.nbre_commande}
@@ -347,9 +349,10 @@ view: pdt_vente {
     }
 
   measure: sum_CA_drive_select_mois_N1 {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA Drive n-1"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${pdt_commandes.total_ht}
@@ -357,9 +360,10 @@ view: pdt_vente {
   }
 
   measure: sum_Nb_cde_drive_select_mois_N1 {
-    type: sum
+    type: sum_distinct
     value_format_name: decimal_0
     label: "Commande Drive n-1"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.nbre_commande}
@@ -420,9 +424,10 @@ view: pdt_vente {
     }
 
   measure: sum_CA_drive_select_mois_N2 {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA Drive n-2"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.total_ht}
@@ -430,9 +435,10 @@ view: pdt_vente {
   }
 
   measure: sum_Nb_cde_drive_select_mois_N2 {
-    type: sum
+    type: sum_distinct
     value_format_name: decimal_0
     label: "Commande Drive n-2"
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${pdt_commandes.nbre_commande}
