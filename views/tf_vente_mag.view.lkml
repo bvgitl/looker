@@ -304,9 +304,10 @@ view: tf_vente_mag {
   }
 
   measure: sum_CA_drive_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA Drive"
+    sql_distinct_key: pdt_commandes.primary_key ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.total_ht}
