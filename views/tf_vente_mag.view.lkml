@@ -314,9 +314,10 @@ view: tf_vente_mag {
   }
 
   measure: sum_Nb_cde_drive_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: decimal_0
     label: "Commande Drive"
+    sql_distinct_key: pdt_commandes.primary_key ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.nbre_commande}
