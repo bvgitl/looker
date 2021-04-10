@@ -18,6 +18,20 @@ datagroup: bv_vente_digitale_datagroup {
 persist_with: bv_vente_datagroup
 
 
+explore: pdt_ventes_mag {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pdt_ventes_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+  join: pdt_commandes {
+    type: left_outer
+    relationship: many_to_many
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
+  }
+}
+
+
 explore: pdt_vente {
   join: magasins {
     type: left_outer
