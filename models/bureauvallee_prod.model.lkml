@@ -51,10 +51,10 @@ explore: pdt_vente_mag {
     relationship: many_to_many
     sql_on: ${pdt_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
-  join: commandes {
+  join: pdt_commandes {
     type: left_outer
-    relationship: one_to_one
-    sql_on: ${magasins.cd_magasin}=${commandes.cd_magasin} ;;
+    relationship: many_to_many
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
   }
 }
 
