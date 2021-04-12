@@ -10,7 +10,7 @@ view: pdt_ventes_mag {
         sum(marge_brute) as marge_brute ,
         sum(nb_ticket) as nb_ticket ,
         row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key
-  from `bv-prod.Matillion_Perm_Table.TFVENTE`
+  from `bv-prod.Matillion_Perm_Table.TF_VENTE`
   group by 1,2,3
 
   UNION ALL
