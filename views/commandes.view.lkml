@@ -2,6 +2,13 @@ view: commandes {
   sql_table_name: `bv-prod.Matillion_Perm_Table.commandes`
     ;;
 
+
+  dimension: numero_commande {
+    primary_key: yes
+    type: number
+    sql: ${TABLE}.numero_commande ;;
+  }
+
   dimension: canal_commande {
     type: string
     sql: ${TABLE}.Canal_commande ;;
@@ -34,11 +41,6 @@ view: commandes {
   dimension: methode_livraison {
     type: string
     sql: ${TABLE}.methode_livraison ;;
-  }
-
-  dimension: numero_commande {
-    type: number
-    sql: ${TABLE}.numero_commande ;;
   }
 
   dimension: statut {

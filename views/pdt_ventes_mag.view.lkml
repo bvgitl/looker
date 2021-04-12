@@ -1,42 +1,40 @@
-view: tf_vente_mag {
-  sql_table_name: `bv-prod.Matillion_Perm_Table.TFVENTEMAG`
-    ;;
+view: pdt_ventes_mag {
+  derived_table: {
+    sql: select
+        CD_Site_Ext ,
+        Dte_Vte ,
+        Typ_Vente ,
+        sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
+        sum(Qtite) as Qtite ,
+        sum(ca_ht) as ca_ht ,
+        sum(marge_brute) as marge_brute ,
+        sum(nb_ticket) as nb_ticket ,
+        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key
+  from `bv-prod.Matillion_Perm_Table.TFVENTE`
+  group by 1,2,3
 
-  dimension: compound_primary_key {
+  UNION ALL
+
+  select
+        CD_SITE_EXT ,
+        DTE_VENTE ,
+        TYP_VENTE ,
+        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
+        sum(QTITE) as Qtite ,
+        sum(CA_HT) as ca_ht ,
+        sum(MARGE_BRUTE) as marge_brute ,
+        sum(NB_TICKET) as nb_ticket ,
+        row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, TYP_VENTE) AS primary_key
+  from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+  group by 1,2,3
+ ;;
+    datagroup_trigger: bv_vente_datagroup
+  }
+
+  dimension: primary_key {
     primary_key: yes
-    hidden: yes
-    type: string
-    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
-  }
-
-  dimension: an_sem {
-    type: string
-    sql: ${TABLE}.An_Sem ;;
-  }
-
-  dimension: annee {
-    type: string
-    sql: ${TABLE}.Annee ;;
-  }
-
-  dimension: ca_ht {
     type: number
-    sql: ${TABLE}.ca_ht ;;
-  }
-
-  dimension: ca_net {
-    type: number
-    sql: ${TABLE}.ca_net ;;
-  }
-
-  dimension: cd_magasin {
-    type: string
-    sql: ${TABLE}.CD_Magasin ;;
-  }
-
-  dimension: cd_pays {
-    type: string
-    sql: ${TABLE}.CD_Pays ;;
+    sql: ${TABLE}.primary_key ;;
   }
 
   dimension: cd_site_ext {
@@ -44,74 +42,11 @@ view: tf_vente_mag {
     sql: ${TABLE}.CD_Site_Ext ;;
   }
 
-  dimension_group: dte_creat {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.Dte_creat ;;
-  }
-
   dimension_group: dte_vte {
     type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
+    timeframes: [date, week, month, quarter, year, raw, month_name, fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year]
     datatype: date
     sql: ${TABLE}.Dte_Vte ;;
-  }
-
-  dimension: jour {
-    type: string
-    sql: ${TABLE}.Jour ;;
-  }
-
-  dimension: marge_brute {
-    type: number
-    sql: ${TABLE}.marge_brute ;;
-  }
-
-  dimension: mois {
-    type: string
-    sql: ${TABLE}.Mois ;;
-  }
-
-  dimension: nb_ticket {
-    type: number
-    sql: ${TABLE}.nb_ticket ;;
-  }
-
-  dimension: num_jour {
-    type: string
-    sql: ${TABLE}.Num_Jour ;;
-  }
-
-  dimension: qtite {
-    type: number
-    sql: ${TABLE}.Qtite ;;
-  }
-
-  dimension: qtite_uvc {
-    type: number
-    sql: ${TABLE}.Qtite_uvc ;;
-  }
-
-  dimension: typ_article {
-    type: string
-    sql: ${TABLE}.Typ_Article ;;
   }
 
   dimension: typ_vente {
@@ -124,14 +59,40 @@ view: tf_vente_mag {
     sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
-########################### KPIs #######################
-
-  measure: sum_ca_ht_mag {
-    type: sum
-    value_format_name: eur
-    label: "ca_ht mag"
-    sql:  ${ca_ht} ;;
+  dimension: qtite {
+    type: number
+    sql: ${TABLE}.Qtite ;;
   }
+
+  dimension: ca_ht {
+    type: number
+    sql: ${TABLE}.ca_ht ;;
+  }
+
+  dimension: marge_brute {
+    type: number
+    sql: ${TABLE}.marge_brute ;;
+  }
+
+  dimension: nb_ticket {
+    type: number
+    sql: ${TABLE}.nb_ticket ;;
+  }
+
+
+  set: detail {
+    fields: [
+      cd_site_ext,
+      typ_vente,
+      val_achat_gbl,
+      qtite,
+      ca_ht,
+      marge_brute,
+      nb_ticket,
+      primary_key
+    ]
+  }
+
 
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n"
@@ -307,7 +268,7 @@ view: tf_vente_mag {
     type: sum_distinct
     value_format_name: eur
     label: "CA Drive"
-    sql_distinct_key: ${pdt_commandes.primary_key}  ;;
+    sql_distinct_key: ${pdt_commandes.primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${pdt_commandes.total_ht}
@@ -940,6 +901,5 @@ view: tf_vente_mag {
     type: number
     sql: 1.0 * (${marge_par_client_select_mois_N2}-${marge_par_client_select_mois_N3})/NULLIF(${marge_par_client_select_mois_N3},0);;
   }
-
 
 }

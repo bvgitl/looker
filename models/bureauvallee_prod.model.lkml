@@ -18,6 +18,20 @@ datagroup: bv_vente_digitale_datagroup {
 persist_with: bv_vente_datagroup
 
 
+explore: pdt_ventes_mag {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${pdt_ventes_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+  join: pdt_commandes {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
+  }
+}
+
+
 explore: pdt_vente {
 
   sql_always_where:
@@ -34,10 +48,10 @@ explore: pdt_vente {
     relationship: many_to_one
     sql_on: ${pdt_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
-  join: commandes {
+  join: pdt_commandes {
     type: left_outer
-    relationship: one_to_one
-    sql_on: ${magasins.cd_magasin}=${commandes.cd_magasin} ;;
+    relationship: many_to_many
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
   }
 
   join: ndt_top_n_magasins {
@@ -66,14 +80,6 @@ explore: pdt_commandes_digitales {
   persist_with: bv_vente_digitale_datagroup
 }
 
-explore: tf_vente {
-  label: "Data Quality"
-  join: tf_vente_mag {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${tf_vente.cd_site_ext}=${tf_vente_mag.cd_site_ext} ;;
-  }
-}
 
 explore: pdt_data_quality {
   join: magasins {
@@ -83,7 +89,18 @@ explore: pdt_data_quality {
   }
 }
 
-explore: tf_vente_mag {}
+explore: tf_vente_mag {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+  join: pdt_commandes {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
+  }
+}
 
 explore: ventes_devise {
   join: magasins {
