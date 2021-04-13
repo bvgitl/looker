@@ -6,7 +6,7 @@ view: vue_data_tbe {
     primary_key: yes
     hidden: yes
     type: string
-    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}) ;;
+    sql: CONCAT(${cd_magasin},' ' ,${cd_site_ext}, ' ',${dte_vte_date}) ;;
   }
 
   dimension: ca_ht {
