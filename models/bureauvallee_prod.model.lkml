@@ -17,11 +17,11 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
-explore: pdt_ventes_cdes {
+explore: vue_data_tbe {
   join: magasins {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${pdt_ventes_cdes.cd_site_ext}=${magasins.cd_logiciel} ;;
+    sql_on: ${vue_data_tbe.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
 }
 
