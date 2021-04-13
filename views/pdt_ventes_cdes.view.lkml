@@ -11,8 +11,7 @@ view: pdt_ventes_cdes {
         sum(v.marge_brute) as marge_brute ,
         sum(v.nb_ticket) as nb_ticket ,
         sum(c.Total_HT) as total_ht,
-        COUNT(distinct(c.numero_commande)) as nbre_commande ,
-        row_number() OVER(ORDER BY v.CD_Site_Ext , v.Dte_Vte, v.Typ_Vente) AS primary_key
+        COUNT(distinct(c.numero_commande)) as nbre_commande
 
         FROM
 (select
@@ -53,10 +52,11 @@ view: pdt_ventes_cdes {
     drill_fields: [detail*]
   }
 
-  dimension: primary_key {
-    type: number
+  dimension: compound_primary_key {
     primary_key: yes
-    sql: ${TABLE}.primary_key ;;
+    hidden: yes
+    type: string
+    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
   }
 
   dimension: cd_magasin {
@@ -127,8 +127,7 @@ view: pdt_ventes_cdes {
       marge_brute,
       nb_ticket,
       total_ht,
-      nbre_commande,
-      primary_key
+      nbre_commande
     ]
   }
 
@@ -253,10 +252,9 @@ view: pdt_ventes_cdes {
   ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
   measure: sum_CA_select_mois {
-    type: sum_distinct
+    type: sum
     value_format_name: eur
     label: "CA HT"
-    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
