@@ -42,7 +42,6 @@ view: pdt_ventes_cdes {
   ON v.CD_Site_Ext = m.CD_Logiciel
   LEFT JOIN `bv-prod.Matillion_Perm_Table.commandes` c
   ON m.CD_Magasin = c.cd_magasin
-  AND v.Dte_Vte = CAST(DATETIME_TRUNC(c.dte_cde, DAY) AS DATE)
   group by 1,2,3,4
  ;;
   }
@@ -252,10 +251,9 @@ view: pdt_ventes_cdes {
   ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
   measure: sum_CA_select_mois {
-    type: sum_distinct
+    type: sum
     value_format_name: eur
     label: "CA HT"
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
