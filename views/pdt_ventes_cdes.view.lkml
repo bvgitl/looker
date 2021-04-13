@@ -253,9 +253,10 @@ view: pdt_ventes_cdes {
   ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
   measure: sum_CA_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA HT"
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
