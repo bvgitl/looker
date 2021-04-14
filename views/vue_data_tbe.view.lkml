@@ -3,13 +3,6 @@ view: vue_data_tbe {
     ;;
 
 
-  dimension: compound_primary_key {
-    primary_key: yes
-    hidden: yes
-    type: string
-    sql: CONCAT(${cd_magasin}, ' ', ${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
-  }
-
   dimension: anciennete {
     type: string
     sql: ${TABLE}.Anciennete ;;
@@ -237,10 +230,9 @@ view: vue_data_tbe {
   ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
   measure: sum_CA_select_mois {
-    type: sum_distinct
+    type: sum
     value_format_name: eur
     label: "CA HT"
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
@@ -249,9 +241,8 @@ view: vue_data_tbe {
 
   measure: sum_marge_select_mois {
     label: "Marge"
-    type: sum_distinct
+    type: sum
     value_format_name: eur
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
@@ -260,9 +251,8 @@ view: vue_data_tbe {
 
   measure: sum_nb_ticket_select_mois {
     label: "Nb clts"
-    type: sum_distinct
+    type: sum
     value_format_name: decimal_0
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nb_ticket}
@@ -281,9 +271,8 @@ view: vue_data_tbe {
 
   measure: sum_val_achat_gbl_select_mois {
     hidden: yes
-    type: sum_distinct
+    type: sum
     value_format_name: eur
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${val_achat_gbl}
@@ -291,10 +280,9 @@ view: vue_data_tbe {
   }
 
   measure: sum_CA_drive_select_mois {
-    type: sum_distinct
+    type: sum
     value_format_name: eur
     label: "CA Drive"
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
@@ -302,10 +290,9 @@ view: vue_data_tbe {
   }
 
   measure: sum_Nb_cde_drive_select_mois {
-    type: sum_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Commande Drive"
-    sql_distinct_key: ${compound_primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
