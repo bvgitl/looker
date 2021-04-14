@@ -54,7 +54,6 @@ view: pdt_tbe {
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
-  limit 5
  ;;
   }
 
