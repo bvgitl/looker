@@ -17,9 +17,9 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
-explore: tbe_table {
+explore: tbe_table {}
 
-}
+explore: vue_data_tbe {}
 
 
 explore: pdt_ventes_mag {
