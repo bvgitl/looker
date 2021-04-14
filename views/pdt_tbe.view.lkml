@@ -55,6 +55,8 @@ view: pdt_tbe {
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
  ;;
+
+datagroup_trigger: bv_vente_datagroup
   }
 
   measure: count {
