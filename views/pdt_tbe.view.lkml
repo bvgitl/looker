@@ -39,7 +39,7 @@ view: pdt_tbe {
 
       select
         CD_Site_Ext ,
-        Dte_Vte ,
+        Dte_Vente ,
         Typ_Vente ,
         Val_Achat_Gbl as Val_Achat_Gbl ,
         Qtite ,
