@@ -38,7 +38,14 @@ view: pdt_tbe {
       UNION ALL
 
       select
-        *
+        CD_Site_Ext ,
+        Dte_Vte ,
+        Typ_Vente ,
+        Val_Achat_Gbl as Val_Achat_Gbl ,
+        Qtite ,
+        ca_ht ,
+        marge_brute ,
+        nb_ticket
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
     `bv-prod.Matillion_Perm_Table.commandes` cmd
