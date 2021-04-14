@@ -7,7 +7,7 @@ view: vue_data_tbe {
     primary_key: yes
     hidden: yes
     type: string
-    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
+    sql: CONCAT(${cd_magasin}, ' ', ${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
   }
 
   dimension: anciennete {
