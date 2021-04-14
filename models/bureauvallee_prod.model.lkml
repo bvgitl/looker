@@ -19,6 +19,8 @@ persist_with: bv_vente_datagroup
 
 explore: pdt_view_table {}
 
+explore: sql_runner_query {}
+
 explore: pdt_tbe {}
 
 explore: tbe_table {}
