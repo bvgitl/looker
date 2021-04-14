@@ -20,7 +20,7 @@ view: pdt_tbe {
         sum(v.Qtite) as Qtite,
         sum(v.ca_ht) as ca_ht ,
         sum(v.marge_brute) as marge_brute,
-        sum(mag.nb_ticket) as nb_ticket,
+        sum(v.nb_ticket) as nb_ticket,
         sum(cmd.Total_HT) as Total_HT,
         count(distinct(cmd.numero_commande)) as Nbre_commande
   from
@@ -52,7 +52,6 @@ view: pdt_tbe {
 
   where v.CD_Site_Ext = m.CD_Logiciel
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
-      and mag.CD_Site_Ext = m.CD_Logiciel
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
  ;;
