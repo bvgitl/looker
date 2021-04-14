@@ -327,9 +327,10 @@ view: sql_runner_query {
   ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
   measure: sum_CA_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA HT"
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
@@ -338,8 +339,9 @@ view: sql_runner_query {
 
   measure: sum_marge_select_mois {
     label: "Marge"
-    type: sum
+    type: sum_distinct
     value_format_name: eur
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
@@ -348,8 +350,9 @@ view: sql_runner_query {
 
   measure: sum_nb_ticket_select_mois {
     label: "Nb clts"
-    type: sum
+    type: sum_distinct
     value_format_name: decimal_0
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nb_ticket}
@@ -368,8 +371,9 @@ view: sql_runner_query {
 
   measure: sum_val_achat_gbl_select_mois {
     hidden: yes
-    type: sum
+    type: sum_distinct
     value_format_name: eur
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${val_achat_gbl}
@@ -377,9 +381,10 @@ view: sql_runner_query {
   }
 
   measure: sum_CA_drive_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
     label: "CA Drive"
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
@@ -387,9 +392,10 @@ view: sql_runner_query {
   }
 
   measure: sum_Nb_cde_drive_select_mois {
-    type: sum
+    type: sum_distinct
     value_format_name: decimal_0
     label: "Commande Drive"
+    sql_distinct_key: ${primary_key} ;;
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
