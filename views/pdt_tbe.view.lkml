@@ -20,7 +20,7 @@ view: pdt_tbe {
         sum(v.Qtite) as Qtite,
         sum(v.ca_ht) as ca_ht ,
         sum(v.marge_brute) as marge_brute,
-        sum(v.nb_ticket) as nb_ticket,
+        sum(mag.nb_ticket) as nb_ticket,
         sum(cmd.Total_HT) as Total_HT,
         count(distinct(cmd.numero_commande)) as Nbre_commande
   from
@@ -31,8 +31,7 @@ view: pdt_tbe {
         Val_Achat_Gbl as Val_Achat_Gbl ,
         Qtite ,
         ca_ht ,
-        marge_brute ,
-        nb_ticket
+        marge_brute
       from `bv-prod.Matillion_Perm_Table.TF_VENTE`
 
       UNION ALL
@@ -44,15 +43,16 @@ view: pdt_tbe {
         Val_Achat_Gbl as Val_Achat_Gbl ,
         Qtite ,
         ca_ht ,
-        marge_brute ,
-        nb_ticket
+        marge_brute
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
-    `bv-prod.Matillion_Perm_Table.commandes` cmd
+    `bv-prod.Matillion_Perm_Table.commandes` cmd,
+    `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` mag
 
 
   where v.CD_Site_Ext = m.CD_Logiciel
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
+      mag.CD_Site_Ext = m.CD_Logiciel
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
  ;;
