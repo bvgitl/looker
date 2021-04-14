@@ -46,8 +46,7 @@ view: pdt_tbe {
         MARGE_BRUTE
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
-    `bv-prod.Matillion_Perm_Table.commandes` cmd,
-    `bv-prod.Matillion_Perm_Table.TF_VENTE` mag
+    `bv-prod.Matillion_Perm_Table.commandes` cmd
 
 
   where v.CD_Site_Ext = m.CD_Logiciel
