@@ -2,6 +2,14 @@ view: vue_data_tbe {
   sql_table_name: `bv-prod.Matillion_Perm_Table.vue_data_TBE`
     ;;
 
+
+  dimension: compound_primary_key {
+    primary_key: yes
+    hidden: yes
+    type: string
+    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}) ;;
+  }
+
   dimension: anciennete {
     type: string
     sql: ${TABLE}.Anciennete ;;
@@ -37,9 +45,6 @@ view: vue_data_tbe {
     timeframes: [
       raw,
       date,
-      week,
-      month,
-      quarter,
       year
     ]
     convert_tz: no
