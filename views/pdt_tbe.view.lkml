@@ -57,7 +57,7 @@ select
   ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-  INNER JOIN
+  LEFT JOIN
 
 
   (
@@ -72,7 +72,7 @@ select
   ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte
 
 
-  INNER JOIN
+  LEFT JOIN
 
   (SELECT
       cd_magasin,
