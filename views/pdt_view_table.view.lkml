@@ -7,8 +7,8 @@ view: pdt_view_table {
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
         m.NOM as NOM,
-        m.Pays as Pays ,
         m.Ferme as Ferme,
+        m.Pays as Pays ,
         m.Region as Region ,
         m.SURF_VTE as Surface ,
         m.TYP_MAG as TYP_MAG,
@@ -20,17 +20,43 @@ view: pdt_view_table {
         sum(v.Qtite) as Qtite,
         sum(v.ca_ht) as ca_ht ,
         sum(v.marge_brute) as marge_brute,
-        sum(v.nb_ticket) as nb_ticket ,
+        sum(v.nb_ticket) as nb_ticket,
         sum(cmd.Total_HT) as Total_HT,
         count(distinct(cmd.numero_commande)) as Nbre_commande
   from
-    `bv-prod.Matillion_Perm_Table.TF_VENTE` v,
+    (select
+        CD_Site_Ext ,
+        Dte_Vte ,
+        Typ_Vente ,
+        Val_Achat_Gbl as Val_Achat_Gbl ,
+        Qtite ,
+        ca_ht ,
+        marge_brute ,
+        nb_ticket
+      from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+
+      UNION ALL
+
+      select
+        CD_Site_Ext ,
+        Dte_Vente ,
+        Typ_Vente ,
+        Val_Achat_Gbl as Val_Achat_Gbl ,
+        Qtite ,
+        ca_ht ,
+        marge_brute ,
+        NB_TICKET
+      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
     `bv-prod.Matillion_Perm_Table.commandes` cmd
-  where v.CD_Site_Ext = m.CD_Logiciel
+
+
+  where   m.CD_Logiciel = v.CD_Site_Ext
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+
  ;;
+ persist_for: "24 hour"
   }
 
   measure: count {
