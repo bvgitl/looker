@@ -16,10 +16,10 @@ view: pdt_tbe {
         v.CD_Site_Ext as CD_Site_Ext ,
         v.Dte_Vte as Dte_Vte ,
         v.Typ_Vente as Typ_Vente ,
-        sum(v.Val_Achat_Gbl) as Val_Achat_Gbl ,
-        sum(v.Qtite) as Qtite,
-        sum(v.ca_ht) as ca_ht ,
-        sum(v.marge_brute) as marge_brute,
+        v.Val_Achat_Gbl as Val_Achat_Gbl ,
+        v.Qtite as Qtite,
+        v.ca_ht as ca_ht ,
+        v.marge_brute as marge_brute,
         sum(mag.nb_ticket) as nb_ticket,
         sum(cmd.Total_HT) as Total_HT,
         count(distinct(cmd.numero_commande)) as Nbre_commande
@@ -28,23 +28,25 @@ view: pdt_tbe {
         CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
-        Val_Achat_Gbl as Val_Achat_Gbl ,
-        Qtite ,
-        ca_ht ,
-        marge_brute
+        sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
+        sum(Qtite) as Qtite ,
+        sum(ca_ht) as ca_ht ,
+        sum(marge_brute) as marge_brute
       from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+      group by 1,2,3
 
       UNION ALL
 
-      select
-        CD_Site_Ext ,
-        Dte_Vente ,
-        Typ_Vente ,
-        Val_Achat_Gbl as Val_Achat_Gbl ,
-        Qtite ,
-        ca_ht ,
-        marge_brute
-      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
+select
+        CD_SITE_EXT ,
+        DTE_VENTE ,
+        TYP_VENTE ,
+        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
+        sum(QTITE) as Qtite ,
+        sum(CA_HT) as ca_ht ,
+        sum(MARGE_BRUTE) as marge_brute
+      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+      group by 1,2,3) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
     `bv-prod.Matillion_Perm_Table.commandes` cmd,
     `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` mag
@@ -53,7 +55,7 @@ view: pdt_tbe {
   where   m.CD_Logiciel = v.CD_Site_Ext
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
       and  mag.CD_Site_Ext = v.CD_Site_Ext and  mag.dte_vte = v.dte_vte
-  group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+  group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
 
  ;;
 
