@@ -31,8 +31,7 @@ view: pdt_tbe {
         Val_Achat_Gbl as Val_Achat_Gbl ,
         Qtite ,
         ca_ht ,
-        marge_brute ,
-        nb_ticket
+        marge_brute
       from `bv-prod.Matillion_Perm_Table.TF_VENTE`
 
       UNION ALL
@@ -44,8 +43,7 @@ view: pdt_tbe {
         Val_Achat_Gbl as Val_Achat_Gbl ,
         Qtite ,
         ca_ht ,
-        marge_brute ,
-        NB_TICKET
+        marge_brute
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`) v,
     `bv-prod.Matillion_Perm_Table.Magasins` m,
     `bv-prod.Matillion_Perm_Table.commandes` cmd,
