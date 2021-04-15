@@ -53,7 +53,7 @@ select
 
       ) v
 
-  INNER JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+  LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
   ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
