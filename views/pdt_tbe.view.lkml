@@ -52,7 +52,7 @@ view: pdt_tbe {
 
   where   m.CD_Logiciel = v.CD_Site_Ext
       and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
-      and   m.CD_Logiciel = mag.CD_Site_Ext
+      and  mag.CD_Site_Ext = v.CD_Site_Ext and  mag.dte_vte = v.dte_vte
   group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 
  ;;
