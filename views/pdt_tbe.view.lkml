@@ -1,30 +1,33 @@
 view: pdt_tbe {
   derived_table: {
-    sql: select
-        m.CD_Magasin as CD_Magasin ,
-        m.Animateur as Animateur ,
+    sql: select  m.Animateur as Animateur ,
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
         m.NOM as NOM,
-        m.Ferme as Ferme,
+        m.Ferme as Ferme ,
         m.Pays as Pays ,
         m.Region as Region ,
         m.SURF_VTE as Surface ,
         m.TYP_MAG as TYP_MAG,
         m.Tranche_age as Anciennete,
+        m.CD_Magasin as CD_Magasin ,
         v.CD_Site_Ext as CD_Site_Ext ,
         v.Dte_Vte as Dte_Vte ,
         v.Typ_Vente as Typ_Vente ,
-        v.Val_Achat_Gbl as Val_Achat_Gbl ,
+        v.Val_Achat_Gbl as Val_Achat_Gbl,
         v.Qtite as Qtite,
-        v.ca_ht as ca_ht ,
+        v.ca_ht as ca_ht,
         v.marge_brute as marge_brute,
-        sum(mag.nb_ticket) as nb_ticket,
-        sum(cmd.Total_HT) as Total_HT,
-        count(distinct(cmd.numero_commande)) as Nbre_commande
-  from
-    (select
+        mag.nb_ticket as nb_ticket,
+        c.nbre_commande as nbre_commande,
+        c.Total_HT as Total_HT
+
+        from
+(
+
+
+(select
         CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
@@ -46,16 +49,46 @@ select
         sum(CA_HT) as ca_ht ,
         sum(MARGE_BRUTE) as marge_brute
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
-      group by 1,2,3) v,
-    `bv-prod.Matillion_Perm_Table.Magasins` m,
-    `bv-prod.Matillion_Perm_Table.commandes` cmd,
-    `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` mag
+      group by 1,2,3
+
+      ) v
+
+  INNER JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+  ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-  where   m.CD_Logiciel = v.CD_Site_Ext
-      and CAST(DATETIME_TRUNC(cmd.dte_cde, DAY) AS DATE) = v.dte_vte and cmd.cd_magasin = m.CD_Magasin
-      and  mag.CD_Site_Ext = v.CD_Site_Ext and  mag.dte_vte = v.dte_vte
-  group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19
+  INNER JOIN
+
+
+  (
+    select
+    CD_Site_Ext,
+    Dte_Vte,
+    sum(nb_ticket) as nb_ticket
+    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    group by 1,2
+  ) mag
+
+  ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte
+
+
+  INNER JOIN
+
+  (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_cde, DAY) AS DATE) AS dte_cde,
+      count(distinct(numero_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+       FROM `bv-prod.Matillion_Perm_Table.commandes`
+       group by 1,2
+) as c
+
+
+  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
+
+)
+
+
 
  ;;
 
