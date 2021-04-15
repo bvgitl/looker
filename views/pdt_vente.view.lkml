@@ -1,50 +1,191 @@
 view: pdt_vente {
-
   derived_table: {
-    sql: select
+    sql: select  m.Animateur as Animateur ,
+        m.DATE_OUV as Dte_Ouverture,
+        m.Directeur as Directeur ,
+        m.Franchise as Franchise ,
+        m.NOM as NOM,
+        m.Ferme as Ferme ,
+        m.Pays as Pays ,
+        m.Region as Region ,
+        m.SURF_VTE as Surface ,
+        m.TYP_MAG as TYP_MAG,
+        m.Tranche_age as Anciennete,
+        m.CD_Magasin as CD_Magasin ,
+        v.CD_Site_Ext as CD_Site_Ext ,
+        v.Dte_Vte as Dte_Vte ,
+        v.Typ_Vente as Typ_Vente ,
+        v.Val_Achat_Gbl as Val_Achat_Gbl,
+        v.Qtite as Qtite,
+        v.ca_ht as ca_ht,
+        v.marge_brute as marge_brute,
+        mag.nb_ticket as nb_ticket,
+        c.nbre_commande as nbre_commande,
+        c.Total_HT as Total_HT
+
+        from
+(
+
+
+(select
         CD_Site_Ext ,
         Dte_Vte ,
-        CD_Article ,
         Typ_Vente ,
-        Val_Achat_Gbl ,
-        Qtite ,
-        ca_ht ,
-        marge_brute ,
-        nb_ticket,
-        row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key
-  from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+        sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
+        sum(Qtite) as Qtite ,
+        sum(ca_ht) as ca_ht ,
+        sum(marge_brute) as marge_brute
+      from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+      group by 1,2,3
 
-  UNION ALL
+      UNION ALL
 
-  select
-        *,
-        row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, TYP_VENTE) AS primary_key
-  from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+select
+        CD_SITE_EXT ,
+        DTE_VENTE ,
+        TYP_VENTE ,
+        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
+        sum(QTITE) as Qtite ,
+        sum(CA_HT) as ca_ht ,
+        sum(MARGE_BRUTE) as marge_brute
+      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+      group by 1,2,3
+
+      ) v
+
+  LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+  ON  m.CD_Logiciel = v.CD_Site_Ext
+
+
+  LEFT JOIN
+
+
+  (
+    select
+    CD_Site_Ext,
+    Dte_Vte,
+    sum(nb_ticket) as nb_ticket
+    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    group by 1,2
+  ) mag
+
+  ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte
+
+
+  LEFT JOIN
+
+  (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_cde, DAY) AS DATE) AS dte_cde,
+      count(distinct(numero_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+       FROM `bv-prod.Matillion_Perm_Table.commandes`
+       group by 1,2
+) as c
+
+
+  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
+
+)
+
+
+
  ;;
+
       persist_for: "24 hours"
     }
 
-    dimension: primary_key {
+    measure: count {
+      type: count
+      drill_fields: [detail*]
+    }
+
+    dimension: cd_magasin {
+      type: string
+      sql: ${TABLE}.CD_Magasin ;;
+    }
+
+    dimension: animateur {
+      type: string
+      sql: ${TABLE}.Animateur ;;
+    }
+
+
+    dimension: directeur {
+      type: string
+      sql: ${TABLE}.Directeur ;;
+    }
+
+    dimension: franchise {
+      type: string
+      sql: ${TABLE}.Franchise ;;
+    }
+
+    dimension: nom {
+      type: string
+      sql: ${TABLE}.NOM ;;
+    }
+
+    dimension: ferme {
+      type: string
+      sql: ${TABLE}.Ferme ;;
+    }
+
+    dimension: pays {
+      type: string
+      sql: ${TABLE}.Pays ;;
+    }
+
+    dimension: region {
+      type: string
+      sql: ${TABLE}.Region ;;
+    }
+
+    dimension: surface {
       type: number
-      primary_key: yes
-      hidden: yes
-      sql: ${TABLE}.primary_key ;;
+      sql: ${TABLE}.Surface ;;
+    }
+
+    dimension: typ_mag {
+      type: string
+      sql: ${TABLE}.TYP_MAG ;;
+    }
+
+    dimension: anciennete {
+      type: string
+      sql: ${TABLE}.Anciennete ;;
     }
 
     dimension: cd_site_ext {
       type: string
+      sql: ${TABLE}.CD_Site_Ext ;;
+    }
+
+    dimension_group: dte_ouverture {
+      type: time
+      timeframes: [
+        raw,
+        date,
+        year
+      ]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.Dte_Ouverture ;;
     }
 
     dimension_group: dte_vte {
       type: time
-      timeframes: [date, week, month, quarter, year, raw, month_name, fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year]
+      timeframes: [
+        raw,
+        date,
+        week,
+        month,
+        quarter,
+        year
+      ]
+      convert_tz: no
       datatype: date
       sql: ${TABLE}.Dte_Vte ;;
-    }
-
-    dimension: cd_article {
-      type: string
-      sql: ${TABLE}.CD_Article ;;
     }
 
     dimension: typ_vente {
@@ -77,16 +218,38 @@ view: pdt_vente {
       sql: ${TABLE}.nb_ticket ;;
     }
 
+    dimension: total_ht {
+      type: number
+      sql: ${TABLE}.Total_HT ;;
+    }
+
+    dimension: nbre_commande {
+      type: number
+      sql: ${TABLE}.Nbre_commande ;;
+    }
+
     set: detail {
       fields: [
+        cd_magasin,
+        animateur,
+        directeur,
+        franchise,
+        nom,
+        ferme,
+        pays,
+        region,
+        surface,
+        typ_mag,
+        anciennete,
         cd_site_ext,
-        cd_article,
         typ_vente,
         val_achat_gbl,
         qtite,
         ca_ht,
         marge_brute,
-        nb_ticket
+        nb_ticket,
+        total_ht,
+        nbre_commande
       ]
     }
 
@@ -110,44 +273,21 @@ view: pdt_vente {
       type: date
     }
 
-    dimension_group: diff_date {
-      type: duration
-      intervals: [year]
-      sql_start: ${magasins.date_ouv_date::datetime} ;;
-      sql_end: {% date_end date_filter %} ;;
-    }
 
-    dimension: diff {
-      type: number
-      sql:  DATEDIFF(year, ${magasins.date_ouv_raw}, {% date_end date_filter %}) ;;
-    }
 
     dimension: categorie {
       label: "Catégorie"
       sql:
         CASE
-          WHEN ${magasins.ferme} = "S" THEN "P. non comparable"
+          WHEN ${ferme} = "S" THEN "P. non comparable"
           ELSE (
             CASE
-              WHEN ${magasins.date_ouv_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
+              WHEN ${dte_ouverture_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
               ELSE "P. non Comparable"
             END )
         END
-     ;;
+    ;;
     }
-
-    dimension: anciennete {
-      label: "Ancienneté"
-      sql:
-        CASE
-          WHEN  ${years_diff_date} <= 2 THEN "A≤2 ans"
-          WHEN  ${years_diff_date}  <= 5 AND ${years_diff_date} > 2 THEN "2 ans<A≤ 5 ans"
-          WHEN  ${years_diff_date}  <= 10 AND ${years_diff_date}  > 5 THEN "5 ans<A≤10 ans"
-          WHEN  ${years_diff_date}  > 10 THEN "A>10 ans"
-        END
-      ;;
-    }
-
 
 
     dimension: Type_retrocession {
@@ -260,31 +400,29 @@ view: pdt_vente {
           END ;;
     }
 
-  measure: sum_CA_drive_select_mois {
-    type: sum_distinct
-    value_format_name: eur
-    label: "CA Drive"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes.total_ht}
+    measure: sum_CA_drive_select_mois {
+      type: sum
+      value_format_name: eur
+      label: "CA Drive"
+      sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${total_ht}
           END ;;
-  }
+    }
 
-  measure: sum_Nb_cde_drive_select_mois {
-    type: sum
-    value_format_name: decimal_0
-    label: "Commande Drive"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes.nbre_commande}
+    measure: sum_Nb_cde_drive_select_mois {
+      type: sum
+      value_format_name: decimal_0
+      label: "Commande Drive"
+      sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${nbre_commande}
           END ;;
-  }
+    }
 
     measure: sum_surf_select_mois {
       type: average
-      sql: ${magasins.surf_vte};;
+      sql: ${surface};;
     }
 
     measure: ecarts_jour_select_mois {
@@ -348,27 +486,25 @@ view: pdt_vente {
           END ;;
     }
 
-  measure: sum_CA_drive_select_mois_N1 {
-    type: sum_distinct
-    value_format_name: eur
-    label: "CA Drive n-1"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${pdt_commandes.total_ht}
+    measure: sum_CA_drive_select_mois_N1 {
+      type: sum
+      value_format_name: eur
+      label: "CA Drive n-1"
+      sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
+            THEN ${total_ht}
           END ;;
-  }
+    }
 
-  measure: sum_Nb_cde_drive_select_mois_N1 {
-    type: sum_distinct
-    value_format_name: decimal_0
-    label: "Commande Drive n-1"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes.nbre_commande}
+    measure: sum_Nb_cde_drive_select_mois_N1 {
+      type: sum
+      value_format_name: decimal_0
+      label: "Commande Drive n-1"
+      sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${nbre_commande}
           END ;;
-  }
+    }
 
     ############## calcul des KPIs à n-2 de la période sélectionnée au niveau du filtre ##############
 
@@ -423,27 +559,25 @@ view: pdt_vente {
           END ;;
     }
 
-  measure: sum_CA_drive_select_mois_N2 {
-    type: sum_distinct
-    value_format_name: eur
-    label: "CA Drive n-2"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${pdt_commandes.total_ht}
+    measure: sum_CA_drive_select_mois_N2 {
+      type: sum
+      value_format_name: eur
+      label: "CA Drive n-2"
+      sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${total_ht}
           END ;;
-  }
+    }
 
-  measure: sum_Nb_cde_drive_select_mois_N2 {
-    type: sum_distinct
-    value_format_name: decimal_0
-    label: "Commande Drive n-2"
-    sql_distinct_key: ${pdt_commandes.primary_key} ;;
-    sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${pdt_commandes.dte_cde_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${pdt_commandes.nbre_commande}
+    measure: sum_Nb_cde_drive_select_mois_N2 {
+      type: sum
+      value_format_name: decimal_0
+      label: "Commande Drive n-2"
+      sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
+            THEN ${nbre_commande}
           END ;;
-  }
+    }
 
 
     ############ calcul des KPIs à n-3 de la période sélectionnée au niveau du filtre ###############
@@ -538,12 +672,12 @@ view: pdt_vente {
       sql:  ${sum_CA_select_mois}/NULLIF(${sum_nb_ticket_select_mois},0) ;;
     }
 
-  measure: panier_moyen_drive_select_mois {
-    label: "PM Drive"
-    value_format_name: decimal_2
-    type: number
-    sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_Nb_cde_drive_select_mois},0) ;;
-  }
+    measure: panier_moyen_drive_select_mois {
+      label: "PM Drive"
+      value_format_name: decimal_2
+      type: number
+      sql:  ${sum_CA_drive_select_mois}/NULLIF(${sum_Nb_cde_drive_select_mois},0) ;;
+    }
 
     measure: marge_par_client_select_mois {
       label: "marge / clts"
@@ -702,12 +836,12 @@ view: pdt_vente {
       sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
     }
 
-  measure: prog_CA_Drive_select_mois {
-    label: "prog CA Drive"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
-  }
+    measure: prog_CA_Drive_select_mois {
+      label: "prog CA Drive"
+      value_format_name: percent_2
+      type: number
+      sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
+    }
 
     measure: prog_marge_select_mois {
       label: "prog marge"
@@ -898,4 +1032,4 @@ view: pdt_vente {
       sql: 1.0 * (${marge_par_client_select_mois_N2}-${marge_par_client_select_mois_N3})/NULLIF(${marge_par_client_select_mois_N3},0);;
     }
 
-}
+  }

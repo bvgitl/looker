@@ -42,18 +42,7 @@ explore: pdt_ventes_mag {
 }
 
 
-explore: pdt_vente {
-  join: magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${pdt_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-  join: pdt_commandes {
-    type: left_outer
-    relationship: many_to_many
-    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
-  }
-}
+explore: pdt_vente {}
 
 explore: pdt_vente_mag {
   join: magasins {
