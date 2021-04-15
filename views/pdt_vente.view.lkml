@@ -21,7 +21,7 @@ view: pdt_vente {
         row_number() OVER(ORDER BY CD_SITE_EXT, DTE_VENTE, TYP_VENTE) AS primary_key
   from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
  ;;
-      datagroup_trigger: bv_vente_datagroup
+      persist_for: "24 hours"
     }
 
     dimension: primary_key {

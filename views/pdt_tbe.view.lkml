@@ -59,7 +59,7 @@ view: pdt_tbe {
 
  ;;
 
-datagroup_trigger: bv_vente_datagroup
+persist_for: "24 hours"
   }
 
   measure: count {

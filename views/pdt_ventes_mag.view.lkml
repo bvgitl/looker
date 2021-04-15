@@ -28,7 +28,7 @@ view: pdt_ventes_mag {
   from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
   group by 1,2,3
  ;;
-    datagroup_trigger: bv_vente_datagroup
+    persist_for: "24 hours"
   }
 
   dimension: primary_key {
