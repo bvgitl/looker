@@ -289,7 +289,7 @@ select
     dimension: Type_retrocession {
       sql: CASE
             WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
-            WHEN ${typ_vente} = 1 THEN "Rétrocession"
+            ELSE THEN "Rétrocession"
           END ;;
     }
 
@@ -297,6 +297,7 @@ select
   dimension: Groupe_Region {
     sql: CASE
             WHEN ${region} = "RN,RNE, RNW, RRA, RSE, RSW" THEN "France Metro"
+            ELSE
             WHEN ${region} = "BE, CAM, ESP, IT, MAL, MAU, TOM, TUN" THEN "International"
           END ;;
   }
