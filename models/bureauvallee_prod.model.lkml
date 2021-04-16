@@ -17,49 +17,11 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
-explore: pdt_view_table {}
-
-explore: sql_runner_query {}
-
-explore: pdt_tbe {}
-
-explore: tbe_table {}
-
-
-
-
-explore: pdt_ventes_mag {
-  join: magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${pdt_ventes_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-  join: pdt_commandes {
-    type: left_outer
-    relationship: one_to_one
-    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
-  }
-}
 
 
 explore: pdt_vente {}
 
-explore: pdt_vente_mag {
-  join: magasins {
-    type: left_outer
-    relationship: many_to_many
-    sql_on: ${pdt_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-  join: pdt_commandes {
-    type: left_outer
-    relationship: many_to_many
-    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
-  }
-}
 
-explore: pdt_commandes_digitales {
-  persist_with: bv_vente_digitale_datagroup
-}
 
 
 explore: pdt_data_quality {
@@ -75,11 +37,6 @@ explore: tf_vente_mag {
     type: left_outer
     relationship: many_to_one
     sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-  join: pdt_commandes {
-    type: left_outer
-    relationship: one_to_one
-    sql_on: ${magasins.cd_magasin}=${pdt_commandes.cd_magasin} ;;
   }
 }
 
