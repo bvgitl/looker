@@ -417,7 +417,7 @@ select
     }
 
     measure: sum_surf_select_mois {
-      type: average
+      type: number
       sql: ${surface};;
     }
 
