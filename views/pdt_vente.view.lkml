@@ -289,7 +289,7 @@ select
     dimension: Type_retrocession {
       sql: CASE
             WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
-            ELSE THEN "Rétrocession"
+            ELSE "Rétrocession"
           END ;;
     }
 
