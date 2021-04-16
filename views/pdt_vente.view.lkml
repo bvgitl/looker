@@ -294,6 +294,14 @@ select
     }
 
 
+  dimension: Groupe_Region {
+    sql: CASE
+            WHEN ${region} = "RN,RNE, RNW, RRA, RSE, RSW" THEN "France Metro"
+            WHEN ${region} = "BE, CAM, ESP, IT, MAL, MAU, TOM, TUN" THEN "International"
+          END ;;
+  }
+
+
 ########################## Calcul global des KPIs ################################
 
     measure: sum_ca_ht {
