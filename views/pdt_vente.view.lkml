@@ -397,10 +397,9 @@ select
     }
 
     measure: sum_CA_drive_select_mois {
-      type: sum_distinct
+      type: sum
       value_format_name: eur
       label: "CA Drive"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
@@ -408,10 +407,9 @@ select
     }
 
     measure: sum_Nb_cde_drive_select_mois {
-      type: sum_distinct
+      type: sum
       value_format_name: decimal_0
       label: "Commande Drive"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
@@ -419,8 +417,7 @@ select
     }
 
     measure: sum_surf_select_mois {
-      type: average_distinct
-      sql_distinct_key: ${cd_magasin} ;;
+      type: average
       sql: ${surface};;
     }
 
@@ -486,10 +483,9 @@ select
     }
 
     measure: sum_CA_drive_select_mois_N1 {
-      type: sum_distinct
+      type: sum
       value_format_name: eur
       label: "CA Drive n-1"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${total_ht}
@@ -497,10 +493,9 @@ select
     }
 
     measure: sum_Nb_cde_drive_select_mois_N1 {
-      type: sum_distinct
+      type: sum
       value_format_name: decimal_0
       label: "Commande Drive n-1"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
@@ -561,10 +556,9 @@ select
     }
 
     measure: sum_CA_drive_select_mois_N2 {
-      type: sum_distinct
+      type: sum
       value_format_name: eur
       label: "CA Drive n-2"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
@@ -572,10 +566,9 @@ select
     }
 
     measure: sum_Nb_cde_drive_select_mois_N2 {
-      type: sum_distinct
+      type: sum
       value_format_name: decimal_0
       label: "Commande Drive n-2"
-      sql_distinct_key: ${cd_magasin} ;;
       sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${nbre_commande}
