@@ -25,7 +25,7 @@ explore: pdt_tbe {}
 
 explore: tbe_table {}
 
-explore: vue_data_tbe {}
+
 
 
 explore: pdt_ventes_mag {
