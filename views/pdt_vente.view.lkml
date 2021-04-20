@@ -4,9 +4,9 @@ view: pdt_vente {
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
-        m.NOM as NOM,
-        m.Ferme as Ferme ,
-        m.Pays as Pays ,
+        m.Nom_TBE as NOM,
+        m.Type_TBE as Type ,
+        m.Pays_TBE as Pays ,
         m.Region as Region ,
         m.SURF_VTE as Surface ,
         m.TYP_MAG as TYP_MAG,
@@ -126,9 +126,9 @@ select
       sql: ${TABLE}.NOM ;;
     }
 
-    dimension: ferme {
+    dimension: type {
       type: string
-      sql: ${TABLE}.Ferme ;;
+      sql: ${TABLE}.Type ;;
     }
 
     dimension: pays {
@@ -231,7 +231,7 @@ select
         directeur,
         franchise,
         nom,
-        ferme,
+        type,
         pays,
         region,
         surface,
@@ -275,7 +275,7 @@ select
       label: "Catégorie"
       sql:
         CASE
-          WHEN ${ferme} = "S" THEN "P. non comparable"
+          WHEN ${type} = "S" THEN "P. non comparable"
           ELSE (
             CASE
               WHEN ${dte_ouverture_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
