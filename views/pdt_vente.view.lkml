@@ -1,6 +1,6 @@
 view: pdt_vente {
   derived_table: {
-    sql: select  m.Animateur as Animateur ,
+    sql: select distinct  m.Animateur as Animateur ,
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
