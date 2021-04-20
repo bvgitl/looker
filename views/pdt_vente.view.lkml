@@ -276,8 +276,8 @@ select
       sql:
         CASE
           WHEN ${typ} = "S"  AND
-          ${dte_ouverture_date} > CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P. non Comparable"
-          WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
+          ${dte_ouverture_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P. non Comparable"
+          WHEN ${dte_ouverture_date} >= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
         END
     ;;
     }
