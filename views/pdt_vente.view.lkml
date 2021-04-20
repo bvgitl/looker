@@ -695,6 +695,7 @@ select
       value_format_name: decimal_0
       type: number
       sql: ${sum_nb_ticket_select_mois_N1}/NULLIF(${sum_nb_jour_select_mois_N1},0) ;;
+      drill_fields: [detail*]
     }
 
     measure: ca_par_jour_select_mois_N1 {
