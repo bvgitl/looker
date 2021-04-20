@@ -48,6 +48,8 @@ explore: ventes_devise {
   }
 }
 
+explore: log_bcp {}
+
 
 
 explore: google_sheet {}
