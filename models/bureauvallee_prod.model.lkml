@@ -48,6 +48,8 @@ explore: ventes_devise {
   }
 }
 
+explore: log_files {}
+
 explore: google_sheet {}
 
 explore: commandes {}
