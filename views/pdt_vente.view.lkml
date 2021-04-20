@@ -5,7 +5,7 @@ view: pdt_vente {
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
         m.Nom_TBE as NOM,
-        m.Type_TBE as Type ,
+        m.Type_TBE as Typ ,
         m.Pays_TBE as Pays ,
         m.Region as Region ,
         m.SURF_VTE as Surface ,
@@ -126,9 +126,9 @@ select
       sql: ${TABLE}.NOM ;;
     }
 
-    dimension: type {
+    dimension: typ {
       type: string
-      sql: ${TABLE}.Type ;;
+      sql: ${TABLE}.Typ ;;
     }
 
     dimension: pays {
@@ -231,7 +231,7 @@ select
         directeur,
         franchise,
         nom,
-        type,
+        typ,
         pays,
         region,
         surface,
@@ -275,7 +275,7 @@ select
       label: "Catégorie"
       sql:
         CASE
-          WHEN ${type} = "S" THEN "P. non comparable"
+          WHEN ${typ} = "S" THEN "P. non comparable"
           ELSE (
             CASE
               WHEN ${dte_ouverture_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
