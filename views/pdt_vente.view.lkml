@@ -275,12 +275,9 @@ select
       label: "Catégorie"
       sql:
         CASE
-          WHEN ${typ} = "S" THEN "P. non comparable"
-          ELSE (
-            CASE
-              WHEN ${dte_ouverture_date} < CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
-              ELSE "P. non Comparable"
-            END )
+          WHEN ${typ} = "S"  AND
+          ${dte_ouverture_date} > CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P. non Comparable"
+          WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
         END
     ;;
     }
