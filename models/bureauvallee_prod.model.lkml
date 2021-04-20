@@ -48,7 +48,7 @@ explore: ventes_devise {
   }
 }
 
-explore: log_bcp  {}
+explore: log_bcp_vue  {}
 
 explore: google_sheet {}
 
