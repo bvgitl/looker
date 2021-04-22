@@ -20,6 +20,8 @@ persist_with: bv_vente_datagroup
 
 explore: pdt_vente {}
 
+explore: pdt_test_vente {}
+
 
 explore: pdt_data_quality {
   join: magasins {
