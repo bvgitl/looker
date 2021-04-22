@@ -18,10 +18,7 @@ datagroup: bv_vente_digitale_datagroup {
 persist_with: bv_vente_datagroup
 
 
-
 explore: pdt_vente {}
-
-
 
 
 explore: pdt_data_quality {
