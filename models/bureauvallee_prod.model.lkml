@@ -24,6 +24,9 @@ explore: pdt_vente {}
 explore: tf_vente {}
 
 
+explore: google_sheet {}
+
+
 
 explore: pdt_data_quality {
   join: magasins {
@@ -34,15 +37,6 @@ explore: pdt_data_quality {
 }
 
 
-
-explore: tf_vente_mag {
-  join: magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-}
-
 explore: ventes_devise {
   join: magasins {
     type: left_outer
@@ -50,13 +44,3 @@ explore: ventes_devise {
     sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_logiciel} ;;
   }
 }
-
-explore: log_bcp {}
-
-
-
-explore: google_sheet {}
-
-explore: commandes {}
-
-explore: magasins {}
