@@ -11,7 +11,7 @@ view: pdt_data_quality {
         nb_ticket,
         row_number() OVER(ORDER BY CD_Site_Ext , Dte_Vte, Typ_Vente) AS primary_key ,
         'Articles' AS Origine
-  from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+  from `bv-prod.Matillion_Perm_Table.TFVENTE`
 
   UNION ALL
 
