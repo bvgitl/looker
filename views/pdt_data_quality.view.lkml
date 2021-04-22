@@ -168,15 +168,6 @@ view: pdt_data_quality {
   }
 
 
-  # measure: Nb_Lignes_Ecarts_ca {
-  #   label: "Nbre de lignes avec écarts CA"
-  #   type: count
-  #   value_format_name: decimal_0
-  #   filters: [${Ecarts_CA} != 0]
-  #   drill_fields: [sheet_diff*]
-  # }
-
-
   measure: Ecarts_magasins {
     type: number
     value_format_name: decimal_0

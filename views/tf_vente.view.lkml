@@ -170,144 +170,11 @@ view: tf_vente {
     sql: ${marge_brute}/NULLIF(${ca_ht},0) ;;
   }
 
-
-  ########################### KPIs Data Quality #######################
-
-
-  # measure: sum_ca_ht_article {
-  #   type: sum
-  #   value_format_name: eur
-  #   label: "ca_ht articles"
-  #   sql:  ${ca_ht};;
-  # }
-
-  # measure: sum_marge_brute_article {
-  #   type: sum
-  #   value_format_name: eur
-  #   label: "marge_brute articles"
-  #   sql:  ${marge_brute} ;;
-  # }
-
-  # measure: Ecarts_CA {
-  #   type: number
-  #   value_format_name: eur
-  #   sql: ${tf_vente_mag.sum_ca_ht_mag}-${sum_ca_ht_article} ;;
-  #   drill_fields: [sheet_diff*]
-  # }
-
-  # measure: Nb_Lignes_CA_Null {
-  #   label: "Nbre de lignes CA = 0"
-  #   type: count_distinct
-  #   value_format_name: decimal_0
-  #   sql: ${compound_primary_key} ;;
-  #   filters: [ca_ht: "0"]
-  #   drill_fields: [sheet_ca*]
-  # }
-
-  # measure: Nb_Lignes_Ecarts_ca {
-  #   label: "Nbre de lignes avec écarts CA"
-  #   type: number
-  #   value_format_name: decimal_0
-  #   sql: ${Ecarts_CA} = "-NULL" ;;
-  #   drill_fields: [sheet_diff*]
-  # }
-
-  # measure: Nb_Lignes_tx_Marge {
-  #   label: "Nbre de lignes tx Marge >1"
-  #   type: count_distinct
-  #   value_format_name: decimal_0
-  #   sql: ${compound_primary_key} ;;
-  #   filters: [tx_marge_brute: ">1"]
-  #   drill_fields: [sheet_marge*]
-  # }
-
-  # measure: Nb_Lignes_Marge_Negatif {
-  #   label: "Nbre de lignes Marge <0"
-  #   type: count_distinct
-  #   value_format_name: decimal_0
-  #   sql: ${compound_primary_key} ;;
-  #   filters: [marge_brute: "<0"]
-  #   drill_fields: [sheet_marge*]
-  # }
-
-  # measure: Nb_Mag {
-  #   label: "Nbre de magasins ayant réalisé des ventes"
-  #   type: count_distinct
-  #   value_format_name: decimal_0
-  #   sql: ${cd_site_ext} ;;
-  #   drill_fields: [cd_site_ext]
-  # }
-
-
-
-
-  filter: date_filter {
-    type: date
-  }
-
-  measure: sum_ca_ht_article {
-    type: sum
-    value_format_name: eur
-    label: "ca_ht articles"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${ca_ht}
-          END ;;
-  }
-
-  measure: sum_marge_brute_article {
-    type: sum
-    value_format_name: eur
-    label: "marge_brute articles"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${marge_brute}
-          END ;;
-  }
-
-
-  measure: sum_ca_ht_mag {
-    type: sum
-    value_format_name: eur
-    label: "ca_ht mag"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${tf_vente_mag.ca_ht}
-          END ;;
-  }
-
-  measure: sum_marge_brute_mag {
-    type: sum
-    value_format_name: eur
-    label: "marge_brute mag"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${tf_vente_mag.dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${tf_vente_mag.marge_brute}
-          END ;;
-  }
-
-  measure: Ecarts_CA {
-      type: number
-      value_format_name: eur
-      sql: ${tf_vente_mag.sum_ca_ht_mag}-${sum_ca_ht_article} ;;
-      drill_fields: [sheet_diff*]
-  }
-
-  measure: Ecarts_Marge_Brute {
-    type: number
-    value_format_name: eur
-    sql: ${sum_marge_brute_mag}-${sum_marge_brute_article} ;;
-    drill_fields: [sheet_diff*]
-  }
-
   measure: Nb_Lignes_CA_Null {
     label: "Nbre de lignes CA = 0"
     type: count_distinct
     value_format_name: decimal_0
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${compound_primary_key}
-          END ;;
+    sql:  ${compound_primary_key} ;;
     filters: [ca_ht: "0"]
     drill_fields: [sheet_ca*]
   }
@@ -316,10 +183,7 @@ view: tf_vente {
     label: "Nbre de lignes tx Marge >1"
     type: count_distinct
     value_format_name: decimal_0
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${compound_primary_key}
-          END ;;
+    sql: ${compound_primary_key} ;;
     filters: [tx_marge_brute: ">1"]
     drill_fields: [sheet_marge*]
   }
@@ -328,10 +192,7 @@ view: tf_vente {
     label: "Nbre de lignes Marge <0"
     type: count_distinct
     value_format_name: decimal_0
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${compound_primary_key}
-          END ;;
+    sql:  ${compound_primary_key} ;;
     filters: [marge_brute: "<0"]
     drill_fields: [sheet_marge*]
   }
