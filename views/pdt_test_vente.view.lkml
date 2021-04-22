@@ -65,7 +65,7 @@ select
     CD_Site_Ext,
     Dte_Vte,
     sum(nb_ticket) as nb_ticket
-    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    from `bv-prod.Matillion_Perm_Table.TFVENTEMAG`
     group by 1,2
   ) mag
 
