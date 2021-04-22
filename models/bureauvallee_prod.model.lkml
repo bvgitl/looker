@@ -20,7 +20,6 @@ persist_with: bv_vente_datagroup
 
 explore: pdt_vente {}
 
-explore: pdt_test_vente {}
 
 
 explore: pdt_data_quality {
@@ -31,13 +30,6 @@ explore: pdt_data_quality {
   }
 }
 
-explore: pdt_test {
-  join: magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${pdt_test.cd_site_ext}=${magasins.cd_logiciel} ;;
-  }
-}
 
 
 explore: tf_vente_mag {
