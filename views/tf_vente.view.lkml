@@ -198,14 +198,14 @@ view: tf_vente {
   }
 
   set: sheet_diff {
-    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente]
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente]
   }
 
   set: sheet_ca {
-    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht]
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht]
   }
 
   set: sheet_marge {
-    fields: [cd_site_ext, dte_vte_date, cd_article, typ_vente, marge_brute]
+    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente, marge_brute]
   }
 }
