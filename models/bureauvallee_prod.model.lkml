@@ -21,7 +21,13 @@ persist_with: bv_vente_datagroup
 explore: pdt_vente {}
 
 
-explore: tf_vente {}
+explore: tf_vente {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tf_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
+  }
+}
 
 
 explore: google_sheet {}
