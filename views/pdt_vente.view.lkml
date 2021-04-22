@@ -76,8 +76,8 @@ select
 
   (SELECT
       cd_magasin,
-      CAST(DATETIME_TRUNC(dte_cde, DAY) AS DATE) AS dte_cde,
-      count(distinct(numero_commande)) as Nbre_commande ,
+      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(cd_commande)) as Nbre_commande ,
       sum(Total_HT) as Total_HT
        FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
        group by 1,2
