@@ -4,7 +4,7 @@ view: pdt_vente {
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
-        m.Nom_TBE as NOM,
+        m.Nom as NOM,
         m.Type_TBE as Typ ,
         m.Pays_TBE as Pays ,
         m.Region as Region ,
