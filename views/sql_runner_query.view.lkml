@@ -160,8 +160,9 @@ select
     sql: ${TABLE}.CD_Site_Ext ;;
   }
 
-  dimension: dte_vte {
-    type: date
+  dimension_group: dte_vte {
+    type: time
+    timeframes: [date, raw]
     datatype: date
     sql: ${TABLE}.Dte_Vte ;;
   }
@@ -221,7 +222,6 @@ select
       anciennete,
       cd_magasin,
       cd_site_ext,
-      dte_vte,
       typ_vente,
       val_achat_gbl,
       qtite,
