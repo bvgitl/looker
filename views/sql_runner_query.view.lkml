@@ -24,8 +24,23 @@ view: sql_runner_query {
         c.nbre_commande as nbre_commande,
         c.Total_HT as Total_HT
 
-from(
-select distinct
+from
+
+
+          (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(cd_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+       group by 1,2
+) as c
+
+
+LEFT JOIN
+
+
+  (   select distinct
         m.Animateur as Animateur ,
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
@@ -94,18 +109,6 @@ select distinct
 
   ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
 ) p
-
-FULL OUTER JOIN
-
-
-    (SELECT
-      cd_magasin,
-      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
-      count(distinct(cd_commande)) as Nbre_commande ,
-      sum(Total_HT) as Total_HT
-       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
-       group by 1,2
-) as c
 
 
   ON c.cd_magasin = p.CD_Magasin AND  c.dte_cde = p.Dte_Vte
