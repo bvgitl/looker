@@ -1,6 +1,32 @@
 view: sql_runner_query {
   derived_table: {
-    sql: select distinct  m.Animateur as Animateur ,
+    sql: Select distinct
+        p.Animateur as Animateur ,
+        p.Dte_Ouverture as Dte_Ouverture,
+        p.Directeur as Directeur ,
+        p.Franchise as Franchise ,
+        p.Nom as NOM,
+        p.Typ as Typ ,
+        p.Pays as Pays ,
+        p.Region as Region ,
+        p.Surface as Surface ,
+        p.TYP_MAG as TYP_MAG,
+        p.Anciennete as Anciennete,
+        p.CD_Magasin as CD_Magasin ,
+        p.CD_Site_Ext as CD_Site_Ext ,
+        p.Dte_Vte as Dte_Vte ,
+        p.Typ_Vente as Typ_Vente ,
+        p.Val_Achat_Gbl as Val_Achat_Gbl,
+        p.Qtite as Qtite,
+        p.ca_ht as ca_ht,
+        p.marge_brute as marge_brute,
+        p.nb_ticket as nb_ticket,
+        c.nbre_commande as nbre_commande,
+        c.Total_HT as Total_HT
+
+from(
+select distinct
+        m.Animateur as Animateur ,
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
@@ -20,46 +46,10 @@ view: sql_runner_query {
         v.ca_ht as ca_ht,
         v.marge_brute as marge_brute,
         mag.nb_ticket as nb_ticket,
-        c.nbre_commande as nbre_commande,
-        c.Total_HT as Total_HT
 
-        from  `bv-prod.Matillion_Perm_Table.Magasins` m
+      from
 
-
-     FULL JOIN
-
-
-    (SELECT
-      cd_magasin,
-      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
-      count(distinct(cd_commande)) as Nbre_commande ,
-      sum(Total_HT) as Total_HT
-       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
-       group by 1,2
-) as c
-
-
-  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
-
-
-  FULL JOIN
-
-
-  (
-    select
-    CD_Site_Ext,
-    Dte_Vte,
-    sum(nb_ticket) as nb_ticket
-    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-    group by 1,2
-  ) mag
-
-  ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
-
-
-  FULL JOIN
-
-  (  select
+      (  select
         CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
@@ -72,7 +62,7 @@ view: sql_runner_query {
 
       UNION ALL
 
-select
+      select
         CD_SITE_EXT ,
         DTE_VENTE ,
         TYP_VENTE ,
@@ -85,8 +75,40 @@ select
 
       ) v
 
+       LEFT JOIN  `bv-prod.Matillion_Perm_Table.Magasins` m
 
-  ON  m.CD_Logiciel = v.CD_Site_Ext
+       ON  m.CD_Logiciel = v.CD_Site_Ext
+
+
+      LEFT JOIN
+
+
+    (
+      select
+      CD_Site_Ext,
+      Dte_Vte,
+      sum(nb_ticket) as nb_ticket
+     from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+     group by 1,2
+     ) mag
+
+  ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
+) p
+
+FULL JOIN
+
+
+    (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(cd_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+       group by 1,2
+) as c
+
+
+  ON c.cd_magasin = p.CD_Magasin AND  c.dte_cde = p.Dte_Vte
 
 
  ;;
