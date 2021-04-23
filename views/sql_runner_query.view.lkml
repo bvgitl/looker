@@ -37,7 +37,7 @@ from
 ) as c
 
 
-LEFT JOIN
+FULL OUTER JOIN
 
 
   (   select distinct
