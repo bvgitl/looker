@@ -22,6 +22,8 @@ explore: pdt_vente {}
 
 explore: commandes {}
 
+explore: google_sheet {}
+
 
 explore: tf_vente {
   join: magasins {
