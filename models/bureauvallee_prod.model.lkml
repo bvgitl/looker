@@ -24,6 +24,8 @@ explore: commandes {}
 
 explore: google_sheet {}
 
+explore: sql_runner_query {}
+
 
 explore: tf_vente {
   join: magasins {
