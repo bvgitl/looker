@@ -20,6 +20,8 @@ persist_with: bv_vente_datagroup
 
 explore: pdt_vente {}
 
+explore: commandes {}
+
 
 explore: tf_vente {
   join: magasins {
