@@ -28,7 +28,38 @@ view: sql_runner_query {
 
      FULL JOIN
 
-     (  select
+
+    (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(cd_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+       group by 1,2
+) as c
+
+
+  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
+
+
+  FULL JOIN
+
+
+  (
+    select
+    CD_Site_Ext,
+    Dte_Vte,
+    sum(nb_ticket) as nb_ticket
+    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    group by 1,2
+  ) mag
+
+  ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
+
+
+  FULL JOIN
+
+  (  select
         CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
@@ -58,34 +89,6 @@ select
   ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-  FULL JOIN
-
-
-  (
-    select
-    CD_Site_Ext,
-    Dte_Vte,
-    sum(nb_ticket) as nb_ticket
-    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-    group by 1,2
-  ) mag
-
-  ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
-
-
-  FULL JOIN
-
-  (SELECT
-      cd_magasin,
-      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
-      count(distinct(cd_commande)) as Nbre_commande ,
-      sum(Total_HT) as Total_HT
-       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
-       group by 1,2
-) as c
-
-
-  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
  ;;
   }
 
