@@ -95,7 +95,7 @@ select distinct
   ON mag.CD_Site_Ext = m.CD_Logiciel AND mag.Dte_Vte = v.Dte_Vte
 ) p
 
-FULL JOIN
+FULL OUTER JOIN
 
 
     (SELECT
