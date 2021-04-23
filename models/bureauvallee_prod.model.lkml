@@ -32,10 +32,6 @@ explore: tf_vente {
 }
 
 
-explore: google_sheet {}
-
-
-
 explore: pdt_data_quality {
   join: magasins {
     type: left_outer
