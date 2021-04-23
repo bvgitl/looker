@@ -6,7 +6,7 @@ view: pdt_vente {
         m.Franchise as Franchise ,
         m.Nom as NOM,
         m.Type_TBE as Typ ,
-        m.Pays_TBE as Pays ,
+        m.Pays as Pays ,
         m.Region as Region ,
         m.SURF_VTE as Surface ,
         m.TYP_MAG as TYP_MAG,
