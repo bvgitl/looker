@@ -26,7 +26,7 @@ view: sql_runner_query {
 
         from `bv-prod.Matillion_Perm_Table.Magasins` m
 
-        LEFT JOIN
+        FULL JOIN
 
         (select
                 CD_Site_Ext ,
@@ -58,7 +58,7 @@ view: sql_runner_query {
           ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-        LEFT JOIN (
+        FULL JOIN (
 
 
         select
@@ -74,7 +74,7 @@ view: sql_runner_query {
         ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
 
 
-       LEFT JOIN  (
+       FULL JOIN  (
 
 
        SELECT
