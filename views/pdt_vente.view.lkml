@@ -64,12 +64,13 @@ select
     select
     CD_Site_Ext,
     Dte_Vte,
+    Typ_vente,
     sum(nb_ticket) as nb_ticket
     from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-    group by 1,2
+    group by 1,2,3
   ) mag
 
-  ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte
+  ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
 
 
   LEFT JOIN
