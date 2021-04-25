@@ -58,10 +58,10 @@ view: sql_runner_query {
           ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-        LEFT JOIN
+        LEFT JOIN (
 
 
-        (select
+        select
                 CD_Site_Ext,
                 Dte_Vte,
                 Typ_vente,
@@ -74,9 +74,10 @@ view: sql_runner_query {
         ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
 
 
-       LEFT JOIN
+       LEFT JOIN  (
 
-       (SELECT
+
+       SELECT
               cd_magasin,
               CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
               count(distinct(cd_commande)) as Nbre_commande ,
