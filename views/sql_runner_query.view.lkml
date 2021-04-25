@@ -71,7 +71,7 @@ view: sql_runner_query {
           ) mag
 
 
-        ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
+        ON m.CD_Logiciel = mag.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
 
 
        FULL JOIN  (
