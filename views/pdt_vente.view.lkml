@@ -54,7 +54,7 @@ select
       ) v
 
   LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
-  ON  m.CD_Logiciel = v.CD_Site_Ext
+  ON  m.CD_Logiciel = RIGHT(CONCAT('000',v.CD_Site_Ext),3)
 
 
   LEFT JOIN
