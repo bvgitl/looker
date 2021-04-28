@@ -70,7 +70,11 @@ select
     group by 1,2,3
   ) mag
 
-  ON mag.CD_Site_Ext = v.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
+  ON RIGHT(CONCAT('000',mag.CD_Site_Ext),3) = RIGHT(CONCAT('000',v.CD_Site_Ext),3)
+
+  AND mag.Dte_Vte = v.Dte_Vte
+
+  AND v.Typ_vente = mag.Typ_vente
 
 
   LEFT JOIN
