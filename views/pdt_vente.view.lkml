@@ -80,7 +80,8 @@ select
       CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
       count(distinct(cd_commande)) as Nbre_commande ,
       sum(Total_HT) as Total_HT
-       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+      FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+      where statut IN ("pending", "processing" , "fraud", "complete")
        group by 1,2
 ) as c
 
