@@ -28,7 +28,7 @@ view: pdt_vente {
 
 
 (select
-        CD_Site_Ext ,
+        RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
         sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
@@ -54,7 +54,7 @@ select
       ) v
 
   LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
-  ON  m.CD_Logiciel = RIGHT(CONCAT('000',v.CD_Site_Ext),3)
+  ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
   LEFT JOIN
@@ -62,7 +62,7 @@ select
 
   (
     select
-    CD_Site_Ext,
+    RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
     Dte_Vte,
     Typ_vente,
     sum(nb_ticket) as nb_ticket
@@ -70,7 +70,7 @@ select
     group by 1,2,3
   ) mag
 
-  ON RIGHT(CONCAT('000',mag.CD_Site_Ext),3) = RIGHT(CONCAT('000',v.CD_Site_Ext),3)
+  ON mag.CD_Site_Ext = v.CD_Site_Ext
 
   AND mag.Dte_Vte = v.Dte_Vte
 
