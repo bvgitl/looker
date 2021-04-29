@@ -91,7 +91,7 @@ select
 ) as c
 
 
-  ON c.cd_magasin = m.CD_Magasin AND  c.dte_cde = v.Dte_Vte
+  ON c.cd_magasin = m.CD_Magasin
 
 )
 
