@@ -20,6 +20,7 @@ view: pdt_vente {
         v.ca_ht as ca_ht,
         v.marge_brute as marge_brute,
         mag.nb_ticket as nb_ticket,
+        c.dte_cde as dte_cde,
         c.nbre_commande as nbre_commande,
         c.Total_HT as Total_HT
 
@@ -189,6 +190,18 @@ select
       datatype: date
       sql: ${TABLE}.Dte_Vte ;;
     }
+
+
+  dimension_group: dte_cde {
+    type: time
+    timeframes: [
+      raw, date, week, month, month_name, quarter, year,
+      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.dte_cde ;;
+  }
 
     dimension: typ_vente {
       type: number
@@ -412,7 +425,7 @@ select
       value_format_name: eur_0
       label: "CA Drive"
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
     }
@@ -422,7 +435,7 @@ select
       value_format_name: decimal_0
       label: "Commande Drive"
       sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${dte_cde_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
           END ;;
     }
