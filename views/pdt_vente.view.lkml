@@ -373,7 +373,7 @@ select
 
     measure: sum_CA_select_mois {
       type: sum
-      value_format_name: eur_0
+      value_format_name: eur
       label: "CA HT"
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
@@ -384,7 +384,7 @@ select
     measure: sum_marge_select_mois {
       label: "Marge"
       type: sum
-      value_format_name: eur_0
+      value_format_name: eur
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
@@ -414,7 +414,7 @@ select
     measure: sum_val_achat_gbl_select_mois {
       hidden: yes
       type: sum
-      value_format_name: eur_0
+      value_format_name: eur
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${val_achat_gbl}
@@ -424,7 +424,7 @@ select
 
   measure: sum_livraison_select_mois {
     type: sum
-    value_format_name: eur_0
+    value_format_name: eur
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tarif_ht_livraison}
@@ -433,7 +433,7 @@ select
 
     measure: sum_total_ht_select_mois {
       type: sum
-      value_format_name: eur_0
+      value_format_name: eur
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
@@ -442,7 +442,7 @@ select
 
   measure: sum_CA_drive_select_mois {
     type: number
-    value_format_name: eur_0
+    value_format_name: eur
     label: "CA Drive"
     sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
   }
