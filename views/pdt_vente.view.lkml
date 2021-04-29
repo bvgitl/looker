@@ -13,7 +13,7 @@ view: pdt_vente {
         m.Tranche_age as Anciennete,
         m.CD_Magasin as CD_Magasin ,
         v.CD_Site_Ext as CD_Site_Ext ,
-        v.Dte_Vte as Dte_Vte ,
+        day as Dte_Vte ,
         v.Typ_Vente as Typ_Vente ,
         v.Val_Achat_Gbl as Val_Achat_Gbl,
         v.Qtite as Qtite,
@@ -21,10 +21,17 @@ view: pdt_vente {
         v.marge_brute as marge_brute,
         mag.nb_ticket as nb_ticket,
         c.nbre_commande as nbre_commande,
+        c.Tarif_HT_livraison as Tarif_HT_livraison,
         c.Total_HT as Total_HT
 
-        from
-(
+        from  `bv-prod.Matillion_Perm_Table.Magasins` m,
+
+(SELECT day
+FROM UNNEST(
+    GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY)
+) AS day)
+
+LEFT JOIN (
 
 
 (select
@@ -46,18 +53,17 @@ select
         TYP_VENTE ,
         sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
         sum(QTITE) as Qtite ,
-        sum(CA_HT) as ca_ht ,
+        sum(CA_HT) as ca_ht,
         sum(MARGE_BRUTE) as marge_brute
       from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
       group by 1,2,3
 
       ) v
 
-  LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
-  ON  m.CD_Logiciel = v.CD_Site_Ext
 
 
-  LEFT JOIN
+
+  INNER JOIN
 
 
   (
@@ -74,7 +80,10 @@ select
 
   AND mag.Dte_Vte = v.Dte_Vte
 
-  AND v.Typ_vente = mag.Typ_vente
+  AND v.Typ_vente = mag.Typ_vente )
+
+
+  ON m.CD_Logiciel = v.CD_Site_Ext and day = v.Dte_Vte
 
 
   LEFT JOIN
@@ -83,6 +92,7 @@ select
       cd_magasin,
       CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
       count(distinct(cd_commande)) as Nbre_commande ,
+      sum(Tarif_HT_livraison) as Tarif_HT_livraison,
       sum(Total_HT) as Total_HT
       FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
       where statut IN ("pending", "processing" , "fraud", "complete")
@@ -90,9 +100,7 @@ select
 ) as c
 
 
-  ON c.cd_magasin = m.CD_Magasin
-
-)
+  ON c.cd_magasin = m.CD_Magasin  and day = c.dte_cde
 
 
 
@@ -190,18 +198,6 @@ select
       sql: ${TABLE}.Dte_Vte ;;
     }
 
-
-  dimension_group: dte_cde {
-    type: time
-    timeframes: [
-      raw, date, week, month, month_name, quarter, year,
-      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.dte_cde ;;
-  }
-
     dimension: typ_vente {
       type: number
       sql: ${TABLE}.Typ_Vente ;;
@@ -235,6 +231,12 @@ select
     dimension: total_ht {
       type: number
       sql: ${TABLE}.Total_HT ;;
+    }
+
+
+    dimension: tarif_ht_livraison {
+      type: number
+      sql: ${TABLE}.Tarif_HT_livraison ;;
     }
 
     dimension: nbre_commande {
@@ -419,15 +421,31 @@ select
           END ;;
     }
 
-    measure: sum_CA_drive_select_mois {
+
+  measure: sum_livraison_select_mois {
+    type: sum
+    value_format_name: eur_0
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_ht_livraison}
+          END ;;
+  }
+
+    measure: sum_total_ht_select_mois {
       type: sum
       value_format_name: eur_0
-      label: "CA Drive"
       sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
     }
+
+  measure: sum_CA_drive_select_mois {
+    type: number
+    value_format_name: eur_0
+    label: "CA Drive"
+    sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
+  }
 
     measure: sum_Nb_cde_drive_select_mois {
       type: sum
@@ -505,14 +523,31 @@ select
           END ;;
     }
 
-    measure: sum_CA_drive_select_mois_N1 {
-      type: sum
-      value_format_name: eur
-      label: "CA Drive n-1"
-      sql: CASE
+
+  measure: sum_livraison_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
+            THEN ${tarif_ht_livraison}
+          END ;;
+  }
+
+
+  measure: sum_total_ht_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${total_ht}
           END ;;
+  }
+
+    measure: sum_CA_drive_select_mois_N1 {
+      type: number
+      value_format_name: eur
+      label: "CA Drive n-1"
+      sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
     }
 
     measure: sum_Nb_cde_drive_select_mois_N1 {
@@ -578,14 +613,29 @@ select
           END ;;
     }
 
-    measure: sum_CA_drive_select_mois_N2 {
-      type: sum
-      value_format_name: eur
-      label: "CA Drive n-2"
-      sql: CASE
+  measure: sum_livraison_select_mois_N2 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_ht_livraison}
+          END ;;
+  }
+
+  measure: sum_total_ht_select_mois_N2 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
+  }
+
+    measure: sum_CA_drive_select_mois_N2 {
+      type: number
+      value_format_name: eur
+      label: "CA Drive n-2"
+      sql: ${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2} ;;
     }
 
     measure: sum_Nb_cde_drive_select_mois_N2 {
