@@ -26,7 +26,7 @@ view: sql_runner_query {
 
         from ( `bv-prod.Matillion_Perm_Table.Magasins` m
 
-        FULL OUTER JOIN  (
+        FULL JOIN  (
 
 
 (select
@@ -69,7 +69,7 @@ view: sql_runner_query {
 
         ON m.CD_Logiciel = v.CD_Site_Ext )
 
-        FULL OUTER JOIN
+        FULL JOIN
 
         (
 
