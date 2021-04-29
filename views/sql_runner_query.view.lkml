@@ -69,7 +69,7 @@ view: sql_runner_query {
 
         ON m.CD_Logiciel = v.CD_Site_Ext )
 
-        FULL JOIN
+        FULL OUTER JOIN
 
         (
 
