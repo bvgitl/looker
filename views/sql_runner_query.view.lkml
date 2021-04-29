@@ -1,7 +1,6 @@
 view: sql_runner_query {
   derived_table: {
-    sql: select distinct
-        m.Animateur as Animateur ,
+    sql: select distinct  m.Animateur as Animateur ,
         m.DATE_OUV as Dte_Ouverture,
         m.Directeur as Directeur ,
         m.Franchise as Franchise ,
@@ -14,7 +13,7 @@ view: sql_runner_query {
         m.Tranche_age as Anciennete,
         m.CD_Magasin as CD_Magasin ,
         v.CD_Site_Ext as CD_Site_Ext ,
-        v.Dte_Vte as Dte_Vte ,
+        day as Dte_Vte ,
         v.Typ_Vente as Typ_Vente ,
         v.Val_Achat_Gbl as Val_Achat_Gbl,
         v.Qtite as Qtite,
@@ -24,67 +23,83 @@ view: sql_runner_query {
         c.nbre_commande as nbre_commande,
         c.Total_HT as Total_HT
 
-        from ( `bv-prod.Matillion_Perm_Table.Magasins` m
+        from  `bv-prod.Matillion_Perm_Table.Magasins` m,
 
-        LEFT JOIN  (
+(SELECT day
+FROM UNNEST(
+    GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY)
+) AS day)
+
+LEFT JOIN (
 
 
 (select
-                CD_Site_Ext ,
-                Dte_Vte ,
-                Typ_Vente ,
-                sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
-                sum(Qtite) as Qtite ,
-                sum(ca_ht) as ca_ht ,
-                sum(marge_brute) as marge_brute
-          from `bv-prod.Matillion_Perm_Table.TF_VENTE`
-          group by 1,2,3
+        RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+        Dte_Vte ,
+        Typ_Vente ,
+        sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
+        sum(Qtite) as Qtite ,
+        sum(ca_ht) as ca_ht ,
+        sum(marge_brute) as marge_brute
+      from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+      group by 1,2,3
 
       UNION ALL
 
-        select
-              CD_SITE_EXT ,
-              DTE_VENTE ,
-              TYP_VENTE ,
-              sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
-              sum(QTITE) as Qtite ,
-              sum(CA_HT) as ca_ht ,
-              sum(MARGE_BRUTE) as marge_brute
-          from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
-          group by 1,2,3 ) v
+select
+        CD_SITE_EXT ,
+        DTE_VENTE ,
+        TYP_VENTE ,
+        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
+        sum(QTITE) as Qtite ,
+        sum(CA_HT) as ca_ht ,
+        sum(MARGE_BRUTE) as marge_brute
+      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+      group by 1,2,3
 
-        INNER JOIN
-
-        (select
-                CD_Site_Ext,
-                Dte_Vte,
-                Typ_vente,
-                sum(nb_ticket) as nb_ticket
-              from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-              group by 1,2,3 ) mag
+      ) v
 
 
-        ON v.CD_Site_Ext = mag.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente )
 
 
-        ON m.CD_Logiciel = v.CD_Site_Ext )
-
-        FULL JOIN
-
-        (
+  INNER JOIN
 
 
-       SELECT
-              cd_magasin,
-              CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
-              count(distinct(cd_commande)) as Nbre_commande ,
-              sum(Total_HT) as Total_HT
-            FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
-            group by 1,2
-        ) as c
+  (
+    select
+    RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+    Dte_Vte,
+    Typ_vente,
+    sum(nb_ticket) as nb_ticket
+    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    group by 1,2,3
+  ) mag
+
+  ON mag.CD_Site_Ext = v.CD_Site_Ext
+
+  AND mag.Dte_Vte = v.Dte_Vte
+
+  AND v.Typ_vente = mag.Typ_vente )
 
 
-          ON c.cd_magasin = m.CD_Magasin AND c.dte_cde = v.Dte_Vte
+  ON m.CD_Logiciel = v.CD_Site_Ext and day = v.Dte_Vte
+
+
+  LEFT JOIN
+
+  (SELECT
+      cd_magasin,
+      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(cd_commande)) as Nbre_commande ,
+      sum(Total_HT) as Total_HT
+      FROM `bv-prod.Matillion_Perm_Table.COMMANDES`
+      where statut IN ("pending", "processing" , "fraud", "complete")
+       group by 1,2
+) as c
+
+
+  ON c.cd_magasin = m.CD_Magasin  and day = c.dte_cde
+
 
  ;;
   }
