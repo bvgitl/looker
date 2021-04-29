@@ -24,11 +24,12 @@ view: sql_runner_query {
         c.nbre_commande as nbre_commande,
         c.Total_HT as Total_HT
 
-        from `bv-prod.Matillion_Perm_Table.Magasins` m
+        from ( `bv-prod.Matillion_Perm_Table.Magasins` m
 
-        FULL JOIN
+        left join  (
 
-        (select
+
+(select
                 CD_Site_Ext ,
                 Dte_Vte ,
                 Typ_Vente ,
@@ -50,31 +51,27 @@ view: sql_runner_query {
               sum(CA_HT) as ca_ht ,
               sum(MARGE_BRUTE) as marge_brute
           from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
-          group by 1,2,3
+          group by 1,2,3 ) v
 
-        ) v
+        INNER JOIN
 
-
-          ON  m.CD_Logiciel = v.CD_Site_Ext
-
-
-        FULL JOIN (
-
-
-        select
+        (select
                 CD_Site_Ext,
                 Dte_Vte,
                 Typ_vente,
                 sum(nb_ticket) as nb_ticket
               from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-              group by 1,2,3
-          ) mag
+              group by 1,2,3 ) mag
 
 
-        ON m.CD_Logiciel = mag.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente
+        ON v.CD_Site_Ext = mag.CD_Site_Ext AND mag.Dte_Vte = v.Dte_Vte AND v.Typ_vente = mag.Typ_vente )
 
 
-       FULL JOIN  (
+        ON m.CD_Logiciel = v.CD_Site_Ext )
+
+        FULL JOIN
+
+        (
 
 
        SELECT
@@ -88,8 +85,6 @@ view: sql_runner_query {
 
 
           ON c.cd_magasin = m.CD_Magasin AND c.dte_cde = v.Dte_Vte
-
-
 
  ;;
   }
