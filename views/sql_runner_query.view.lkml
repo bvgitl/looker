@@ -26,7 +26,7 @@ view: sql_runner_query {
 
         from ( `bv-prod.Matillion_Perm_Table.Magasins` m
 
-        FULL JOIN  (
+        LEFT JOIN  (
 
 
 (select
