@@ -77,7 +77,7 @@ select
   AND v.Typ_vente = mag.Typ_vente
 
 
-  LEFT JOIN
+  FULL JOIN
 
   (SELECT
       cd_magasin,
