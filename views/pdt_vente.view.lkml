@@ -289,8 +289,6 @@ select
       type: date
     }
 
-
-
     dimension: categorie {
       label: "Catégorie"
       sql:
