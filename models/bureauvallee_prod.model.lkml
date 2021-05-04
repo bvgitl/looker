@@ -54,3 +54,27 @@ explore: ventes_devise {
     sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_logiciel} ;;
   }
 }
+
+explore: article_dwh {
+  join: tf_vente {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_dwh.c_article} = ${tf_vente.cd_article} ;;
+  }
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${magasins.cd_magasin}=${tf_vente.cd_site_ext} ;;
+  }
+  join: four_dwh {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${four_dwh.c_fournisseur}=${article_dwh.c_fournisseur} ;;
+  }
+  join: marques {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${marques.cd_marque}=${article_dwh.c_marque} ;;
+  }
+
+}
