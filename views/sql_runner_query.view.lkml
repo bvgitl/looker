@@ -325,6 +325,13 @@ select
           END ;;
   }
 
+  measure: taux_de_marge_select_mois {
+    label: "% marge"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_CA_select_mois},0);;
+  }
+
   measure: sum_qte_select_mois {
     label: "Qte"
     type: sum
@@ -403,6 +410,31 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+  }
+
+
+########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
+
+
+  measure: prog_CA_select_mois {
+    label: "prog CA"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+  }
+
+  measure: prog_Qte_select_mois {
+    label: "prog Qte"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
+  }
+
+  measure: prog_marge_select_mois {
+    label: "prog marge"
+    value_format_name: percent_2
+    type: number
+    sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
   }
 
 
