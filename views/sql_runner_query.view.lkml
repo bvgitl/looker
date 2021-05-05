@@ -4,48 +4,73 @@ view: sql_runner_query {
        a.c_article as article,
        a.c_fournisseur as cd_fournisseur,
        a.c_marque as cd_marque,
+       art.c_noeud as noeud,
        art.c_arbre as arbre,
        n4.Niveau4 as Niveau_4,
        n3.SousFamille as N3_SS_Famille,
        n2.Famille as N2_Famille,
        n1.Division as N1_Division,
-       m.Nom_TBE as NOM,
-       m.Type_TBE as Typ ,
-       DATE_OUV as Dte_Ouverture,
-       m.Pays_TBE as Pays ,
-       m.Region as Region ,
-       m.SURF_VTE as Surface ,
-       m.TYP_MAG as TYP_MAG,
-       m.Tranche_age as Anciennete,
-       m.CD_Magasin as CD_Magasin,
-       v.Dte_Vte as Dte_Vte,
-       v.Typ_Vente as Typ_Vente ,
-       v.Qtite as Qtite,
-       v.ca_ht as ca_ht,
-       v.marge_brute as marge_brute,
+       b.Nom_TBE as NOM,
+       b.Type_TBE as Typ ,
+       b.DATE_OUV as Dte_Ouverture,
+       b.Pays_TBE as Pays ,
+       b.Region as Region ,
+       b.SURF_VTE as Surface ,
+       b.TYP_MAG as TYP_MAG,
+       b.Tranche_age as Anciennete,
+       b.CD_Magasin as CD_Magasin,
+       b.CD_Article,
+       b.Dte_Vte as Dte_Vte,
+       b.Typ_Vente as Typ_Vente ,
+       b.Qtite as Qtite,
+       b.ca_ht as ca_ht,
+       b.marge_brute as marge_brute
 
 
-       FROM (`bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
+FROM  (`bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
 
-       LEFT JOIN `bv-prod.Matillion_Temp_Table.ART_ARBO_DWH` art
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` art
 
-       ON art.c_article = a.c_Article
+ON art.c_article = a.c_Article
 
-       LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
 
-       ON n4.ID_N4_N4 = art.c_noeud
+ON n4.ID_N4_N4 = art.c_noeud
 
-       LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3
 
-       ON n3.ID_N3_SSFAMILLE = n4.ID_N3_SSFAMILLE
+ON n3.ID_N3_SSFAMILLE = n4.ID_N3_SSFAMILLE
 
-       LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2
 
-       ON n2.ID_N2_FAMILLE = n3.ID_N2_FAMILLE
+ON n2.ID_N2_FAMILLE = n3.ID_N2_FAMILLE
 
-       LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1
 
-       ON n1.ID_N1_DIVISION = n2.ID_N1_DIVISION  )
+ON n1.ID_N1_DIVISION = n2.ID_N1_DIVISION)
+
+
+LEFT JOIN  (
+
+SELECT
+       Nom_TBE,
+       Type_TBE ,
+       DATE_OUV,
+       Pays_TBE,
+       Region ,
+       SURF_VTE,
+       TYP_MAG ,
+       Tranche_age ,
+       CD_Magasin ,
+       CD_Article,
+       Dte_Vte ,
+       Typ_Vente  ,
+       Qtite ,
+       ca_ht ,
+       marge_brute
+
+
+       FROM `bv-prod.Matillion_Perm_Table.Magasins` m
 
        LEFT JOIN
 
@@ -64,7 +89,7 @@ view: sql_runner_query {
       UNION ALL
 
 select
-        CD_SITE_EXT ,
+        RIGHT(CONCAT('000', CD_SITE_EXT),3)  as CD_Site_Ext ,
         DTE_VENTE ,
         TYP_VENTE ,
         ID_ARTICLE,
@@ -77,12 +102,11 @@ select
 
       ) v
 
+       ON m.cd_logiciel = v.CD_Site_Ext ) b
 
-       ON v.CD_Article = a.c_article
 
-       LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+       ON b.CD_Article = a.c_Article
 
-       ON m.cd_logiciel = v.CD_Site_Ext
  ;;
   }
 
