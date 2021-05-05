@@ -298,7 +298,7 @@ select
   dimension: Groupe_Region {
     sql: CASE
             WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
-            WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
+            WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW", "BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "Réseau"
           END ;;
   }
 
