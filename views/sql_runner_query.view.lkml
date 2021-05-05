@@ -251,23 +251,13 @@ select
     type: date
   }
 
-  filter: date_filter_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n-2"
-    type: date
-  }
-
-  filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
-    label: "Période n-3"
-    type: date
-  }
-
   dimension: categorie {
     label: "Catégorie"
     sql:
         CASE
           WHEN ${typ} = "S"  OR
-          ${dte_ouverture_date} > CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P. non Comparable"
-          WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
+          ${dte_ouverture_date} > CAST ({% date_start date_filter_1 %} AS DATETIME) THEN "P. non Comparable"
+          WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_1 %} AS DATETIME) THEN "P.Comparable"
         END
     ;;
   }
