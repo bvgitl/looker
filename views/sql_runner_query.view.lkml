@@ -391,7 +391,7 @@ select
   }
 
   measure: sum_qte_select_mois_N1 {
-    label: "Qte"
+    label: "Qte n-1"
     type: sum
     value_format_name: eur
     sql: CASE
