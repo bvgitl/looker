@@ -198,10 +198,27 @@ group by 1,2,3,4,5,6
     sql: ${TABLE}.Typ ;;
   }
 
-  dimension: dte_ouverture {
-    type: date
+  dimension_group: dte_ouverture {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
     datatype: date
     sql: ${TABLE}.Dte_Ouverture ;;
+  }
+
+  dimension_group: dte_vte {
+    type: time
+    timeframes: [
+      raw, date, week, month, month_name, quarter, year,
+      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Vte ;;
   }
 
   dimension: pays {
@@ -239,11 +256,6 @@ group by 1,2,3,4,5,6
     sql: ${TABLE}.CD_Article ;;
   }
 
-  dimension: dte_vte {
-    type: date
-    datatype: date
-    sql: ${TABLE}.Dte_Vte ;;
-  }
 
   dimension: typ_vente {
     type: number
@@ -303,7 +315,6 @@ group by 1,2,3,4,5,6
       n1_division,
       nom,
       typ,
-      dte_ouverture,
       pays,
       region,
       surface,
@@ -311,7 +322,6 @@ group by 1,2,3,4,5,6
       anciennete,
       cd_magasin,
       cd_article,
-      dte_vte,
       typ_vente,
       qtite,
       ca_ht,
