@@ -335,7 +335,7 @@ select
   measure: sum_qte_select_mois {
     label: "Qte"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${qtite}
@@ -393,7 +393,7 @@ select
   measure: sum_qte_select_mois_N1 {
     label: "Qte n-1"
     type: sum
-    value_format_name: eur
+    value_format_name: decimal_0
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${qtite}
