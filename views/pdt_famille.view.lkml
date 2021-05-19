@@ -135,6 +135,7 @@ group by 1,2,3,4,5,6
        AND w.dte_commande = b.Dte_Vte
        AND w.cd_magasin = b.CD_Magasin
  ;;
+    persist_for: "24 hours"
   }
 
   measure: count {

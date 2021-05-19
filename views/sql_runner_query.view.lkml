@@ -108,6 +108,7 @@ select
        ON b.CD_Article = a.c_Article
 
  ;;
+    persist_for: "24 hours"
   }
 
   measure: count {
@@ -299,6 +300,20 @@ select
     sql: CASE
             WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
+          END ;;
+  }
+
+  dimension: Groupe_Laser {
+    sql: CASE
+            WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE LASER ET COPIEUR COMPATIBLE") THEN "Laser"
+            WHEN ${n2_famille} IN ("CARTOUCHE JET D’ENCRE MARQUE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "JET D'ENCRE"
+          END ;;
+  }
+
+  dimension: Groupe_Marq {
+    sql: CASE
+            WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE JET D’ENCRE MARQUE") THEN "Marques"
+            WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR COMPATIBLE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "Compatible"
           END ;;
   }
 
