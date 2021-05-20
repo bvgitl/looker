@@ -20,7 +20,7 @@ persist_with: bv_vente_datagroup
 
 explore: pdt_vente {}
 
-explore: commandes {}
+explore: pdt_famille {}
 
 explore: google_sheet {}
 
