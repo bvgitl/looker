@@ -510,31 +510,6 @@ select
   }
 
 
-########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
-
-
-  measure: prog_CA_select_mois {
-    label: "prog CA"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
-  }
-
-  measure: prog_Qte_select_mois {
-    label: "prog Qte"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
-  }
-
-  measure: prog_marge_select_mois {
-    label: "prog marge"
-    value_format_name: percent_2
-    type: number
-    sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
-  }
-
-
   measure: sum_livraison_select_mois_N1 {
     type: sum
     value_format_name: eur
@@ -570,6 +545,49 @@ select
             THEN ${nbre_commande}
           END ;;
   }
+
+
+########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
+
+
+  measure: prog_CA_select_mois {
+    label: "prog CA"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+  }
+
+  measure: prog_Qte_select_mois {
+    label: "prog Qte"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
+  }
+
+  measure: prog_marge_select_mois {
+    label: "prog marge"
+    value_format_name: percent_2
+    type: number
+    sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
+  }
+
+  measure: prog_CA_Drive_select_mois {
+    label: "prog CA Drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
+  }
+
+
+  measure: prog_Nb_cde_Drive_select_mois {
+    label: "prog CA Drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_Nb_cde_drive_select_mois}-${sum_Nb_cde_drive_select_mois_N1})/NULLIF(${sum_Nb_cde_drive_select_mois_N1},0);;
+  }
+
+
+
 
 
 
