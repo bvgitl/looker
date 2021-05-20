@@ -580,7 +580,7 @@ select
 
 
   measure: prog_Nb_cde_Drive_select_mois {
-    label: "prog CA Drive"
+    label: "prog Nb cde Drive"
     value_format_name: percent_2
     type: number
     sql: 1.0 * (${sum_Nb_cde_drive_select_mois}-${sum_Nb_cde_drive_select_mois_N1})/NULLIF(${sum_Nb_cde_drive_select_mois_N1},0);;
