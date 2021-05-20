@@ -348,6 +348,19 @@ select
           END ;;
   }
 
+  dimension: Type_MEP {
+    sql: CASE
+            WHEN ${typ} IN ("I","Cyi") THEN "MEP"
+          END ;;
+  }
+
+  dimension: Type_City {
+    sql: CASE
+            WHEN ${typ} IN ("Cyi", "Cyf") THEN "City"
+          END ;;
+  }
+
+
   dimension: Groupe_Laser {
     sql: CASE
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE LASER ET COPIEUR COMPATIBLE") THEN "Laser"
