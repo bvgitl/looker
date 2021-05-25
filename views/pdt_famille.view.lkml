@@ -157,15 +157,15 @@ select
     html: {% if value == "B" %}
           <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
           {% elsif value == "C" %}
-           <p style="color: black;  background-color: yellow; font-size: 100%;">{{ value }}</p>
+           <p style="color: black;  background-color: yellow; font-size: 100%;"><B>{{ value }}</B></p>
           {% elsif value == "A" %}
-           <p style="color: black; background-color: limegreen; font-size: 100%;">{{ value }}</p>
+           <p style="color: black; background-color: limegreen; font-size: 100%;"><B>{{ value }}</B></p>
           {% elsif value == "D" %}
-           <p style="color: black; background-color: gold; font-size: 100%;">{{ value }}</p>
+           <p style="color: black; background-color: gold; font-size: 100%;"><B>{{ value }}</B></p>
           {% elsif value == "X" %}
-           <p style="color: black; background-color: red; font-size: 100%;">{{ value }}</p>
+           <p style="color: black; background-color: red; font-size: 100%;"><B>{{ value }}</B></p>
           {% else %}
-           <p style="color: black; background-color: tomato; font-size: 100%;">{{ value }}</p>
+           <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
     {% endif %};;
   }
 
