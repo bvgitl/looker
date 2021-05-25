@@ -2,6 +2,7 @@ view: pdt_famille {
   derived_table: {
     sql: SELECT distinct
        a.c_article as article,
+       a.c_Note as Note_ecologigique,
        art.c_noeud as noeud,
        art.c_arbre as arbre,
        n4.Niveau4 as Niveau_4,
@@ -149,6 +150,25 @@ select
     type: string
     sql: ${TABLE}.article ;;
   }
+
+  dimension: Note_ecologigique {
+    type: string
+    sql: ${TABLE}.Note_ecologigique ;;
+    html: {% if value == "B" %}
+          <a href="{{ link }}" style="background-color: lime;">{{ value }}</a>
+          {% elsif value == "C" %}
+           <a href="{{ link }}" style="background-color: yellow;">{{ value }}</a>
+          {% elsif value == "A" %}
+           <a href="{{ link }}" style="background-color: limegreen;">{{ value }}</a>
+          {% elsif value == "D" %}
+           <a href="{{ link }}" style="background-color: gold;">{{ value }}</a>
+          {% elsif value == "X" %}
+           <a href="{{ link }}" style="background-color: red;">{{ value }}</a>
+          {% else %}
+           <a href="{{ link }}" style="background-color: tomato;">{{ value }}</a>
+    {% endif %};;
+  }
+
 
   dimension: noeud {
     type: number
