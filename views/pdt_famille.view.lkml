@@ -3,6 +3,7 @@ view: pdt_famille {
     sql: SELECT distinct
        a.c_article as article,
        a.c_Note as Note_ecologigique,
+       a.c_Origine as Origine,
        art.c_noeud as noeud,
        art.c_arbre as arbre,
        n4.Niveau4 as Niveau_4,
@@ -167,6 +168,16 @@ select
           {% else %}
            <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
     {% endif %};;
+  }
+
+  dimension: origine {
+    type: string
+    sql: CASE
+    WHEN ${TABLE}.origine = "5" THEN "France"
+    WHEN ${TABLE}.origine = "6" THEN "Union Européenne"
+    WHEN ${TABLE}.origine = "7" THEN "Reste du monde"
+    WHEN ${TABLE}.origine = "8" THEN "Non renseigné"
+    END;;
   }
 
 
