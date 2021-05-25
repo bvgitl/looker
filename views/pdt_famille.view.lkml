@@ -155,7 +155,7 @@ select
     type: string
     sql: ${TABLE}.Note_ecologigique ;;
     html: {% if value == "B" %}
-          <a href="{{ link }}" style="color: black; background-color: lime; font-size: 50%;">{{ value }}</a>
+          <a href="{{ link }}" style="color: black; background-color: lime; font-size: 100%;">{{ value }}</a>
           {% elsif value == "C" %}
            <a href="{{ link }}" style="background-color: yellow;">{{ value }}</a>
           {% elsif value == "A" %}
