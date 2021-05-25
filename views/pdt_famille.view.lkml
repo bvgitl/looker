@@ -14,6 +14,7 @@ view: pdt_famille {
        b.Type_TBE as Typ ,
        b.DATE_OUV as Dte_Ouverture,
        b.Pays_TBE as Pays ,
+       b.Animateur as Animateur,
        b.Region as Region ,
        b.SURF_VTE as Surface ,
        b.TYP_MAG as TYP_MAG,
@@ -65,6 +66,7 @@ SELECT
        Type_TBE ,
        DATE_OUV,
        Pays_TBE,
+       Animateur,
        Region ,
        SURF_VTE,
        TYP_MAG ,
@@ -214,6 +216,11 @@ select
   dimension: nom {
     type: string
     sql: ${TABLE}.NOM ;;
+  }
+
+  dimension: animateur {
+    type: string
+    sql: ${TABLE}.Animateur ;;
   }
 
   dimension: typ {
