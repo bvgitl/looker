@@ -28,7 +28,7 @@ explore: magasins {
   join: tf_vente_mag {
     type: left_outer
     relationship: one_to_many
-    sql_on: ${tf_vente_mag.cd_site_ext}=${magasins.cd_logiciel}
+    sql_on: ${tf_vente_mag.cd_site_ext}=${tf_vente.cd_site_ext}
     AND ${tf_vente.dte_vte_date} = ${tf_vente_mag.dte_vte_date};;
   }
 
