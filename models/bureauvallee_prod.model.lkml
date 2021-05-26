@@ -32,7 +32,7 @@ explore: magasins {
   }
 
   join: commandes {
-    type: full_outer
+    type: left_outer
     relationship: one_to_one
     sql_on: ${commandes.cd_magasin}=${magasins.cd_magasin};;
   }
