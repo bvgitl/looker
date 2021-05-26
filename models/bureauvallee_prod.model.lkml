@@ -33,7 +33,7 @@ explore: magasins {
 
   join: commandes {
     type: left_outer
-    relationship: one_to_one
+    relationship: one_to_many
     sql_on: ${commandes.cd_magasin}=${magasins.cd_magasin};;
   }
 }
