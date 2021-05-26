@@ -18,33 +18,6 @@ datagroup: bv_vente_digitale_datagroup {
 persist_with: bv_vente_datagroup
 
 
-explore: magasins {
-  fields: [cd_magasin, nom_tbe, animateur, directeur, date_ouv_date, cd_logiciel ]
-  join: tf_vente {
-    type: left_outer
-    relationship: one_to_many
-    sql_on: ${tf_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
-    fields: [tf_vente.ca_ht, tf_vente.marge_brute, tf_vente.val_achat_gbl, tf_vente.qtite, tf_vente.dte_vte_date, tf_vente.cd_site_ext]
-  }
-
-  join: tf_vente_mag {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${tf_vente_mag.cd_site_ext}=${tf_vente.cd_site_ext}
-    AND ${tf_vente.dte_vte_date} = ${tf_vente_mag.dte_vte_date};;
-    fields: [tf_vente_mag.ca_ht, tf_vente_mag.marge_brute, tf_vente_mag.val_achat_gbl, tf_vente_mag.qtite, tf_vente_mag.dte_vte_date, tf_vente_mag.cd_site_ext]
-  }
-
-  join: commandes {
-    type: left_outer
-    relationship: one_to_one
-    sql_on: ${commandes.cd_magasin}=${magasins.cd_magasin}
-    AND ${commandes.dte_commande_date}=${tf_vente.dte_vte_date};;
-    fields: [commandes.total_ht, commandes.tarif_ht_livraison, commandes.dte_commande_date]
-  }
-}
-
-
 explore: pdt_vente {}
 
 explore: pdt_famille {}
