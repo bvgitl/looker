@@ -144,7 +144,7 @@ select
          AND w.dte_cde = day
          AND w.cd_magasin = b.CD_Magasin
 
-        LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` mq
+        LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
 
         ON mq.cd_marque = a.c_marque
 
