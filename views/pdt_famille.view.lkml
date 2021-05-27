@@ -2,8 +2,12 @@ view: pdt_famille {
   derived_table: {
     sql: SELECT distinct
        a.c_article as article,
-       a.c_Note as Note_ecologigique,
+       a.c_Note as Note_ecologique,
        a.c_Origine as Origine,
+       a. c_Validite_1 as Statut_article,
+       f.l_Fournisseur as Fournisseur,
+       mq.LB_MARQUE as Marque,
+       a.c_Gencode as Gencode,
        art.c_noeud as noeud,
        art.c_arbre as arbre,
        n4.Niveau4 as Niveau_4,
@@ -131,7 +135,7 @@ select
         sum(Tarif_HT_livraison) as Tarif_HT_livraison
         from `bv-prod.Matillion_Perm_Table.Produit_Commande` p
         inner join `bv-prod.Matillion_Perm_Table.COMMANDES` c
-        on p.cd_commande=CAST(c.cd_commande AS INT64 )
+        on p.cd_commande = c.cd_commande
         where statut IN ("pending", "processing" , "fraud", "complete")
         group by 1,2,3,4
                ) w
@@ -139,6 +143,15 @@ select
          ON  w.cd_produit = a.c_article
          AND w.dte_cde = day
          AND w.cd_magasin = b.CD_Magasin
+
+        LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` mq
+
+        ON mq.cd_marque = a.c_marque
+
+
+        LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
+
+        ON f.c_fournisseur = a.c_fournisseur
  ;;
 
     persist_for: "24 hours"
@@ -154,9 +167,24 @@ select
     sql: ${TABLE}.article ;;
   }
 
-  dimension: Note_ecologigique {
+  dimension: gencode {
     type: string
-    sql: ${TABLE}.Note_ecologigique ;;
+    sql: ${TABLE}.gencode ;;
+  }
+
+  dimension: fournisseur {
+    type: string
+    sql: ${TABLE}.fournisseur ;;
+  }
+
+  dimension: marque {
+    type: string
+    sql: ${TABLE}.marque ;;
+  }
+
+  dimension: Note_ecologique {
+    type: string
+    sql: ${TABLE}.Note_ecologique ;;
     html: {% if value == "B" %}
           <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
           {% elsif value == "C" %}
@@ -180,6 +208,14 @@ select
     WHEN ${TABLE}.origine = "7" THEN "Reste du monde"
     WHEN ${TABLE}.origine = "8" THEN "Non renseigné"
     END;;
+  }
+
+  dimension: statut_article {
+    type: string
+    sql: CASE
+          WHEN ${TABLE}.statut_article = "1" THEN "Actif"
+          WHEN ${TABLE}.statut_article = "5" THEN "Déférencé"
+          END;;
   }
 
 
