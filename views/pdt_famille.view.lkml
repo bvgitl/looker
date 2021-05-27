@@ -34,6 +34,7 @@ view: pdt_famille {
        w.nbre_commande as nbre_commande,
        w.Total_HT as Total_HT ,
        w.Tarif_HT_livraison as Tarif_HT_livraison,
+       w.Tarif_Produit_HT as Tarif_Produit_HT,
        t.Qte_tracts
 
 
@@ -115,6 +116,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
         Canal_commande,
         CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
         count(distinct(c.cd_commande)) as Nbre_commande ,
+        sum(Tarif_Produit_HT) as Tarif_Produit_HT,
         sum(Total_HT) as Total_HT,
         sum(Tarif_HT_livraison) as Tarif_HT_livraison
         from `bv-prod.Matillion_Perm_Table.Produit_Commande` p
@@ -371,6 +373,11 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     sql: ${TABLE}.Tarif_HT_livraison ;;
   }
 
+  dimension: tarif_produit_ht {
+    type: number
+    sql: ${TABLE}.Tarif_Produit_HT ;;
+  }
+
   dimension: qte_tracts {
     type: number
     sql: ${TABLE}.Qte_tracts ;;
@@ -551,6 +558,15 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
           END ;;
   }
 
+  measure: sum_tarif_produit_select_mois {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_produit_ht}
+          END ;;
+  }
+
   measure: sum_total_ht_select_mois {
     type: sum
     value_format_name: eur
@@ -571,7 +587,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     label: "% marge drive"
     value_format_name: percent_2
     type: number
-    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_total_ht_select_mois},0);;
+    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_tarif_produit_select_mois},0);;
   }
 
 
@@ -627,7 +643,14 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
           END ;;
   }
 
-
+  measure: sum_tarif_produit_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_produit_ht}
+          END ;;
+  }
 
   measure: sum_nb_jour_select_mois_N1 {
     label: "Nb jr n-1"
@@ -652,7 +675,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     label: "% marge drive n-1"
     value_format_name: percent_2
     type: number
-    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_total_ht_select_mois_N1},0);;
+    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_tarif_produit_select_mois_N1},0);;
   }
 
 
