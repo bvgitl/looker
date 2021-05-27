@@ -5,6 +5,7 @@ view: pdt_famille {
        a.c_Note as Note_ecologique,
        a.c_Origine as Origine,
        a. c_Validite_1 as Statut_article,
+       s.stock as stock,
        f.l_Fournisseur as Fournisseur,
        mq.LB_MARQUE as Marque,
        a.c_Gencode as Gencode,
@@ -14,25 +15,26 @@ view: pdt_famille {
        n3.SousFamille as N3_SS_Famille,
        n2.Famille as N2_Famille,
        n1.Division as N1_Division,
-       b.Nom_TBE as NOM,
-       b.Type_TBE as Typ ,
-       b.DATE_OUV as Dte_Ouverture,
-       b.Pays_TBE as Pays ,
-       b.Animateur as Animateur,
-       b.Region as Region ,
-       b.SURF_VTE as Surface ,
-       b.TYP_MAG as TYP_MAG,
-       b.Tranche_age as Anciennete,
-       b.CD_Magasin as CD_Magasin,
+       m.Nom_TBE as NOM,
+       m.Type_TBE as Typ ,
+       m.DATE_OUV as Dte_Ouverture,
+       m.Pays_TBE as Pays ,
+       m.Animateur as Animateur,
+       m.Region as Region ,
+       m.SURF_VTE as Surface ,
+       m.TYP_MAG as TYP_MAG,
+       m.Tranche_age as Anciennete,
+       m.CD_Magasin as CD_Magasin,
        day as Dte_Vte,
-       b.Typ_Vente as Typ_Vente ,
-       b.Qtite as Qtite,
-       b.ca_ht as ca_ht,
-       b.marge_brute as marge_brute,
+       v.Typ_Vente as Typ_Vente ,
+       v.Qtite as Qtite,
+       v.ca_ht as ca_ht,
+       v.marge_brute as marge_brute,
        w.Canal_commande,
        w.nbre_commande as nbre_commande,
-       w.Total_HT,
-       w.Tarif_HT_livraison
+       w.Total_HT as Total_HT ,
+       w.Tarif_HT_livraison as Tarif_HT_livraison,
+       t.Qte_tracts
 
 
 FROM  (`bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
@@ -62,31 +64,7 @@ FROM UNNEST(
     GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY)
 ) AS day)
 
-
-LEFT JOIN  (
-
-SELECT
-       Nom_TBE,
-       Type_TBE ,
-       DATE_OUV,
-       Pays_TBE,
-       Animateur,
-       Region ,
-       SURF_VTE,
-       TYP_MAG ,
-       Tranche_age ,
-       CD_Magasin ,
-       CD_Article,
-       Dte_Vte ,
-       Typ_Vente  ,
-       Qtite ,
-       ca_ht ,
-       marge_brute
-
-
-       FROM `bv-prod.Matillion_Perm_Table.Magasins` m
-
-       LEFT JOIN
+LEFT JOIN
 
        (select
         RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
@@ -116,10 +94,16 @@ select
 
       ) v
 
-       ON m.cd_logiciel = v.CD_Site_Ext ) b
+
+       ON v.CD_Article = a.c_Article
+
+       AND day = v.Dte_Vte
+
+LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
 
 
-       ON b.CD_Article = a.c_Article and day = b.Dte_Vte
+       ON m.cd_logiciel = v.CD_Site_Ext
+
 
 
        LEFT JOIN
@@ -142,7 +126,7 @@ select
 
          ON  w.cd_produit = a.c_article
          AND w.dte_cde = day
-         AND w.cd_magasin = b.CD_Magasin
+         AND w.cd_magasin = m.CD_Magasin
 
         LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
 
@@ -152,6 +136,30 @@ select
         LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
         ON f.c_fournisseur = a.c_fournisseur
+
+        LEFT JOIN
+
+        (
+               SELECT
+               code_bv,
+               sum(Qt_tracts) as Qte_tracts
+               FROM `bv-prod.Matillion_Temp_Table.TRACTS`
+               GROUP BY 1 ) t
+
+        ON t.code_bv = m.cd_magasin
+
+        LEFT JOIN
+
+       (SELECT cd_externe,
+               cd_article,
+               CAST(DATETIME_TRUNC(date_modification, DAY) AS DATE) as dte_modification,
+               sum(n_stock) as stock
+               FROM `bv-prod.Matillion_Perm_Table.Stocks`
+               GROUP BY 1,2,3) s
+
+        ON s.cd_externe = m.cd_logiciel
+        AND s.cd_article = a.c_article
+        AND s.dte_modification = a.d_modification
  ;;
 
     persist_for: "24 hours"
@@ -167,22 +175,8 @@ select
     sql: ${TABLE}.article ;;
   }
 
-  dimension: gencode {
-    type: string
-    sql: ${TABLE}.gencode ;;
-  }
 
-  dimension: fournisseur {
-    type: string
-    sql: ${TABLE}.fournisseur ;;
-  }
-
-  dimension: marque {
-    type: string
-    sql: ${TABLE}.marque ;;
-  }
-
-  dimension: Note_ecologique {
+  dimension: note_ecologique {
     type: string
     sql: ${TABLE}.Note_ecologique ;;
     html: {% if value == "B" %}
@@ -203,21 +197,40 @@ select
   dimension: origine {
     type: string
     sql: CASE
-    WHEN ${TABLE}.origine = "5" THEN "France"
-    WHEN ${TABLE}.origine = "6" THEN "Union Européenne"
-    WHEN ${TABLE}.origine = "7" THEN "Reste du monde"
-    WHEN ${TABLE}.origine = "8" THEN "Non renseigné"
-    END;;
+          WHEN ${TABLE}.Origine = "5" THEN "France"
+          WHEN ${TABLE}.Origine = "6" THEN "Union Européenne"
+          WHEN ${TABLE}.Origine = "7" THEN "Reste du monde"
+          WHEN ${TABLE}.Origine = "8" THEN "Non renseigné"
+          END;;
   }
 
   dimension: statut_article {
     type: string
     sql: CASE
-          WHEN ${TABLE}.statut_article = "1" THEN "Actif"
-          WHEN ${TABLE}.statut_article = "5" THEN "Déférencé"
+          WHEN ${TABLE}.Statut_article = "1" THEN "Actif"
+          WHEN ${TABLE}.Statut_article = "5" THEN "Déférencé"
           END;;
   }
 
+  dimension: stock {
+    type: number
+    sql: ${TABLE}.stock ;;
+  }
+
+  dimension: fournisseur {
+    type: string
+    sql: ${TABLE}.Fournisseur ;;
+  }
+
+  dimension: marque {
+    type: string
+    sql: ${TABLE}.Marque ;;
+  }
+
+  dimension: gencode {
+    type: string
+    sql: ${TABLE}.Gencode ;;
+  }
 
   dimension: noeud {
     type: number
@@ -254,11 +267,6 @@ select
     sql: ${TABLE}.NOM ;;
   }
 
-  dimension: animateur {
-    type: string
-    sql: ${TABLE}.Animateur ;;
-  }
-
   dimension: typ {
     type: string
     sql: ${TABLE}.Typ ;;
@@ -276,20 +284,15 @@ select
     sql: ${TABLE}.Dte_Ouverture ;;
   }
 
-  dimension_group: dte_vte {
-    type: time
-    timeframes: [
-      raw, date, week, month, month_name, quarter, year,
-      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: ${TABLE}.Dte_Vte ;;
-  }
 
   dimension: pays {
     type: string
     sql: ${TABLE}.Pays ;;
+  }
+
+  dimension: animateur {
+    type: string
+    sql: ${TABLE}.Animateur ;;
   }
 
   dimension: region {
@@ -315,6 +318,17 @@ select
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.CD_Magasin ;;
+  }
+
+  dimension_group: dte_vte {
+    type: time
+    timeframes: [
+      raw, date, week, month, month_name, quarter, year,
+      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Vte ;;
   }
 
   dimension: typ_vente {
@@ -344,7 +358,7 @@ select
 
   dimension: nbre_commande {
     type: number
-    sql: ${TABLE}.Nbre_commande ;;
+    sql: ${TABLE}.nbre_commande ;;
   }
 
   dimension: total_ht {
@@ -357,31 +371,9 @@ select
     sql: ${TABLE}.Tarif_HT_livraison ;;
   }
 
-  set: detail {
-    fields: [
-      article,
-      noeud,
-      arbre,
-      niveau_4,
-      n3_ss_famille,
-      n2_famille,
-      n1_division,
-      nom,
-      typ,
-      pays,
-      region,
-      surface,
-      typ_mag,
-      anciennete,
-      cd_magasin,
-      typ_vente,
-      qtite,
-      ca_ht,
-      marge_brute,
-      canal_commande,
-      total_ht,
-      tarif_ht_livraison
-    ]
+  dimension: qte_tracts {
+    type: number
+    sql: ${TABLE}.Qte_tracts ;;
   }
 
 
@@ -449,6 +441,43 @@ select
           END ;;
   }
 
+
+  set: detail {
+    fields: [
+      article,
+      note_ecologique,
+      origine,
+      statut_article,
+      stock,
+      fournisseur,
+      marque,
+      gencode,
+      noeud,
+      arbre,
+      niveau_4,
+      n3_ss_famille,
+      n2_famille,
+      n1_division,
+      nom,
+      typ,
+      pays,
+      animateur,
+      region,
+      surface,
+      typ_mag,
+      anciennete,
+      cd_magasin,
+      typ_vente,
+      qtite,
+      ca_ht,
+      marge_brute,
+      canal_commande,
+      nbre_commande,
+      total_ht,
+      tarif_ht_livraison,
+      qte_tracts
+    ]
+  }
 
 ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
