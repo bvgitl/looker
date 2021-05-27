@@ -560,6 +560,20 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
           END ;;
   }
 
+  measure: valeur_drive {
+    type: number
+    label: "Valeur Drive"
+    value_format_name: decimal_2
+    sql: (${sum_total_ht_select_mois} * ${taux_de_marge_drive_select_mois}) + ${sum_livraison_select_mois};;
+  }
+
+  measure: taux_de_marge_drive_select_mois {
+    label: "% marge drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_total_ht_select_mois},0);;
+  }
+
 
   measure: sum_CA_drive_select_mois {
     type: number
@@ -623,6 +637,22 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+  }
+
+
+  measure: valeur_drive_N1 {
+    type: number
+    label: "Valeur Drive n-1"
+    value_format_name: decimal_2
+    sql: (${sum_total_ht_select_mois_N1} * ${taux_de_marge_drive_select_mois_N1}) + ${sum_livraison_select_mois_N1};;
+  }
+
+
+  measure: taux_de_marge_drive_select_mois_N1 {
+    label: "% marge drive n-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_total_ht_select_mois_N1},0);;
   }
 
 
