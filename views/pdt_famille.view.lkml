@@ -178,12 +178,6 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
 
-  dimension: designation {
-    type: string
-    sql: ${TABLE}.designation ;;
-  }
-
-
   dimension: note_ecologique {
     type: string
     sql: ${TABLE}.Note_ecologique ;;
