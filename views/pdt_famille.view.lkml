@@ -204,7 +204,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
   dimension: origine {
-    type: string
+    type: number
     sql: CASE
           WHEN ${TABLE}.Origine = "5" THEN "France"
           WHEN ${TABLE}.Origine = "6" THEN "Union Européenne"
