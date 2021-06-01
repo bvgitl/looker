@@ -626,6 +626,17 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
 
+  measure: stock_N {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "Stocks"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${stock}
+          END ;;
+  }
+
+
 
 
   ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
@@ -737,9 +748,20 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   measure: DN_N1 {
     type: count_distinct
     value_format_name: decimal_0
+    label: "DN n-1"
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${article}
+          END ;;
+  }
+
+  measure: stock_N1 {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "stocks n-1"
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${stock}
           END ;;
   }
 
