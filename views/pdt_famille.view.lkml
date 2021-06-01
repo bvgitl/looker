@@ -214,7 +214,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
   dimension: statut_article {
-    type: string
+    type: number
     sql: CASE
           WHEN ${TABLE}.Statut_article = "1" THEN "Actif"
           WHEN ${TABLE}.Statut_article = "5" THEN "Déférencé"
