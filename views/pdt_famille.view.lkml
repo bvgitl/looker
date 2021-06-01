@@ -5,7 +5,6 @@ view: pdt_famille {
        a.c_Note as Note_ecologique,
        a.c_Origine as Origine,
        a. c_Validite_1 as Statut_article,
-       a.l_Article_long as designation,
        s.stock as stock,
        f.l_Fournisseur as Fournisseur,
        mq.LB_MARQUE as Marque,
@@ -206,18 +205,18 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   dimension: origine {
     type: number
     sql: CASE
-          WHEN ${TABLE}.Origine = "5" THEN "France"
-          WHEN ${TABLE}.Origine = "6" THEN "Union Européenne"
-          WHEN ${TABLE}.Origine = "7" THEN "Reste du monde"
-          WHEN ${TABLE}.Origine = "8" THEN "Non renseigné"
+          WHEN ${TABLE}.Origine = 5 THEN "France"
+          WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
+          WHEN ${TABLE}.Origine = 7 THEN "Reste du monde"
+          WHEN ${TABLE}.Origine = 8 THEN "Non renseigné"
           END;;
   }
 
   dimension: statut_article {
     type: number
     sql: CASE
-          WHEN ${TABLE}.Statut_article = "1" THEN "Actif"
-          WHEN ${TABLE}.Statut_article = "5" THEN "Déférencé"
+          WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
+          WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
           END;;
   }
 
