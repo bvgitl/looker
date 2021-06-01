@@ -5,6 +5,7 @@ view: pdt_famille {
        a.c_Note as Note_ecologique,
        a.c_Origine as Origine,
        a. c_Validite_1 as Statut_article,
+       a.l_Article_long as designation,
        s.stock as stock,
        f.l_Fournisseur as Fournisseur,
        mq.LB_MARQUE as Marque,
@@ -175,6 +176,12 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   dimension: article {
     type: string
     sql: ${TABLE}.article ;;
+  }
+
+
+  dimension: designation {
+    type: string
+    sql: ${TABLE}.designation ;;
   }
 
 
@@ -606,6 +613,12 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
           END ;;
+  }
+
+  measure: DN {
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: ${article};;
   }
 
 
