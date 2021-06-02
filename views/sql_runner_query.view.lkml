@@ -241,7 +241,6 @@ select
 
   set: detail {
     fields: [
-      article,
       cd_fournisseur,
       cd_marque,
       arbre,
