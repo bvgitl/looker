@@ -620,7 +620,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
 
 
   measure: stock_N {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "Stocks"
     sql: CASE
@@ -749,7 +749,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
   measure: stock_N1 {
-    type: count_distinct
+    type: sum
     value_format_name: decimal_0
     label: "stocks n-1"
     sql: CASE
