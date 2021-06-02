@@ -161,7 +161,6 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
 
         ON s.cd_externe = m.cd_logiciel
         AND s.cd_article = a.c_article
-        AND s.dte_modification = a.d_modification
  ;;
 
     persist_for: "24 hours"
