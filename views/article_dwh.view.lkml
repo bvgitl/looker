@@ -13,7 +13,7 @@ view: article_dwh {
   }
 
   dimension: c_arbo_web {
-    type: string
+    type: number
     sql: ${TABLE}.c_Arbo_Web ;;
   }
 
@@ -68,12 +68,12 @@ view: article_dwh {
   }
 
   dimension: c_fixe {
-    type: string
+    type: number
     sql: ${TABLE}.c_Fixe ;;
   }
 
   dimension: c_fournisseur {
-    type: string
+    type: number
     sql: ${TABLE}.c_Fournisseur ;;
   }
 
@@ -83,7 +83,7 @@ view: article_dwh {
   }
 
   dimension: c_gamme {
-    type: string
+    type: number
     sql: ${TABLE}.c_Gamme ;;
   }
 
@@ -98,7 +98,7 @@ view: article_dwh {
   }
 
   dimension: c_niv_2 {
-    type: string
+    type: number
     sql: ${TABLE}.c_Niv_2 ;;
   }
 
@@ -108,7 +108,7 @@ view: article_dwh {
   }
 
   dimension: c_origine {
-    type: string
+    type: number
     sql: ${TABLE}.c_Origine ;;
   }
 
@@ -128,7 +128,7 @@ view: article_dwh {
   }
 
   dimension: c_taxe {
-    type: string
+    type: number
     sql: ${TABLE}.c_Taxe ;;
   }
 
@@ -148,22 +148,42 @@ view: article_dwh {
   }
 
   dimension: c_validite_1 {
-    type: string
+    type: number
     sql: ${TABLE}.c_Validite_1 ;;
   }
 
   dimension: c_validite_2 {
-    type: string
+    type: number
     sql: ${TABLE}.c_Validite_2 ;;
   }
 
-  dimension: d_creation {
-    type: string
+  dimension_group: d_creation {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.d_Creation ;;
   }
 
-  dimension: d_creation_2 {
-    type: string
+  dimension_group: d_creation_2 {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.d_Creation_2 ;;
   }
 
@@ -172,13 +192,33 @@ view: article_dwh {
     sql: ${TABLE}.d_Creation_3 ;;
   }
 
-  dimension: d_modification {
-    type: string
+  dimension_group: d_modification {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.d_Modification ;;
   }
 
-  dimension: d_modification_2 {
-    type: string
+  dimension_group: d_modification_2 {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.d_Modification_2 ;;
   }
 
@@ -187,13 +227,33 @@ view: article_dwh {
     sql: ${TABLE}.d_Modification_3 ;;
   }
 
-  dimension: d_pan {
-    type: string
+  dimension_group: d_pan {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.d_Pan ;;
   }
 
-  dimension: dte_create {
-    type: string
+  dimension_group: dte_create {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.Dte_create ;;
   }
 
@@ -213,7 +273,7 @@ view: article_dwh {
   }
 
   dimension: n_coef_pvc {
-    type: string
+    type: number
     sql: ${TABLE}.n_Coef_PVC ;;
   }
 
@@ -228,7 +288,7 @@ view: article_dwh {
   }
 
   dimension: n_stock_impact {
-    type: string
+    type: number
     sql: ${TABLE}.n_Stock_impact ;;
   }
 
@@ -237,8 +297,18 @@ view: article_dwh {
     sql: ${TABLE}.n_TVA ;;
   }
 
-  dimension: recmod_1 {
-    type: string
+  dimension_group: recmod_1 {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: ${TABLE}.Recmod_1 ;;
   }
 
