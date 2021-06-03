@@ -1,11 +1,12 @@
 view: pdt_famille {
   derived_table: {
     sql: SELECT distinct
-       a.LibArticle as designation,
-       a.STATUT_ART as Statut_article,
-       a.TYP_ARTICLE as Typ_article,
-       a.CLASS_ENERGIE as Note_ecologique,
-       a.Gencod as Gencode,
+       a.l_Article_long as designation,
+       a.c_Type  as Typ_article,
+       a.c_Note as Note_ecologique,
+       a.c_Gencode as Gencode,
+       a.c_Validite_1 as Statut_article,
+       c_Origine as Origine,
        n4.Niveau4 as Niveau_4,
        n3.SousFamille as N3_SS_Famille,
        n2.Famille as N2_Famille,
@@ -182,21 +183,9 @@ AND m.CD_Magasin = w.cd_magasin
     view_label: "Article"
   }
 
-  dimension: statut_article {
-    type: string
-    sql: ${TABLE}.Statut_article ;;
-    view_label: "Article"
-  }
-
   dimension: typ_article {
     type: string
     sql: ${TABLE}.Typ_article ;;
-    view_label: "Article"
-  }
-
-  dimension: note_ecologique {
-    type: string
-    sql: ${TABLE}.Note_ecologique ;;
     view_label: "Article"
   }
 
@@ -449,42 +438,45 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
 
-  # dimension: note_ecologique {
-  #   type: string
-  #   sql: ${TABLE}.Note_ecologique ;;
-  #   html: {% if value == "B" %}
-  #         <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
-  #         {% elsif value == "C" %}
-  #         <p style="color: black;  background-color: yellow; font-size: 100%;"><B>{{ value }}</B></p>
-  #         {% elsif value == "A" %}
-  #         <p style="color: black; background-color: limegreen; font-size: 100%;"><B>{{ value }}</B></p>
-  #         {% elsif value == "D" %}
-  #         <p style="color: black; background-color: gold; font-size: 100%;"><B>{{ value }}</B></p>
-  #         {% elsif value == "X" %}
-  #         <p style="color: black; background-color: red; font-size: 100%;"><B>{{ value }}</B></p>
-  #         {% else %}
-  #         <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
-  #   {% endif %};;
-  # }
+  dimension: note_ecologique {
+    type: string
+    sql: ${TABLE}.Note_ecologique ;;
+    html: {% if value == "B" %}
+          <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
+          {% elsif value == "C" %}
+          <p style="color: black;  background-color: yellow; font-size: 100%;"><B>{{ value }}</B></p>
+          {% elsif value == "A" %}
+          <p style="color: black; background-color: limegreen; font-size: 100%;"><B>{{ value }}</B></p>
+          {% elsif value == "D" %}
+          <p style="color: black; background-color: gold; font-size: 100%;"><B>{{ value }}</B></p>
+          {% elsif value == "X" %}
+          <p style="color: black; background-color: red; font-size: 100%;"><B>{{ value }}</B></p>
+          {% else %}
+          <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
+    {% endif %};;
+    view_label: "Article"
+  }
 
-  # dimension: origine {
-  #   type: number
-  #   sql: CASE
-  #         WHEN ${TABLE}.Origine = 5 THEN "France"
-  #         WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
-  #         WHEN ${TABLE}.Origine = 7 THEN "Reste du monde"
-  #         WHEN ${TABLE}.Origine = 8 THEN "Non renseigné"
-  #         END;;
-  # }
+  dimension: origine {
+    type: number
+    sql: CASE
+          WHEN ${TABLE}.Origine = 5 THEN "France"
+          WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
+          WHEN ${TABLE}.Origine = 7 THEN "Reste du monde"
+          WHEN ${TABLE}.Origine = 8 THEN "Non renseigné"
+          END;;
+    view_label: "Article"
+  }
 
-  # dimension: statut_article {
-  #   type: number
-  #   sql: CASE
-  #         WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
-  #         WHEN ${TABLE}.Statut_article = 0 THEN "Création"
-  #         WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
-  #         END;;
-  # }
+  dimension: statut_article {
+    type: number
+    sql: CASE
+          WHEN ${TABLE}.Statut_article = 0 THEN "Création"
+          WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
+          WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
+          END;;
+    view_label: "Article"
+  }
 
 
   dimension_group: dte_ouverture {
