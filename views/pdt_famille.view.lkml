@@ -179,31 +179,31 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: designation {
     type: string
     sql: ${TABLE}.designation ;;
-    view_label: "Magasins"
+    view_label: "Article"
   }
 
   dimension: statut_article {
     type: string
     sql: ${TABLE}.Statut_article ;;
-    view_label: "Magasins"
+    view_label: "Article"
   }
 
   dimension: typ_article {
     type: string
     sql: ${TABLE}.Typ_article ;;
-    view_label: "Magasins"
+    view_label: "Article"
   }
 
   dimension: note_ecologique {
     type: string
     sql: ${TABLE}.Note_ecologique ;;
-    view_label: "Magasins"
+    view_label: "Article"
   }
 
   dimension: gencode {
     type: string
     sql: ${TABLE}.Gencode ;;
-    view_label: "Magasins"
+    view_label: "Article"
   }
 
   dimension: niveau_4 {
@@ -790,6 +790,16 @@ AND m.CD_Magasin = w.cd_magasin
           END ;;
     view_label: "Ventes"
     group_label: "Année N-1"
+  }
+
+  measure: sum_val_achat_gbl_select_mois_N1 {
+    hidden: yes
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${val_achat_gbl}
+          END ;;
   }
 
 
