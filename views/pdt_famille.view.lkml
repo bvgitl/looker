@@ -21,6 +21,7 @@ view: pdt_famille {
        m.Tranche_age as Anciennete,
        m.CD_Magasin as CD_Magasin,
        v.CD_Article as Article,
+       v.Val_Achat_Gbl as Val_Achat_Gbl,
        v.Dte_Vte as Dte_Vte,
        v.Typ_Vente as Typ_Vente ,
        v.Qtite as Qtite,
@@ -310,6 +311,11 @@ AND m.CD_Magasin = w.cd_magasin
     type: number
     sql: ${TABLE}.marge_brute ;;
     view_label: "Ventes"
+  }
+
+  dimension: val_achat_gbl {
+    type: number
+    sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
   dimension: nb_ticket {
@@ -733,6 +739,16 @@ AND m.CD_Magasin = w.cd_magasin
           END ;;
     view_label: "Article"
     group_label: "Année N"
+  }
+
+  measure: sum_val_achat_gbl_select_mois {
+    hidden: yes
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${val_achat_gbl}
+          END ;;
   }
 
 
