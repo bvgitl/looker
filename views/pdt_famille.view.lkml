@@ -98,9 +98,9 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
 
 ON   v.CD_Site_Ext = m.cd_logiciel
 
-LEFT JOIN  `bv-prod.Matillion_Perm_Table.ARTICLE` a
+LEFT JOIN  `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
 
-ON  v.CD_Article = a.ID_ARTICLE_TFVTE
+ON  v.CD_Article = a.c_Article
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art
 
