@@ -156,6 +156,28 @@ ON  v.CD_Site_Ext = s.cd_externe
 AND  v.CD_Article  = s.cd_article
 
 AND v.Dte_vte = s.dte_stock
+
+FULL JOIN
+
+(
+    SELECT
+      p.cd_produit as cd_produit,
+      c.cd_magasin as cd_magasin,
+      CAST(DATETIME_TRUNC(c.dte_commande, DAY) AS DATE) AS dte_cde,
+      count(distinct(p.cd_commande)) as Nbre_commande ,
+      sum(p.Quantite_commandee) as Quantite_commandee,
+      sum(p.Tarif_Produit_HT) as Tarif_Produit_HT
+      FROM `bv-prod.Matillion_Perm_Table.Produit_Commande` p
+      INNER JOIN  `bv-prod.Matillion_Perm_Table.COMMANDES` c
+      ON p.cd_commande = c.cd_commande
+      group by 1,2,3
+) w
+
+ON v.CD_Article = w.cd_produit
+
+AND v.Dte_vte = w.dte_cde
+
+AND m.CD_Magasin = w.cd_magasin
  ;;
 
     persist_for: "24 hours"
@@ -369,6 +391,24 @@ AND v.Dte_vte = s.dte_stock
     type: number
     sql: ${TABLE}.stock ;;
     view_label: "Stocks"
+  }
+
+  dimension: nbre_commande {
+    type: number
+    sql: ${TABLE}.Nbre_commande ;;
+    view_label: "web"
+  }
+
+  dimension: quantite_commandee {
+    type: number
+    sql: ${TABLE}.Quantite_commandee ;;
+    view_label: "web"
+  }
+
+  dimension: tarif_produit_ht {
+    type: number
+    sql: ${TABLE}.Tarif_Produit_HT ;;
+    view_label: "web"
   }
 
   set: detail {
@@ -638,64 +678,43 @@ AND v.Dte_vte = s.dte_stock
   }
 
 
-  # measure: sum_livraison_select_mois {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${tarif_ht_livraison}
-  #         END ;;
-  # }
+  measure: sum_tarif_select_mois {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_produit_ht}
+          END ;;
+    view_label: "Web"
+    group_label: "Année N"
+  }
 
-  # measure: sum_tarif_produit_select_mois {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${tarif_produit_ht}
-  #         END ;;
-  # }
+  measure: sum_total_qte_com_select_mois {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${quantite_commandee}
+          END ;;
+    view_label: "Web"
+    group_label: "Année N"
+  }
 
-  # measure: sum_total_ht_select_mois {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${total_ht}
-  #         END ;;
-  # }
+  measure: sum_total_ht_select_mois {
+    type: number
+    sql: ${sum_tarif_select_mois} * ${sum_total_qte_com_select_mois} ;;
+    view_label: "Web"
+    group_label: "Année N"
+  }
 
-  # measure: valeur_drive {
-  #   type: number
-  #   label: "Valeur Drive"
-  #   value_format_name: decimal_2
-  #   sql: (${sum_total_ht_select_mois} * ${taux_de_marge_drive_select_mois}) + ${sum_livraison_select_mois};;
-  # }
-
-  # measure: taux_de_marge_drive_select_mois {
-  #   label: "% marge drive"
-  #   value_format_name: percent_2
-  #   type: number
-  #   sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_tarif_produit_select_mois},0);;
-  # }
-
-
-  # measure: sum_CA_drive_select_mois {
-  #   type: number
-  #   value_format_name: eur
-  #   label: "CA Drive"
-  #   sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
-  # }
-
-  # measure: sum_Nb_cde_drive_select_mois {
-  #   type: sum
-  #   value_format_name: decimal_0
-  #   label: "Commande Drive"
-  #   sql: CASE
-  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${nbre_commande}
-  #         END ;;
-  # }
+  measure: taux_de_marge_drive_select_mois {
+    label: "% marge drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_total_ht_select_mois},0);;
+    view_label: "Web"
+    group_label: "Année N"
+  }
 
   measure: DN_N {
     type: count_distinct
@@ -763,14 +782,6 @@ AND v.Dte_vte = s.dte_stock
     group_label: "Année N-1"
   }
 
-  # measure: sum_tarif_produit_select_mois_N1 {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${tarif_produit_ht}
-  #         END ;;
-  # }
 
   measure: sum_nb_jour_select_mois_N1 {
     label: "Nb jr n-1"
@@ -785,57 +796,43 @@ AND v.Dte_vte = s.dte_stock
   }
 
 
-  # measure: valeur_drive_N1 {
-  #   type: number
-  #   label: "Valeur Drive n-1"
-  #   value_format_name: decimal_2
-  #   sql: (${sum_total_ht_select_mois_N1} * ${taux_de_marge_drive_select_mois_N1}) + ${sum_livraison_select_mois_N1};;
-  # }
+  measure: sum_tarif_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${tarif_produit_ht}
+          END ;;
+    view_label: "Web"
+    group_label: "Année N-1"
+  }
 
+  measure: sum_total_qte_com_select_mois_N1 {
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${quantite_commandee}
+          END ;;
+    view_label: "Web"
+    group_label: "Année N-1"
+  }
 
-  # measure: taux_de_marge_drive_select_mois_N1 {
-  #   label: "% marge drive n-1"
-  #   value_format_name: percent_2
-  #   type: number
-  #   sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_tarif_produit_select_mois_N1},0);;
-  # }
+  measure: sum_total_ht_select_mois_N1 {
+    type: number
+    sql: ${sum_tarif_select_mois_N1} * ${sum_total_qte_com_select_mois_N1} ;;
+    view_label: "Web"
+    group_label: "Année N-1"
+  }
 
-
-  # measure: sum_livraison_select_mois_N1 {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
-  #           THEN ${tarif_ht_livraison}
-  #         END ;;
-  # }
-
-
-  # measure: sum_total_ht_select_mois_N1 {
-  #   type: sum
-  #   value_format_name: eur
-  #   sql: CASE
-  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
-  #           THEN ${total_ht}
-  #         END ;;
-  # }
-
-  # measure: sum_CA_drive_select_mois_N1 {
-  #   type: number
-  #   value_format_name: eur
-  #   label: "CA Drive n-1"
-  #   sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
-  # }
-
-  # measure: sum_Nb_cde_drive_select_mois_N1 {
-  #   type: sum
-  #   value_format_name: decimal_0
-  #   label: "Commande Drive n-1"
-  #   sql: CASE
-  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-  #           THEN ${nbre_commande}
-  #         END ;;
-  # }
+  measure: taux_de_marge_drive_select_mois_N1 {
+    label: "% marge drive"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_total_ht_select_mois_N1},0);;
+    view_label: "Web"
+    group_label: "Année N-1"
+  }
 
   measure: DN_N1 {
     type: count_distinct
