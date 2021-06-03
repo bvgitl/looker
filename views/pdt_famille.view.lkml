@@ -481,12 +481,21 @@ AND v.Dte_vte = s.dte_stock
     label: "Période n"
     type: date
     view_label: "Ventes"
+    group_label: "Année N"
   }
 
   filter: date_filter_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n-1"
     type: date
     view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  filter: date_filter_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
+    label: "Période n-2"
+    type: date
+    view_label: "Ventes"
+    group_label: "Année N-2"
   }
 
   dimension: categorie {
@@ -853,6 +862,85 @@ AND v.Dte_vte = s.dte_stock
   }
 
 
+  ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
+
+
+
+  measure: sum_CA_select_mois_N2 {
+    label: "CA HT n-2"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ht}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: sum_marge_select_mois_N2 {
+    label: "Marge n-2"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${marge_brute}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: sum_qte_select_mois_N2 {
+    label: "Qte n-2"
+    type: sum
+    value_format_name: decimal_0
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${qtite}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+
+  measure: sum_nb_jour_select_mois_N2 {
+    label: "Nb jr n-2"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${dte_vte_date}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+
+  measure: DN_N2 {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "DN n-1"
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${article}
+          END ;;
+    view_label: "Article"
+    group_label: "Année N-2"
+  }
+
+  measure: stock_N2 {
+    type: sum
+    value_format_name: decimal_0
+    label: "stocks n-2"
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${stock}
+          END ;;
+    view_label: "Stocks"
+    group_label: "Année N-2"
+  }
+
+
 ########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
 
 
@@ -883,23 +971,35 @@ AND v.Dte_vte = s.dte_stock
     group_label: "Année N"
   }
 
-  # measure: prog_CA_Drive_select_mois {
-  #   label: "prog CA Drive"
-  #   value_format_name: percent_2
-  #   type: number
-  #   sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
-  # }
+########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
 
 
-  # measure: prog_Nb_cde_Drive_select_mois {
-  #   label: "prog Nb cde Drive"
-  #   value_format_name: percent_2
-  #   type: number
-  #   sql: 1.0 * (${sum_Nb_cde_drive_select_mois}-${sum_Nb_cde_drive_select_mois_N1})/NULLIF(${sum_Nb_cde_drive_select_mois_N1},0);;
-  # }
+  measure: prog_CA_select_mois_N {
+    label: "prog CA n-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
 
+  measure: prog_Qte_select_mois_N {
+    label: "prog Qte n-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
 
-
+  measure: prog_marge_select_mois_N {
+    label: "prog marge n-1"
+    value_format_name: percent_2
+    type: number
+    sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
 
 
 
