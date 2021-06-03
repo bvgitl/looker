@@ -735,7 +735,7 @@ AND m.CD_Magasin = w.cd_magasin
     label: "DN"
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${article}
+            THEN ${cd_magasin}
           END ;;
     view_label: "Article"
     group_label: "Année N"
@@ -863,7 +863,7 @@ AND m.CD_Magasin = w.cd_magasin
     label: "DN n-1"
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${article}
+            THEN ${cd_magasin}
           END ;;
     view_label: "Article"
     group_label: "Année N-1"
