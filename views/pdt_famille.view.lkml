@@ -713,10 +713,10 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: taux_de_marge_drive_select_mois {
-    label: "% marge drive"
-    value_format_name: percent_2
+    label: "marge drive"
+    value_format_name: decimal_0
     type: number
-    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_total_ht_select_mois},0);;
+    sql: ${sum_total_ht_select_mois}-${sum_val_achat_gbl_select_mois};;
     view_label: "Web"
     group_label: "Année N"
   }
@@ -809,7 +809,7 @@ AND m.CD_Magasin = w.cd_magasin
 
 
   measure: sum_tarif_select_mois_N1 {
-    label: "Tarif Produit HT"
+    label: "Tarif Produit HT n-1"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -821,7 +821,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_qte_com_select_mois_N1 {
-    label: "Quantité commandée"
+    label: "Quantité commandée n-1"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -833,7 +833,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_ht_select_mois_N1 {
-    label: "Total HT"
+    label: "Total HT n-1"
     type: number
     sql: ${sum_tarif_select_mois_N1} * ${sum_total_qte_com_select_mois_N1} ;;
     view_label: "Web"
@@ -841,10 +841,10 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: taux_de_marge_drive_select_mois_N1 {
-    label: "% marge drive"
-    value_format_name: percent_2
+    label: "Marge drive n-1"
+    value_format_name: decimal_0
     type: number
-    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_total_ht_select_mois_N1},0);;
+    sql:  ${sum_total_ht_select_mois_N1}-${sum_val_achat_gbl_select_mois_N1};;
     view_label: "Web"
     group_label: "Année N-1"
   }
