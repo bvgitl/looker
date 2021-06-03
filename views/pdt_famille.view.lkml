@@ -1,16 +1,11 @@
 view: pdt_famille {
   derived_table: {
     sql: SELECT distinct
-       a.c_article as article,
-       a.c_Note as Note_ecologique,
-       a.c_Origine as Origine,
-       a. c_Validite_1 as Statut_article,
-       s.stock as stock,
-       f.l_Fournisseur as Fournisseur,
-       mq.LB_MARQUE as Marque,
-       a.c_Gencode as Gencode,
-       art.c_noeud as noeud,
-       art.c_arbre as arbre,
+       a.LibArticle as designation,
+       a.STATUT_ART as Statut_article,
+       a.TYP_ARTICLE as Typ_article,
+       a.CLASS_ENERGIE as Note_ecologique,
+       a.Gencod as Gencode,
        n4.Niveau4 as Niveau_4,
        n3.SousFamille as N3_SS_Famille,
        n2.Famille as N2_Famille,
@@ -25,49 +20,28 @@ view: pdt_famille {
        m.TYP_MAG as TYP_MAG,
        m.Tranche_age as Anciennete,
        m.CD_Magasin as CD_Magasin,
-       day as Dte_Vte,
+       v.CD_Article as Article,
+       v.Dte_Vte as Dte_Vte,
        v.Typ_Vente as Typ_Vente ,
        v.Qtite as Qtite,
        v.ca_ht as ca_ht,
        v.marge_brute as marge_brute,
-       w.Canal_commande,
-       w.nbre_commande as nbre_commande,
-       w.Total_HT as Total_HT ,
-       w.Tarif_HT_livraison as Tarif_HT_livraison,
-       w.Tarif_Produit_HT as Tarif_Produit_HT,
-       t.Qte_tracts
+       mag.nb_ticket as nb_ticket,
+       mq.LB_MARQUE as Marque,
+       f.l_Fournisseur as Fournisseur,
+       t.Qte_tracts as Qte_tracts,
+       t.Mise_en_avant_web as web,
+       t.E_mail as E_mail,
+       t.SMS as SMS,
+       t.Booster_Bonial as Booster_Bonial,
+       t.Spot_RadioShop as Spot_RadioShop,
+       t.PLV_Moyen_Kit as PLV_Moyen_Kit,
+       t.PLV_Grand_Kit as PLV_Grand_Kit,
+       s.stock as stock
 
+FROM  (
 
-FROM  (`bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` art
-
-ON art.c_article = a.c_Article
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
-
-ON n4.ID_N4_N4 = art.c_noeud
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3
-
-ON n3.ID_N3_SSFAMILLE = n4.ID_N3_SSFAMILLE
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2
-
-ON n2.ID_N2_FAMILLE = n3.ID_N2_FAMILLE
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1
-
-ON n1.ID_N1_DIVISION = n2.ID_N1_DIVISION),
-
-(SELECT day
-FROM UNNEST(
-    GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY)
-) AS day)
-
-LEFT JOIN
-
-       (select
+(select
         RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
         Dte_Vte ,
         Typ_Vente ,
@@ -76,8 +50,8 @@ LEFT JOIN
         sum(Qtite) as Qtite ,
         sum(ca_ht) as ca_ht ,
         sum(marge_brute) as marge_brute
-      from `bv-prod.Matillion_Perm_Table.TF_VENTE`
-      group by 1,2,3,4
+from `bv-prod.Matillion_Perm_Table.TF_VENTE`
+group by 1,2,3,4
 
       UNION ALL
 
@@ -90,158 +64,127 @@ select
         sum(QTITE) as Qtite ,
         sum(CA_HT) as ca_ht,
         sum(MARGE_BRUTE) as marge_brute
-      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
-      group by 1,2,3,4
-
-      ) v
+from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+group by 1,2,3,4) v
 
 
-       ON v.CD_Article = a.c_Article
+LEFT JOIN
 
-       AND day = v.Dte_Vte
+
+(
+    select
+    RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+    Dte_Vte,
+    Typ_vente,
+    sum(nb_ticket) as nb_ticket
+    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+    group by 1,2,3
+  ) mag
+
+  ON  v.CD_Site_Ext = mag.CD_Site_Ext
+
+  AND  v.Dte_Vte = mag.Dte_Vte
+
+  AND v.Typ_vente = mag.Typ_vente )
 
 LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
 
+ON   v.CD_Site_Ext = m.cd_logiciel
 
-       ON m.cd_logiciel = v.CD_Site_Ext
+LEFT JOIN  `bv-prod.Matillion_Perm_Table.ARTICLE` a
 
+ON  v.CD_Article = a.ID_ARTICLE_TFVTE
 
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art
 
-       LEFT JOIN
+ON CAST(v.CD_Article as INT64) = art.ID_ARTICLE
 
-       (
-               SELECT
-        cd_produit,
-        cd_magasin,
-        Canal_commande,
-        CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
-        count(distinct(c.cd_commande)) as Nbre_commande ,
-        sum(Tarif_Produit_HT) as Tarif_Produit_HT,
-        sum(Total_HT) as Total_HT,
-        sum(Tarif_HT_livraison) as Tarif_HT_livraison
-        from `bv-prod.Matillion_Perm_Table.Produit_Commande` p
-        inner join `bv-prod.Matillion_Perm_Table.COMMANDES` c
-        on p.cd_commande = c.cd_commande
-        where statut IN ("pending", "processing" , "fraud", "complete")
-        group by 1,2,3,4
-               ) w
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
 
-         ON  w.cd_produit = a.c_article
-         AND w.dte_cde = day
-         AND w.cd_magasin = m.CD_Magasin
+ON art.ID_N4_N4 = n4.ID_N4_N4
 
-        LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3
 
-        ON mq.cd_marque = a.c_marque
+ON  n4.ID_N3_SSFAMILLE = n3.ID_N3_SSFAMILLE
 
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2
 
-        LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
+ON  n3.ID_N2_FAMILLE = n2.ID_N2_FAMILLE
 
-        ON f.c_fournisseur = a.c_fournisseur
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1
 
-        LEFT JOIN
+ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
 
-        (
-               SELECT
+LEFT JOIN  `bv-prod.Matillion_Perm_Table.Marques` mq
+
+ON a.ID_MARQUE = mq.cd_marque
+
+LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
+
+ON   a.ID_FOURN = CAST(f.c_fournisseur AS STRING)
+
+LEFT JOIN
+
+(
+        SELECT
                code_bv,
+               Mise_en_avant_web,
+               E_mail,
+               SMS,
+               Booster_Bonial,
+               Spot_RadioShop,
+               PLV_Moyen_Kit,
+               PLV_Grand_Kit,
                sum(Qt_tracts) as Qte_tracts
                FROM `bv-prod.Matillion_Temp_Table.TRACTS`
-               GROUP BY 1 ) t
+               GROUP BY 1,2,3,4,5,6,7,8 ) t
+ON  m.cd_magasin = t.code_bv
 
-        ON t.code_bv = m.cd_magasin
-
-        LEFT JOIN
-
-       (SELECT cd_externe,
+LEFT JOIN
+(
+        select
+               cd_externe,
                cd_article,
-               CAST(DATETIME_TRUNC(date_modification, DAY) AS DATE) as dte_modification,
+               CAST(DATETIME_TRUNC(date_modification, day) AS date) dte_stock,
                sum(n_stock) as stock
-               FROM `bv-prod.Matillion_Perm_Table.Stocks`
-               GROUP BY 1,2,3) s
+FROM `bv-prod.Matillion_Perm_Table.Stocks`
+group by 1,2,3
+) s
 
-        ON s.cd_externe = m.cd_logiciel
-        AND s.cd_article = a.c_article
-        AND s.dte_modification = day
+ON  v.CD_Site_Ext = s.cd_externe
+
+AND  v.CD_Article  = s.cd_article
+
+AND v.Dte_vte = s.dte_stock
  ;;
 
     persist_for: "24 hours"
   }
 
-  measure: count {
-    type: count
-    drill_fields: [detail*]
-  }
 
-  dimension: article {
+  dimension: designation {
     type: string
-    sql: ${TABLE}.article ;;
+    sql: ${TABLE}.designation ;;
   }
 
+  dimension: statut_article {
+    type: string
+    sql: ${TABLE}.Statut_article ;;
+  }
+
+  dimension: typ_article {
+    type: string
+    sql: ${TABLE}.Typ_article ;;
+  }
 
   dimension: note_ecologique {
     type: string
     sql: ${TABLE}.Note_ecologique ;;
-    html: {% if value == "B" %}
-          <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
-          {% elsif value == "C" %}
-           <p style="color: black;  background-color: yellow; font-size: 100%;"><B>{{ value }}</B></p>
-          {% elsif value == "A" %}
-           <p style="color: black; background-color: limegreen; font-size: 100%;"><B>{{ value }}</B></p>
-          {% elsif value == "D" %}
-           <p style="color: black; background-color: gold; font-size: 100%;"><B>{{ value }}</B></p>
-          {% elsif value == "X" %}
-           <p style="color: black; background-color: red; font-size: 100%;"><B>{{ value }}</B></p>
-          {% else %}
-           <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
-    {% endif %};;
-  }
-
-  dimension: origine {
-    type: number
-    sql: CASE
-          WHEN ${TABLE}.Origine = 5 THEN "France"
-          WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
-          WHEN ${TABLE}.Origine = 7 THEN "Reste du monde"
-          WHEN ${TABLE}.Origine = 8 THEN "Non renseigné"
-          END;;
-  }
-
-  dimension: statut_article {
-    type: number
-    sql: CASE
-          WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
-          WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
-          END;;
-  }
-
-  dimension: stock {
-    type: number
-    sql: ${TABLE}.stock ;;
-  }
-
-  dimension: fournisseur {
-    type: string
-    sql: ${TABLE}.Fournisseur ;;
-  }
-
-  dimension: marque {
-    type: string
-    sql: ${TABLE}.Marque ;;
   }
 
   dimension: gencode {
     type: string
     sql: ${TABLE}.Gencode ;;
-  }
-
-  dimension: noeud {
-    type: number
-    sql: ${TABLE}.noeud ;;
-  }
-
-  dimension: arbre {
-    type: number
-    sql: ${TABLE}.arbre ;;
   }
 
   dimension: niveau_4 {
@@ -274,18 +217,11 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     sql: ${TABLE}.Typ ;;
   }
 
-  dimension_group: dte_ouverture {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      year
-    ]
-    convert_tz: no
+  dimension: dte_ouverture {
+    type: date
     datatype: date
     sql: ${TABLE}.Dte_Ouverture ;;
   }
-
 
   dimension: pays {
     type: string
@@ -322,13 +258,13 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     sql: ${TABLE}.CD_Magasin ;;
   }
 
-  dimension_group: dte_vte {
-    type: time
-    timeframes: [
-      raw, date, week, month, month_name, quarter, year,
-      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
-    ]
-    convert_tz: no
+  dimension: article {
+    type: string
+    sql: ${TABLE}.Article ;;
+  }
+
+  dimension: dte_vte {
+    type: date
     datatype: date
     sql: ${TABLE}.Dte_Vte ;;
   }
@@ -353,35 +289,172 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     sql: ${TABLE}.marge_brute ;;
   }
 
-  dimension: canal_commande {
+  dimension: nb_ticket {
+    type: number
+    sql: ${TABLE}.nb_ticket ;;
+  }
+
+  dimension: marque {
     type: string
-    sql: ${TABLE}.Canal_commande ;;
+    sql: ${TABLE}.Marque ;;
   }
 
-  dimension: nbre_commande {
-    type: number
-    sql: ${TABLE}.nbre_commande ;;
-  }
-
-  dimension: total_ht {
-    type: number
-    sql: ${TABLE}.Total_HT ;;
-  }
-
-  dimension: tarif_ht_livraison {
-    type: number
-    sql: ${TABLE}.Tarif_HT_livraison ;;
-  }
-
-  dimension: tarif_produit_ht {
-    type: number
-    sql: ${TABLE}.Tarif_Produit_HT ;;
+  dimension: fournisseur {
+    type: string
+    sql: ${TABLE}.Fournisseur ;;
   }
 
   dimension: qte_tracts {
     type: number
     sql: ${TABLE}.Qte_tracts ;;
   }
+
+  dimension: web {
+    type: number
+    sql: ${TABLE}.web ;;
+  }
+
+  dimension: e_mail {
+    type: number
+    sql: ${TABLE}.E_mail ;;
+  }
+
+  dimension: sms {
+    type: number
+    sql: ${TABLE}.SMS ;;
+  }
+
+  dimension: booster_bonial {
+    type: number
+    sql: ${TABLE}.Booster_Bonial ;;
+  }
+
+  dimension: spot_radio_shop {
+    type: number
+    sql: ${TABLE}.Spot_RadioShop ;;
+  }
+
+  dimension: plv_moyen_kit {
+    type: number
+    sql: ${TABLE}.PLV_Moyen_Kit ;;
+  }
+
+  dimension: plv_grand_kit {
+    type: number
+    sql: ${TABLE}.PLV_Grand_Kit ;;
+  }
+
+  dimension: stock {
+    type: number
+    sql: ${TABLE}.stock ;;
+  }
+
+  set: detail {
+    fields: [
+      designation,
+      statut_article,
+      typ_article,
+      note_ecologique,
+      gencode,
+      niveau_4,
+      n3_ss_famille,
+      n2_famille,
+      n1_division,
+      nom,
+      typ,
+      dte_ouverture,
+      pays,
+      animateur,
+      region,
+      surface,
+      typ_mag,
+      anciennete,
+      cd_magasin,
+      article,
+      dte_vte,
+      typ_vente,
+      qtite,
+      ca_ht,
+      marge_brute,
+      nb_ticket,
+      marque,
+      fournisseur,
+      qte_tracts,
+      web,
+      e_mail,
+      sms,
+      booster_bonial,
+      spot_radio_shop,
+      plv_moyen_kit,
+      plv_grand_kit,
+      stock
+    ]
+  }
+
+
+  # dimension: note_ecologique {
+  #   type: string
+  #   sql: ${TABLE}.Note_ecologique ;;
+  #   html: {% if value == "B" %}
+  #         <p style="color: black; background-color: lime; font-size: 100%;"><B>{{ value }}</B></p>
+  #         {% elsif value == "C" %}
+  #         <p style="color: black;  background-color: yellow; font-size: 100%;"><B>{{ value }}</B></p>
+  #         {% elsif value == "A" %}
+  #         <p style="color: black; background-color: limegreen; font-size: 100%;"><B>{{ value }}</B></p>
+  #         {% elsif value == "D" %}
+  #         <p style="color: black; background-color: gold; font-size: 100%;"><B>{{ value }}</B></p>
+  #         {% elsif value == "X" %}
+  #         <p style="color: black; background-color: red; font-size: 100%;"><B>{{ value }}</B></p>
+  #         {% else %}
+  #         <p style="color: black; background-color: tomato; font-size: 100%;"><B>{{ value }}</B></p>
+  #   {% endif %};;
+  # }
+
+  # dimension: origine {
+  #   type: number
+  #   sql: CASE
+  #         WHEN ${TABLE}.Origine = 5 THEN "France"
+  #         WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
+  #         WHEN ${TABLE}.Origine = 7 THEN "Reste du monde"
+  #         WHEN ${TABLE}.Origine = 8 THEN "Non renseigné"
+  #         END;;
+  # }
+
+  # dimension: statut_article {
+  #   type: number
+  #   sql: CASE
+  #         WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
+  #         WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
+  #         END;;
+  # }
+
+
+  dimension_group: dte_ouverture {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Ouverture ;;
+  }
+
+
+
+  dimension_group: dte_vte {
+    type: time
+    timeframes: [
+      raw, date, week, month, month_name, quarter, year,
+      fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Vte ;;
+  }
+
+
 
 
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
@@ -449,42 +522,7 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
 
-  set: detail {
-    fields: [
-      article,
-      note_ecologique,
-      origine,
-      statut_article,
-      stock,
-      fournisseur,
-      marque,
-      gencode,
-      noeud,
-      arbre,
-      niveau_4,
-      n3_ss_famille,
-      n2_famille,
-      n1_division,
-      nom,
-      typ,
-      pays,
-      animateur,
-      region,
-      surface,
-      typ_mag,
-      anciennete,
-      cd_magasin,
-      typ_vente,
-      qtite,
-      ca_ht,
-      marge_brute,
-      canal_commande,
-      nbre_commande,
-      total_ht,
-      tarif_ht_livraison,
-      qte_tracts
-    ]
-  }
+
 
 ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
 
@@ -549,64 +587,64 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
 
-  measure: sum_livraison_select_mois {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${tarif_ht_livraison}
-          END ;;
-  }
+  # measure: sum_livraison_select_mois {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${tarif_ht_livraison}
+  #         END ;;
+  # }
 
-  measure: sum_tarif_produit_select_mois {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${tarif_produit_ht}
-          END ;;
-  }
+  # measure: sum_tarif_produit_select_mois {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${tarif_produit_ht}
+  #         END ;;
+  # }
 
-  measure: sum_total_ht_select_mois {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${total_ht}
-          END ;;
-  }
+  # measure: sum_total_ht_select_mois {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${total_ht}
+  #         END ;;
+  # }
 
-  measure: valeur_drive {
-    type: number
-    label: "Valeur Drive"
-    value_format_name: decimal_2
-    sql: (${sum_total_ht_select_mois} * ${taux_de_marge_drive_select_mois}) + ${sum_livraison_select_mois};;
-  }
+  # measure: valeur_drive {
+  #   type: number
+  #   label: "Valeur Drive"
+  #   value_format_name: decimal_2
+  #   sql: (${sum_total_ht_select_mois} * ${taux_de_marge_drive_select_mois}) + ${sum_livraison_select_mois};;
+  # }
 
-  measure: taux_de_marge_drive_select_mois {
-    label: "% marge drive"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_tarif_produit_select_mois},0);;
-  }
+  # measure: taux_de_marge_drive_select_mois {
+  #   label: "% marge drive"
+  #   value_format_name: percent_2
+  #   type: number
+  #   sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_tarif_produit_select_mois},0);;
+  # }
 
 
-  measure: sum_CA_drive_select_mois {
-    type: number
-    value_format_name: eur
-    label: "CA Drive"
-    sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
-  }
+  # measure: sum_CA_drive_select_mois {
+  #   type: number
+  #   value_format_name: eur
+  #   label: "CA Drive"
+  #   sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
+  # }
 
-  measure: sum_Nb_cde_drive_select_mois {
-    type: sum
-    value_format_name: decimal_0
-    label: "Commande Drive"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${nbre_commande}
-          END ;;
-  }
+  # measure: sum_Nb_cde_drive_select_mois {
+  #   type: sum
+  #   value_format_name: decimal_0
+  #   label: "Commande Drive"
+  #   sql: CASE
+  #           WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${nbre_commande}
+  #         END ;;
+  # }
 
   measure: DN_N {
     type: count_distinct
@@ -666,14 +704,14 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
           END ;;
   }
 
-  measure: sum_tarif_produit_select_mois_N1 {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${tarif_produit_ht}
-          END ;;
-  }
+  # measure: sum_tarif_produit_select_mois_N1 {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${tarif_produit_ht}
+  #         END ;;
+  # }
 
   measure: sum_nb_jour_select_mois_N1 {
     label: "Nb jr n-1"
@@ -686,57 +724,57 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
   }
 
 
-  measure: valeur_drive_N1 {
-    type: number
-    label: "Valeur Drive n-1"
-    value_format_name: decimal_2
-    sql: (${sum_total_ht_select_mois_N1} * ${taux_de_marge_drive_select_mois_N1}) + ${sum_livraison_select_mois_N1};;
-  }
+  # measure: valeur_drive_N1 {
+  #   type: number
+  #   label: "Valeur Drive n-1"
+  #   value_format_name: decimal_2
+  #   sql: (${sum_total_ht_select_mois_N1} * ${taux_de_marge_drive_select_mois_N1}) + ${sum_livraison_select_mois_N1};;
+  # }
 
 
-  measure: taux_de_marge_drive_select_mois_N1 {
-    label: "% marge drive n-1"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_tarif_produit_select_mois_N1},0);;
-  }
+  # measure: taux_de_marge_drive_select_mois_N1 {
+  #   label: "% marge drive n-1"
+  #   value_format_name: percent_2
+  #   type: number
+  #   sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_tarif_produit_select_mois_N1},0);;
+  # }
 
 
-  measure: sum_livraison_select_mois_N1 {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${tarif_ht_livraison}
-          END ;;
-  }
+  # measure: sum_livraison_select_mois_N1 {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
+  #           THEN ${tarif_ht_livraison}
+  #         END ;;
+  # }
 
 
-  measure: sum_total_ht_select_mois_N1 {
-    type: sum
-    value_format_name: eur
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
-            THEN ${total_ht}
-          END ;;
-  }
+  # measure: sum_total_ht_select_mois_N1 {
+  #   type: sum
+  #   value_format_name: eur
+  #   sql: CASE
+  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
+  #           THEN ${total_ht}
+  #         END ;;
+  # }
 
-  measure: sum_CA_drive_select_mois_N1 {
-    type: number
-    value_format_name: eur
-    label: "CA Drive n-1"
-    sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
-  }
+  # measure: sum_CA_drive_select_mois_N1 {
+  #   type: number
+  #   value_format_name: eur
+  #   label: "CA Drive n-1"
+  #   sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
+  # }
 
-  measure: sum_Nb_cde_drive_select_mois_N1 {
-    type: sum
-    value_format_name: decimal_0
-    label: "Commande Drive n-1"
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${nbre_commande}
-          END ;;
-  }
+  # measure: sum_Nb_cde_drive_select_mois_N1 {
+  #   type: sum
+  #   value_format_name: decimal_0
+  #   label: "Commande Drive n-1"
+  #   sql: CASE
+  #           WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+  #           THEN ${nbre_commande}
+  #         END ;;
+  # }
 
   measure: DN_N1 {
     type: count_distinct
@@ -783,20 +821,20 @@ LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
     sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
   }
 
-  measure: prog_CA_Drive_select_mois {
-    label: "prog CA Drive"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
-  }
+  # measure: prog_CA_Drive_select_mois {
+  #   label: "prog CA Drive"
+  #   value_format_name: percent_2
+  #   type: number
+  #   sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
+  # }
 
 
-  measure: prog_Nb_cde_Drive_select_mois {
-    label: "prog Nb cde Drive"
-    value_format_name: percent_2
-    type: number
-    sql: 1.0 * (${sum_Nb_cde_drive_select_mois}-${sum_Nb_cde_drive_select_mois_N1})/NULLIF(${sum_Nb_cde_drive_select_mois_N1},0);;
-  }
+  # measure: prog_Nb_cde_Drive_select_mois {
+  #   label: "prog Nb cde Drive"
+  #   value_format_name: percent_2
+  #   type: number
+  #   sql: 1.0 * (${sum_Nb_cde_drive_select_mois}-${sum_Nb_cde_drive_select_mois_N1})/NULLIF(${sum_Nb_cde_drive_select_mois_N1},0);;
+  # }
 
 
 
