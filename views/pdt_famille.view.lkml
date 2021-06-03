@@ -124,7 +124,7 @@ ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
 
 LEFT JOIN  `bv-prod.Matillion_Perm_Table.Marques` mq
 
-ON a.c_MarqueE = mq.cd_marque
+ON a.c_Marque = mq.cd_marque
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
