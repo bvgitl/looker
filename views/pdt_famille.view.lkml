@@ -919,7 +919,7 @@ AND m.CD_Magasin = w.cd_magasin
   measure: DN_N2 {
     type: count_distinct
     value_format_name: decimal_0
-    label: "DN n-1"
+    label: "DN n-2"
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${article}
