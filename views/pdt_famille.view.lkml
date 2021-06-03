@@ -37,7 +37,12 @@ view: pdt_famille {
        t.Spot_RadioShop as Spot_RadioShop,
        t.PLV_Moyen_Kit as PLV_Moyen_Kit,
        t.PLV_Grand_Kit as PLV_Grand_Kit,
-       s.stock as stock
+       s.stock as stock,
+       w.Nbre_commande as Nbre_commande,
+       w.Quantite_commandee as Quantite_commandee,
+       w.Tarif_Produit_HT as Tarif_Produit_HT
+
+
 
 FROM  (
 
@@ -124,7 +129,6 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 ON   a.ID_FOURN = CAST(f.c_fournisseur AS STRING)
 
 LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
-
 ON  m.cd_magasin = t.code_bv
 
 LEFT JOIN
@@ -383,19 +387,19 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: nbre_commande {
     type: number
     sql: ${TABLE}.Nbre_commande ;;
-    view_label: "web"
+    view_label: "Web"
   }
 
   dimension: quantite_commandee {
     type: number
     sql: ${TABLE}.Quantite_commandee ;;
-    view_label: "web"
+    view_label: "Web"
   }
 
   dimension: tarif_produit_ht {
     type: number
     sql: ${TABLE}.Tarif_Produit_HT ;;
-    view_label: "web"
+    view_label: "Web"
   }
 
   set: detail {
@@ -666,6 +670,7 @@ AND m.CD_Magasin = w.cd_magasin
 
 
   measure: sum_tarif_select_mois {
+    label: "Tarif produit HT"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -677,6 +682,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_qte_com_select_mois {
+    label: "Qte commandée"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -688,6 +694,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_ht_select_mois {
+    label: "Total_HT"
     type: number
     sql: ${sum_tarif_select_mois} * ${sum_total_qte_com_select_mois} ;;
     view_label: "Web"
@@ -714,19 +721,6 @@ AND m.CD_Magasin = w.cd_magasin
     view_label: "Article"
     group_label: "Année N"
   }
-
-
-  measure: stock_N {
-    type: sum
-    value_format_name: decimal_0
-    label: "Stocks"
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${stock}
-          END ;;
-  }
-
-
 
 
   ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
@@ -784,6 +778,7 @@ AND m.CD_Magasin = w.cd_magasin
 
 
   measure: sum_tarif_select_mois_N1 {
+    label: "Tarif Produit HT"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -795,6 +790,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_qte_com_select_mois_N1 {
+    label: "Quantité commandée"
     type: sum
     value_format_name: eur
     sql: CASE
@@ -806,6 +802,7 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
   measure: sum_total_ht_select_mois_N1 {
+    label: "Total HT"
     type: number
     sql: ${sum_tarif_select_mois_N1} * ${sum_total_qte_com_select_mois_N1} ;;
     view_label: "Web"
@@ -830,18 +827,6 @@ AND m.CD_Magasin = w.cd_magasin
             THEN ${article}
           END ;;
     view_label: "Article"
-    group_label: "Année N-1"
-  }
-
-  measure: stock_N1 {
-    type: sum
-    value_format_name: decimal_0
-    label: "stocks n-1"
-    sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${stock}
-          END ;;
-    view_label: "Stocks"
     group_label: "Année N-1"
   }
 
@@ -912,17 +897,6 @@ AND m.CD_Magasin = w.cd_magasin
     group_label: "Année N-2"
   }
 
-  measure: stock_N2 {
-    type: sum
-    value_format_name: decimal_0
-    label: "stocks n-2"
-    sql: CASE
-            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${stock}
-          END ;;
-    view_label: "Stocks"
-    group_label: "Année N-2"
-  }
 
 
 ########### Calcul des progressions n vs n-1 à la péridode sélectionée au niveau du filtre ###########
