@@ -165,72 +165,79 @@ AND v.Dte_vte = s.dte_stock
   dimension: designation {
     type: string
     sql: ${TABLE}.designation ;;
+    view_label: "Magasins"
   }
 
   dimension: statut_article {
     type: string
     sql: ${TABLE}.Statut_article ;;
+    view_label: "Magasins"
   }
 
   dimension: typ_article {
     type: string
     sql: ${TABLE}.Typ_article ;;
+    view_label: "Magasins"
   }
 
   dimension: note_ecologique {
     type: string
     sql: ${TABLE}.Note_ecologique ;;
+    view_label: "Magasins"
   }
 
   dimension: gencode {
     type: string
     sql: ${TABLE}.Gencode ;;
+    view_label: "Magasins"
   }
 
   dimension: niveau_4 {
     type: string
     sql: ${TABLE}.Niveau_4 ;;
+    view_label: "N4"
   }
 
   dimension: n3_ss_famille {
     type: string
     sql: ${TABLE}.N3_SS_Famille ;;
+    view_label: "N3"
   }
 
   dimension: n2_famille {
     type: string
     sql: ${TABLE}.N2_Famille ;;
+    view_label: "N2"
   }
 
   dimension: n1_division {
     type: string
     sql: ${TABLE}.N1_Division ;;
+    view_label: "N1"
   }
 
   dimension: nom {
     type: string
     sql: ${TABLE}.NOM ;;
+    view_label: "Magasins"
   }
 
   dimension: typ {
     type: string
     sql: ${TABLE}.Typ ;;
-  }
-
-  dimension: dte_ouverture {
-    type: date
-    datatype: date
-    sql: ${TABLE}.Dte_Ouverture ;;
+    view_label: "Magasins"
   }
 
   dimension: pays {
     type: string
     sql: ${TABLE}.Pays ;;
+    view_label: "Magasins"
   }
 
   dimension: animateur {
     type: string
     sql: ${TABLE}.Animateur ;;
+    view_label: "Magasins"
   }
 
   dimension: region {
@@ -241,112 +248,127 @@ AND v.Dte_vte = s.dte_stock
   dimension: surface {
     type: number
     sql: ${TABLE}.Surface ;;
+    view_label: "Magasins"
   }
 
   dimension: typ_mag {
     type: string
     sql: ${TABLE}.TYP_MAG ;;
+    view_label: "Magasins"
   }
 
   dimension: anciennete {
     type: string
     sql: ${TABLE}.Anciennete ;;
+    view_label: "Magasins"
   }
 
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.CD_Magasin ;;
+    view_label: "Magasins"
   }
 
   dimension: article {
     type: string
     sql: ${TABLE}.Article ;;
-  }
-
-  dimension: dte_vte {
-    type: date
-    datatype: date
-    sql: ${TABLE}.Dte_Vte ;;
+    view_label: "Article"
   }
 
   dimension: typ_vente {
     type: number
     sql: ${TABLE}.Typ_Vente ;;
+    view_label: "Ventes"
   }
 
   dimension: qtite {
     type: number
     sql: ${TABLE}.Qtite ;;
+    view_label: "Ventes"
   }
 
   dimension: ca_ht {
     type: number
     sql: ${TABLE}.ca_ht ;;
+    view_label: "Ventes"
   }
 
   dimension: marge_brute {
     type: number
     sql: ${TABLE}.marge_brute ;;
+    view_label: "Ventes"
   }
 
   dimension: nb_ticket {
     type: number
     sql: ${TABLE}.nb_ticket ;;
+    view_label: "Ventes"
   }
 
   dimension: marque {
     type: string
     sql: ${TABLE}.Marque ;;
+    view_label: "Marque"
   }
 
   dimension: fournisseur {
     type: string
     sql: ${TABLE}.Fournisseur ;;
+    view_label: "Fournisseur"
   }
 
   dimension: qte_tracts {
     type: number
     sql: ${TABLE}.Qte_tracts ;;
+    view_label: "Tracts"
   }
 
   dimension: web {
     type: number
     sql: ${TABLE}.web ;;
+    view_label: "Tracts"
   }
 
   dimension: e_mail {
     type: number
     sql: ${TABLE}.E_mail ;;
+    view_label: "Tracts"
   }
 
   dimension: sms {
     type: number
     sql: ${TABLE}.SMS ;;
+    view_label: "Tracts"
   }
 
   dimension: booster_bonial {
     type: number
     sql: ${TABLE}.Booster_Bonial ;;
+    view_label: "Tracts"
   }
 
   dimension: spot_radio_shop {
     type: number
     sql: ${TABLE}.Spot_RadioShop ;;
+    view_label: "Tracts"
   }
 
   dimension: plv_moyen_kit {
     type: number
     sql: ${TABLE}.PLV_Moyen_Kit ;;
+    view_label: "Tracts"
   }
 
   dimension: plv_grand_kit {
     type: number
     sql: ${TABLE}.PLV_Grand_Kit ;;
+    view_label: "Tracts"
   }
 
   dimension: stock {
     type: number
     sql: ${TABLE}.stock ;;
+    view_label: "Stocks"
   }
 
   set: detail {
@@ -362,7 +384,6 @@ AND v.Dte_vte = s.dte_stock
       n1_division,
       nom,
       typ,
-      dte_ouverture,
       pays,
       animateur,
       region,
@@ -371,7 +392,6 @@ AND v.Dte_vte = s.dte_stock
       anciennete,
       cd_magasin,
       article,
-      dte_vte,
       typ_vente,
       qtite,
       ca_ht,
@@ -439,9 +459,8 @@ AND v.Dte_vte = s.dte_stock
     convert_tz: no
     datatype: date
     sql: ${TABLE}.Dte_Ouverture ;;
+    view_label: "Magasins"
   }
-
-
 
   dimension_group: dte_vte {
     type: time
@@ -452,6 +471,7 @@ AND v.Dte_vte = s.dte_stock
     convert_tz: no
     datatype: date
     sql: ${TABLE}.Dte_Vte ;;
+    view_label: "Ventes"
   }
 
 
@@ -460,11 +480,13 @@ AND v.Dte_vte = s.dte_stock
   filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n"
     type: date
+    view_label: "Ventes"
   }
 
   filter: date_filter_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n-1"
     type: date
+    view_label: "Ventes"
   }
 
   dimension: categorie {
@@ -484,6 +506,7 @@ AND v.Dte_vte = s.dte_stock
             WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
             ELSE "Rétrocession"
           END ;;
+    view_label: "Ventes"
   }
 
 
@@ -492,18 +515,21 @@ AND v.Dte_vte = s.dte_stock
             WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
+    view_label: "Magasins"
   }
 
   dimension: Type_MEP {
     sql: CASE
             WHEN ${typ} IN ("I","Cyi") THEN "MEP"
           END ;;
+    view_label: "Magasins"
   }
 
   dimension: Type_City {
     sql: CASE
             WHEN ${typ} IN ("Cyi", "Cyf") THEN "City"
           END ;;
+    view_label: "Magasins"
   }
 
 
@@ -512,6 +538,7 @@ AND v.Dte_vte = s.dte_stock
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE LASER ET COPIEUR COMPATIBLE") THEN "Laser"
             WHEN ${n2_famille} IN ("CARTOUCHE JET D’ENCRE MARQUE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "JET D'ENCRE"
           END ;;
+    view_label: "N2"
   }
 
   dimension: Groupe_Marq {
@@ -519,6 +546,7 @@ AND v.Dte_vte = s.dte_stock
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE JET D’ENCRE MARQUE") THEN "Marques"
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR COMPATIBLE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "Compatible"
           END ;;
+    view_label: "N2"
   }
 
 
@@ -534,6 +562,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: sum_marge_select_mois {
@@ -544,6 +574,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: taux_de_marge_select_mois {
@@ -551,6 +583,8 @@ AND v.Dte_vte = s.dte_stock
     value_format_name: percent_2
     type: number
     sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_CA_select_mois},0);;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: sum_qte_select_mois {
@@ -561,6 +595,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${qtite}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
 
@@ -572,18 +608,24 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
 
   measure: sum_surf_select_mois {
     type: average
     sql: ${surface};;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: ecarts_jour_select_mois {
     label: "écart jr"
     type: number
     sql:  ${sum_nb_jour_select_mois}-${sum_nb_jour_select_mois_N1} ;;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
 
@@ -654,6 +696,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${article}
           END ;;
+    view_label: "Article"
+    group_label: "Année N"
   }
 
 
@@ -682,6 +726,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
   }
 
   measure: sum_marge_select_mois_N1 {
@@ -692,6 +738,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
   }
 
   measure: sum_qte_select_mois_N1 {
@@ -702,6 +750,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${qtite}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
   }
 
   # measure: sum_tarif_produit_select_mois_N1 {
@@ -721,6 +771,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
   }
 
 
@@ -784,6 +836,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${article}
           END ;;
+    view_label: "Article"
+    group_label: "Année N-1"
   }
 
   measure: stock_N1 {
@@ -794,6 +848,8 @@ AND v.Dte_vte = s.dte_stock
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${stock}
           END ;;
+    view_label: "Stocks"
+    group_label: "Année N-1"
   }
 
 
@@ -805,6 +861,8 @@ AND v.Dte_vte = s.dte_stock
     value_format_name: percent_2
     type: number
     sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: prog_Qte_select_mois {
@@ -812,6 +870,8 @@ AND v.Dte_vte = s.dte_stock
     value_format_name: percent_2
     type: number
     sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   measure: prog_marge_select_mois {
@@ -819,6 +879,8 @@ AND v.Dte_vte = s.dte_stock
     value_format_name: percent_2
     type: number
     sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
+    view_label: "Ventes"
+    group_label: "Année N"
   }
 
   # measure: prog_CA_Drive_select_mois {
