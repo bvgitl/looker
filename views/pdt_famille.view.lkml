@@ -29,7 +29,7 @@ view: pdt_famille {
        mag.nb_ticket as nb_ticket,
        mq.LB_MARQUE as Marque,
        f.l_Fournisseur as Fournisseur,
-       t.Qte_tracts as Qte_tracts,
+       t.Qt_tracts as Qte_tracts,
        t.Mise_en_avant_web as web,
        t.E_mail as E_mail,
        t.SMS as SMS,
@@ -123,21 +123,8 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
 ON   a.ID_FOURN = CAST(f.c_fournisseur AS STRING)
 
-LEFT JOIN
+LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS`
 
-(
-        SELECT
-               code_bv,
-               Mise_en_avant_web,
-               E_mail,
-               SMS,
-               Booster_Bonial,
-               Spot_RadioShop,
-               PLV_Moyen_Kit,
-               PLV_Grand_Kit,
-               sum(Qt_tracts) as Qte_tracts
-               FROM `bv-prod.Matillion_Temp_Table.TRACTS`
-               GROUP BY 1,2,3,4,5,6,7,8 ) t
 ON  m.cd_magasin = t.code_bv
 
 LEFT JOIN
