@@ -123,7 +123,7 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
 ON   a.ID_FOURN = CAST(f.c_fournisseur AS STRING)
 
-LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS`
+LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
 
 ON  m.cd_magasin = t.code_bv
 
