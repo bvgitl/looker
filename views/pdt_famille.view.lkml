@@ -6,7 +6,7 @@ view: pdt_famille {
        a.c_Note as Note_ecologique,
        a.c_Gencode as Gencode,
        a.c_Validite_1 as Statut_article,
-       c_Origine as Origine,
+       a.c_Origine as Origine,
        n4.Niveau4 as Niveau_4,
        n3.SousFamille as N3_SS_Famille,
        n2.Famille as N2_Famille,
