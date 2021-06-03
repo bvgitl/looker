@@ -475,6 +475,7 @@ AND m.CD_Magasin = w.cd_magasin
   #   type: number
   #   sql: CASE
   #         WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
+  #         WHEN ${TABLE}.Statut_article = 0 THEN "Création"
   #         WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
   #         END;;
   # }
@@ -603,6 +604,18 @@ AND m.CD_Magasin = w.cd_magasin
             THEN ${ca_ht}
           END ;;
     view_label: "Ventes"
+    group_label: "Année N"
+  }
+
+  measure: sum_stock_mois {
+    type: sum
+    value_format_name: eur
+    label: "Stock"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${stock}
+          END ;;
+    view_label: "Stocks"
     group_label: "Année N"
   }
 
