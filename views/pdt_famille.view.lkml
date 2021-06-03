@@ -128,7 +128,7 @@ ON a.c_Marque = mq.cd_marque
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
-ON   a.c_Fournisseur = CAST(f.c_fournisseur AS STRING)
+ON   a.c_Fournisseur = f.c_fournisseur
 
 LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
 ON  m.cd_magasin = t.code_bv
