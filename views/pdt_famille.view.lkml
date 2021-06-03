@@ -124,11 +124,11 @@ ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
 
 LEFT JOIN  `bv-prod.Matillion_Perm_Table.Marques` mq
 
-ON a.ID_MARQUE = mq.cd_marque
+ON a.c_MarqueE = mq.cd_marque
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
 
-ON   a.ID_FOURN = CAST(f.c_fournisseur AS STRING)
+ON   a.c_Fournisseur = CAST(f.c_fournisseur AS STRING)
 
 LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
 ON  m.cd_magasin = t.code_bv
