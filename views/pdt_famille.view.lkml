@@ -712,7 +712,7 @@ AND m.CD_Magasin = w.cd_magasin
     group_label: "Année N"
   }
 
-  measure: taux_de_marge_drive_select_mois {
+  measure: marge_drive_select_mois {
     label: "marge drive"
     value_format_name: decimal_0
     type: number
@@ -840,7 +840,7 @@ AND m.CD_Magasin = w.cd_magasin
     group_label: "Année N-1"
   }
 
-  measure: taux_de_marge_drive_select_mois_N1 {
+  measure: marge_drive_select_mois_N1 {
     label: "Marge drive n-1"
     value_format_name: decimal_0
     type: number
