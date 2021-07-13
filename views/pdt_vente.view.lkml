@@ -117,11 +117,13 @@ select
     dimension: cd_magasin {
       type: string
       sql: ${TABLE}.CD_Magasin ;;
+      view_label: "Magasins"
     }
 
     dimension: animateur {
       type: string
       sql: ${TABLE}.Animateur ;;
+      view_label: "Magasins"
     }
 
 
@@ -138,16 +140,19 @@ select
     dimension: nom {
       type: string
       sql: ${TABLE}.NOM ;;
+      view_label: "Magasins"
     }
 
     dimension: typ {
       type: string
       sql: ${TABLE}.Typ ;;
+      view_label: "Magasins"
     }
 
     dimension: pays {
       type: string
       sql: ${TABLE}.Pays ;;
+      view_label: "Magasins"
     }
 
     dimension: region {
@@ -158,16 +163,19 @@ select
     dimension: surface {
       type: number
       sql: ${TABLE}.Surface ;;
+      view_label: "Magasins"
     }
 
     dimension: typ_mag {
       type: string
       sql: ${TABLE}.TYP_MAG ;;
+      view_label: "Magasins"
     }
 
     dimension: anciennete {
       type: string
       sql: ${TABLE}.Anciennete ;;
+      view_label: "Magasins"
     }
 
     dimension: cd_site_ext {
@@ -185,6 +193,7 @@ select
       convert_tz: no
       datatype: date
       sql: ${TABLE}.Dte_Ouverture ;;
+      view_label: "Magasins"
     }
 
     dimension_group: dte_vte {
@@ -196,11 +205,13 @@ select
       convert_tz: no
       datatype: date
       sql: ${TABLE}.Dte_Vte ;;
+      view_label: "Ventes"
     }
 
     dimension: typ_vente {
       type: number
       sql: ${TABLE}.Typ_Vente ;;
+      view_label: "Ventes"
     }
 
     dimension: val_achat_gbl {
@@ -211,37 +222,44 @@ select
     dimension: qtite {
       type: number
       sql: ${TABLE}.Qtite ;;
+      view_label: "Ventes"
     }
 
     dimension: ca_ht {
       type: number
       sql: ${TABLE}.ca_ht ;;
+      view_label: "Ventes"
     }
 
     dimension: marge_brute {
       type: number
       sql: ${TABLE}.marge_brute ;;
+      view_label: "Ventes"
     }
 
     dimension: nb_ticket {
       type: number
       sql: ${TABLE}.nb_ticket ;;
+      view_label: "Ventes"
     }
 
     dimension: total_ht {
       type: number
       sql: ${TABLE}.Total_HT ;;
+      view_label: "Web"
     }
 
 
     dimension: tarif_ht_livraison {
       type: number
       sql: ${TABLE}.Tarif_HT_livraison ;;
+      view_label: "Web"
     }
 
     dimension: nbre_commande {
       type: number
       sql: ${TABLE}.Nbre_commande ;;
+      view_label: "Web"
     }
 
     set: detail {
@@ -272,25 +290,33 @@ select
     filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
       label: "Période n"
       type: date
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     filter: date_filter_1 {               ### Choisir la période qu'on souhaite obtenir les résultats###
       label: "Période n-1"
       type: date
+      view_label: "Ventes"
+      group_label: "Année N-1"
     }
 
   filter: date_filter_2 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n-2"
     type: date
+    view_label: "Ventes"
+    group_label: "Année N-2"
   }
 
   filter: date_filter_3 {               ### Choisir la période qu'on souhaite obtenir les résultats###
     label: "Période n-3"
     type: date
+    view_label: "Ventes"
+    group_label: "Année N-3"
   }
 
     dimension: categorie {
-      hidden: yes
+      hidden: no
       label: "Catégorie"
       sql:
         CASE
@@ -307,6 +333,7 @@ select
             WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
             ELSE "Rétrocession"
           END ;;
+      view_label: "Ventes"
     }
 
 
@@ -315,6 +342,7 @@ select
             WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
+    view_label: "Magasins"
   }
 
 
@@ -378,6 +406,8 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: sum_marge_select_mois {
@@ -388,6 +418,8 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: sum_nb_ticket_select_mois {
@@ -408,6 +440,8 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: sum_val_achat_gbl_select_mois {
@@ -428,6 +462,7 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tarif_ht_livraison}
           END ;;
+    view_label: "Web"
   }
 
     measure: sum_total_ht_select_mois {
@@ -437,6 +472,7 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
+      view_label: "Web"
     }
 
   measure: sum_CA_drive_select_mois {
@@ -444,6 +480,7 @@ select
     value_format_name: eur
     label: "CA Drive"
     sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
+    view_label: "Web"
   }
 
     measure: sum_Nb_cde_drive_select_mois {
@@ -454,17 +491,22 @@ select
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
           END ;;
+      view_label: "Web"
     }
 
     measure: sum_surf_select_mois {
       type: average
       sql: ${surface};;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: ecarts_jour_select_mois {
       label: "écart jr"
       type: number
       sql:  ${sum_nb_jour_select_mois}-${sum_nb_jour_select_mois_N1} ;;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
 
@@ -480,10 +522,12 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-1"
     }
 
     measure: sum_marge_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "Marge n-1"
       type: sum
       value_format_name: eur
@@ -491,10 +535,12 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-1"
     }
 
     measure: sum_nb_ticket_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "Nb clts n-1"
       type: sum
       value_format_name: decimal_0
@@ -505,7 +551,7 @@ select
     }
 
     measure: sum_nb_jour_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "Nb jr n-1"
       type: count_distinct
       value_format_name: decimal_0
@@ -513,6 +559,8 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-1"
     }
 
     measure: sum_val_achat_gbl_select_mois_N1 {
@@ -533,6 +581,7 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${tarif_ht_livraison}
           END ;;
+    view_label: "Web"
   }
 
 
@@ -543,6 +592,7 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${total_ht}
           END ;;
+    view_label: "Web"
   }
 
     measure: sum_CA_drive_select_mois_N1 {
@@ -550,6 +600,7 @@ select
       value_format_name: eur
       label: "CA Drive n-1"
       sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
+      view_label: "Web"
     }
 
     measure: sum_Nb_cde_drive_select_mois_N1 {
@@ -560,13 +611,14 @@ select
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nbre_commande}
           END ;;
+      view_label: "Web"
     }
 
     ############## calcul des KPIs à n-2 de la période sélectionnée au niveau du filtre ##############
 
 
     measure: sum_CA_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "CA HT n-2"
       type: sum
       value_format_name: eur
@@ -574,10 +626,12 @@ select
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-2"
     }
 
     measure: sum_marge_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "Marge n-2"
       type: sum
       value_format_name: eur
@@ -585,10 +639,12 @@ select
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-2"
     }
 
     measure: sum_nb_ticket_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "Nb clts n-2"
       type: sum
       value_format_name: decimal_0
@@ -599,13 +655,16 @@ select
     }
 
     measure: sum_nb_jour_select_mois_N2 {
-      hidden: yes
+      hidden: no
+      label: "Nb jr n-2"
       type: count_distinct
       value_format_name: decimal_0
       sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${dte_vte_date}
           END ;;
+      view_label: "Ventes"
+      group_label: "Année N-2"
     }
 
     measure: sum_val_achat_gbl_select_mois_N2 {
@@ -625,6 +684,7 @@ select
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${tarif_ht_livraison}
           END ;;
+    view_label: "Web"
   }
 
   measure: sum_total_ht_select_mois_N2 {
@@ -634,18 +694,20 @@ select
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${total_ht}
           END ;;
+    view_label: "Web"
   }
 
     measure: sum_CA_drive_select_mois_N2 {
-      hidden: yes
+      hidden: no
       type: number
       value_format_name: eur
       label: "CA Drive n-2"
       sql: ${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2} ;;
+      view_label: "Web"
     }
 
     measure: sum_Nb_cde_drive_select_mois_N2 {
-      hidden: yes
+      hidden: no
       type: sum
       value_format_name: decimal_0
       label: "Commande Drive n-2"
@@ -653,6 +715,7 @@ select
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)   {% endcondition %}
             THEN ${nbre_commande}
           END ;;
+      view_label: "Web"
     }
 
 
@@ -660,7 +723,7 @@ select
 
 
     measure: sum_CA_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "CA HT n-3"
       type: sum
       value_format_name: eur
@@ -671,7 +734,7 @@ select
     }
 
     measure: sum_marge_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "Marge n-3"
       type: sum
       value_format_name: eur
@@ -682,7 +745,7 @@ select
     }
 
     measure: sum_nb_ticket_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "Nb clts n-3"
       type: sum
       value_format_name: decimal_0
@@ -742,6 +805,8 @@ select
       value_format_name: percent_2
       type: number
       sql: 1.0 * ${sum_marge_select_mois}/NULLIF(${sum_CA_select_mois},0);;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: panier_moyen_select_mois {
@@ -777,7 +842,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "CA/jr n-1"
       value_format_name: eur
       type: number
@@ -792,7 +857,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "% marge n-1"
       value_format_name: percent_2
       type: number
@@ -800,7 +865,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "PM n-1"
       value_format_name: decimal_2
       type: number
@@ -820,7 +885,7 @@ select
 
 
     measure: client_par_jour_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "clts/jr n-2"
       value_format_name: decimal_0
       type: number
@@ -828,7 +893,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "CA/jr n-2"
       value_format_name: eur
       type: number
@@ -836,7 +901,7 @@ select
     }
 
     measure: ca_par_m_carre_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "CA/m² n-2"
       value_format_name: eur
       type: number
@@ -844,7 +909,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "% marge n-2"
       value_format_name: percent_2
       type: number
@@ -852,7 +917,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "PM n-2"
       value_format_name: decimal_2
       type: number
@@ -860,7 +925,7 @@ select
     }
 
     measure: marge_par_client_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "marge/clts n-2"
       value_format_name: decimal_2
       type: number
@@ -873,7 +938,7 @@ select
 
 
     measure: client_par_jour_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "clts/jr n-3"
       value_format_name: decimal_0
       type: number
@@ -881,7 +946,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "CA/jr n-3"
       value_format_name: eur
       type: number
@@ -889,7 +954,7 @@ select
     }
 
     measure: ca_par_m_carre_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "CA/m² n-3"
       value_format_name: eur
       type: number
@@ -897,7 +962,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "% marge n-3"
       value_format_name: percent_2
       type: number
@@ -905,7 +970,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "PM n-3"
       value_format_name: decimal_2
       type: number
@@ -913,7 +978,7 @@ select
     }
 
     measure: marge_par_client_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "marge/clts n-3"
       value_format_name: decimal_2
       type: number
@@ -929,6 +994,8 @@ select
       value_format_name: percent_2
       type: number
       sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: prog_CA_Drive_select_mois {
@@ -936,6 +1003,8 @@ select
       value_format_name: percent_2
       type: number
       sql: 1.0 * (${sum_CA_drive_select_mois}-${sum_CA_drive_select_mois_N1})/NULLIF(${sum_CA_drive_select_mois_N1},0);;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: prog_marge_select_mois {
@@ -943,6 +1012,8 @@ select
       value_format_name: percent_2
       type: number
       sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
+      view_label: "Ventes"
+      group_label: "Année N"
     }
 
     measure: prog_taux_marge_select_mois {
@@ -1006,7 +1077,7 @@ select
     }
 
     measure: prog_marge_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog marge n-1"
       value_format_name: percent_2
       type: number
@@ -1014,7 +1085,7 @@ select
     }
 
     measure: prog_ca_par_m_carre_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog CA/m² n-1"
       value_format_name: percent_2
       type: number
@@ -1022,7 +1093,7 @@ select
     }
 
     measure: prog_nb_Clients_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog nb clts n-1"
       value_format_name: percent_2
       type: number
@@ -1030,7 +1101,7 @@ select
     }
 
     measure: prog_taux_marge_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog %marge n-1"
       value_format_name: percent_2
       type: number
@@ -1038,7 +1109,7 @@ select
     }
 
     measure: prog_Clients_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog clts/jr n-1"
       value_format_name: percent_2
       type: number
@@ -1046,7 +1117,7 @@ select
     }
 
     measure: prog_ca_jour_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog CA/jr n-1"
       value_format_name: percent_2
       type: number
@@ -1054,7 +1125,7 @@ select
     }
 
     measure: prog_PM_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog PM n-1"
       value_format_name: percent_2
       type: number
@@ -1062,7 +1133,7 @@ select
     }
 
     measure: prog_marge_client_select_mois_N1 {
-      hidden: yes
+      hidden: no
       label: "prog marge/clt n-1"
       value_format_name: percent_2
       type: number
@@ -1073,7 +1144,7 @@ select
     ######### Calcul des progressions n-2 vs n-3 à la péridode sélectionée au niveau du filtre #########
 
     measure:prog_ca_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog CA n-2"
       value_format_name: percent_2
       type: number
@@ -1081,7 +1152,7 @@ select
     }
 
     measure: prog_marge_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog marge n-2"
       value_format_name: percent_2
       type: number
@@ -1089,7 +1160,7 @@ select
     }
 
     measure: prog_ca_par_m_carre_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog CA/m² n-2"
       value_format_name: percent_2
       type: number
@@ -1097,7 +1168,7 @@ select
     }
 
     measure: prog_taux_marge_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog %marge n-2"
       value_format_name: percent_2
       type: number
@@ -1105,7 +1176,7 @@ select
     }
 
     measure: prog_Clients_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog clts/jr n-2"
       value_format_name: percent_2
       type: number
@@ -1113,7 +1184,7 @@ select
     }
 
     measure: prog_nb_Clients_select_mois_N3 {
-      hidden: yes
+      hidden: no
       label: "prog nb clts n-2"
       value_format_name: percent_2
       type: number
@@ -1121,7 +1192,7 @@ select
     }
 
     measure: prog_ca_jour_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog CA/jr n-2"
       value_format_name: percent_2
       type: number
@@ -1129,7 +1200,7 @@ select
     }
 
     measure: prog_PM_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog PM n-2"
       value_format_name: percent_2
       type: number
@@ -1137,7 +1208,7 @@ select
     }
 
     measure: prog_marge_client_select_mois_N2 {
-      hidden: yes
+      hidden: no
       label: "prog marge/clt n-2"
       value_format_name: percent_2
       type: number
