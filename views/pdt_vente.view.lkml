@@ -290,6 +290,7 @@ select
   }
 
     dimension: categorie {
+      hidden: yes
       label: "Catégorie"
       sql:
         CASE
@@ -482,6 +483,7 @@ select
     }
 
     measure: sum_marge_select_mois_N1 {
+      hidden: yes
       label: "Marge n-1"
       type: sum
       value_format_name: eur
@@ -492,6 +494,7 @@ select
     }
 
     measure: sum_nb_ticket_select_mois_N1 {
+      hidden: yes
       label: "Nb clts n-1"
       type: sum
       value_format_name: decimal_0
@@ -502,6 +505,7 @@ select
     }
 
     measure: sum_nb_jour_select_mois_N1 {
+      hidden: yes
       label: "Nb jr n-1"
       type: count_distinct
       value_format_name: decimal_0
@@ -562,6 +566,7 @@ select
 
 
     measure: sum_CA_select_mois_N2 {
+      hidden: yes
       label: "CA HT n-2"
       type: sum
       value_format_name: eur
@@ -572,6 +577,7 @@ select
     }
 
     measure: sum_marge_select_mois_N2 {
+      hidden: yes
       label: "Marge n-2"
       type: sum
       value_format_name: eur
@@ -582,6 +588,7 @@ select
     }
 
     measure: sum_nb_ticket_select_mois_N2 {
+      hidden: yes
       label: "Nb clts n-2"
       type: sum
       value_format_name: decimal_0
@@ -630,6 +637,7 @@ select
   }
 
     measure: sum_CA_drive_select_mois_N2 {
+      hidden: yes
       type: number
       value_format_name: eur
       label: "CA Drive n-2"
@@ -637,6 +645,7 @@ select
     }
 
     measure: sum_Nb_cde_drive_select_mois_N2 {
+      hidden: yes
       type: sum
       value_format_name: decimal_0
       label: "Commande Drive n-2"
@@ -651,6 +660,7 @@ select
 
 
     measure: sum_CA_select_mois_N3 {
+      hidden: yes
       label: "CA HT n-3"
       type: sum
       value_format_name: eur
@@ -661,6 +671,7 @@ select
     }
 
     measure: sum_marge_select_mois_N3 {
+      hidden: yes
       label: "Marge n-3"
       type: sum
       value_format_name: eur
@@ -671,6 +682,7 @@ select
     }
 
     measure: sum_nb_ticket_select_mois_N3 {
+      hidden: yes
       label: "Nb clts n-3"
       type: sum
       value_format_name: decimal_0
@@ -765,6 +777,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N1 {
+      hidden: yes
       label: "CA/jr n-1"
       value_format_name: eur
       type: number
@@ -779,6 +792,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N1 {
+      hidden: yes
       label: "% marge n-1"
       value_format_name: percent_2
       type: number
@@ -786,6 +800,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N1 {
+      hidden: yes
       label: "PM n-1"
       value_format_name: decimal_2
       type: number
@@ -805,6 +820,7 @@ select
 
 
     measure: client_par_jour_select_mois_N2 {
+      hidden: yes
       label: "clts/jr n-2"
       value_format_name: decimal_0
       type: number
@@ -812,6 +828,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N2 {
+      hidden: yes
       label: "CA/jr n-2"
       value_format_name: eur
       type: number
@@ -819,6 +836,7 @@ select
     }
 
     measure: ca_par_m_carre_select_mois_N2 {
+      hidden: yes
       label: "CA/m² n-2"
       value_format_name: eur
       type: number
@@ -826,6 +844,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N2 {
+      hidden: yes
       label: "% marge n-2"
       value_format_name: percent_2
       type: number
@@ -833,6 +852,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N2 {
+      hidden: yes
       label: "PM n-2"
       value_format_name: decimal_2
       type: number
@@ -840,6 +860,7 @@ select
     }
 
     measure: marge_par_client_select_mois_N2 {
+      hidden: yes
       label: "marge/clts n-2"
       value_format_name: decimal_2
       type: number
@@ -852,6 +873,7 @@ select
 
 
     measure: client_par_jour_select_mois_N3 {
+      hidden: yes
       label: "clts/jr n-3"
       value_format_name: decimal_0
       type: number
@@ -859,6 +881,7 @@ select
     }
 
     measure: ca_par_jour_select_mois_N3 {
+      hidden: yes
       label: "CA/jr n-3"
       value_format_name: eur
       type: number
@@ -866,6 +889,7 @@ select
     }
 
     measure: ca_par_m_carre_select_mois_N3 {
+      hidden: yes
       label: "CA/m² n-3"
       value_format_name: eur
       type: number
@@ -873,6 +897,7 @@ select
     }
 
     measure: taux_de_marge_select_mois_N3 {
+      hidden: yes
       label: "% marge n-3"
       value_format_name: percent_2
       type: number
@@ -880,6 +905,7 @@ select
     }
 
     measure: panier_moyen_select_mois_N3 {
+      hidden: yes
       label: "PM n-3"
       value_format_name: decimal_2
       type: number
@@ -887,6 +913,7 @@ select
     }
 
     measure: marge_par_client_select_mois_N3 {
+      hidden: yes
       label: "marge/clts n-3"
       value_format_name: decimal_2
       type: number
@@ -979,6 +1006,7 @@ select
     }
 
     measure: prog_marge_select_mois_N1 {
+      hidden: yes
       label: "prog marge n-1"
       value_format_name: percent_2
       type: number
@@ -986,6 +1014,7 @@ select
     }
 
     measure: prog_ca_par_m_carre_select_mois_N1 {
+      hidden: yes
       label: "prog CA/m² n-1"
       value_format_name: percent_2
       type: number
@@ -993,6 +1022,7 @@ select
     }
 
     measure: prog_nb_Clients_select_mois_N1 {
+      hidden: yes
       label: "prog nb clts n-1"
       value_format_name: percent_2
       type: number
@@ -1000,6 +1030,7 @@ select
     }
 
     measure: prog_taux_marge_select_mois_N1 {
+      hidden: yes
       label: "prog %marge n-1"
       value_format_name: percent_2
       type: number
@@ -1007,6 +1038,7 @@ select
     }
 
     measure: prog_Clients_select_mois_N1 {
+      hidden: yes
       label: "prog clts/jr n-1"
       value_format_name: percent_2
       type: number
@@ -1014,6 +1046,7 @@ select
     }
 
     measure: prog_ca_jour_select_mois_N1 {
+      hidden: yes
       label: "prog CA/jr n-1"
       value_format_name: percent_2
       type: number
@@ -1021,6 +1054,7 @@ select
     }
 
     measure: prog_PM_select_mois_N1 {
+      hidden: yes
       label: "prog PM n-1"
       value_format_name: percent_2
       type: number
@@ -1028,6 +1062,7 @@ select
     }
 
     measure: prog_marge_client_select_mois_N1 {
+      hidden: yes
       label: "prog marge/clt n-1"
       value_format_name: percent_2
       type: number
@@ -1038,6 +1073,7 @@ select
     ######### Calcul des progressions n-2 vs n-3 à la péridode sélectionée au niveau du filtre #########
 
     measure:prog_ca_select_mois_N2 {
+      hidden: yes
       label: "prog CA n-2"
       value_format_name: percent_2
       type: number
@@ -1045,6 +1081,7 @@ select
     }
 
     measure: prog_marge_select_mois_N2 {
+      hidden: yes
       label: "prog marge n-2"
       value_format_name: percent_2
       type: number
@@ -1052,6 +1089,7 @@ select
     }
 
     measure: prog_ca_par_m_carre_select_mois_N2 {
+      hidden: yes
       label: "prog CA/m² n-2"
       value_format_name: percent_2
       type: number
@@ -1059,6 +1097,7 @@ select
     }
 
     measure: prog_taux_marge_select_mois_N2 {
+      hidden: yes
       label: "prog %marge n-2"
       value_format_name: percent_2
       type: number
@@ -1066,6 +1105,7 @@ select
     }
 
     measure: prog_Clients_select_mois_N2 {
+      hidden: yes
       label: "prog clts/jr n-2"
       value_format_name: percent_2
       type: number
@@ -1073,6 +1113,7 @@ select
     }
 
     measure: prog_nb_Clients_select_mois_N3 {
+      hidden: yes
       label: "prog nb clts n-2"
       value_format_name: percent_2
       type: number
@@ -1080,6 +1121,7 @@ select
     }
 
     measure: prog_ca_jour_select_mois_N2 {
+      hidden: yes
       label: "prog CA/jr n-2"
       value_format_name: percent_2
       type: number
@@ -1087,6 +1129,7 @@ select
     }
 
     measure: prog_PM_select_mois_N2 {
+      hidden: yes
       label: "prog PM n-2"
       value_format_name: percent_2
       type: number
@@ -1094,6 +1137,7 @@ select
     }
 
     measure: prog_marge_client_select_mois_N2 {
+      hidden: yes
       label: "prog marge/clt n-2"
       value_format_name: percent_2
       type: number
