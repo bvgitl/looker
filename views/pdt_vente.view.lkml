@@ -110,6 +110,7 @@ select
     }
 
     measure: count {
+      hidden: yes
       type: count
       drill_fields: [detail*]
     }
@@ -160,6 +161,7 @@ select
     dimension: region {
       type: string
       sql: ${TABLE}.Region ;;
+      view_label: "Magasins"
     }
 
     dimension: surface {
@@ -181,6 +183,7 @@ select
     }
 
     dimension: cd_site_ext {
+      hidden: yes
       type: string
       sql: ${TABLE}.CD_Site_Ext ;;
     }
