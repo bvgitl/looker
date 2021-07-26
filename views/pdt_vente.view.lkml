@@ -319,17 +319,23 @@ select
       view_label: "Tracts"
     }
 
-    dimension: date_de_debut {
-    type: string
-    sql: ${TABLE}.Date_de_debut ;;
-    view_label: "Tracts_Periode"
-  }
+    dimension_group: date_de_debut {
+      type: time
+      timeframes: [raw,date,year]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.Date_de_debut ;;
+      view_label: "Tracts"
+    }
 
-    dimension: date_de_fin {
-    type: string
-    sql: ${TABLE}.Date_de_fin ;;
-    view_label: "Tracts_Periode"
-  }
+    dimension_group: date_de_fin {
+      type: time
+      timeframes: [raw,date,year]
+      convert_tz: no
+      datatype: date
+      sql: ${TABLE}.Date_de_fin ;;
+      view_label: "Tracts"
+    }
 
     dimension: total_ht {
       type: number
