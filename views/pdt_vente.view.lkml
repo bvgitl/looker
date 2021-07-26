@@ -104,7 +104,7 @@ select
 
   (SELECT
       cd_magasin,
-      CAST(DATETIME_TRUNC(dte_commande, DAY) AS DATE) AS dte_cde,
+      CAST(DATETIME_TRUNC(DATETIME(dte_commande), DAY) AS DATE) AS dte_cde,
       count(distinct(cd_commande)) as Nbre_commande ,
       sum(Tarif_HT_livraison) as Tarif_HT_livraison,
       sum(Total_HT) as Total_HT
