@@ -156,13 +156,13 @@ FULL JOIN
     SELECT
       p.cd_produit as cd_produit,
       c.cd_magasin as cd_magasin,
-      CAST(DATETIME_TRUNC(c.dte_commande, DAY) AS DATE) AS dte_cde,
+      CAST(DATETIME_TRUNC(DATETIME(c.dte_commande), DAY) AS DATE) AS dte_cde,
       count(distinct(p.cd_commande)) as Nbre_commande ,
       sum(p.Quantite_commandee) as Quantite_commandee,
       sum(p.Tarif_Produit_HT) as Tarif_Produit_HT
       FROM `bv-prod.Matillion_Perm_Table.Produit_Commande` p
       INNER JOIN  `bv-prod.Matillion_Perm_Table.COMMANDES` c
-      ON p.cd_commande = c.cd_commande
+      ON p.cd_commande = cast(c.cd_commande as INT64)
       group by 1,2,3
 ) w
 
