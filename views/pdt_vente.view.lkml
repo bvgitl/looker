@@ -96,8 +96,8 @@ select
   ON m.CD_Logiciel = v.CD_Site_Ext and day = v.Dte_Vte
 
 
-  LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
-    ON  m.cd_magasin = t.code_bv
+  LEFT JOIN `bv-prod.Matillion_Perm_Table.TRACTS` t
+    ON  m.cd_magasin = t.code_bv and day between t.Date_de_debut and t.Date_de_fin
 
 
   LEFT JOIN
@@ -265,7 +265,11 @@ select
 
     dimension: qte_tracts {
       type: number
-      sql: ${TABLE}.Qte_tracts ;;
+      sql: CASE
+            WHEN {% condition date_filter %} CAST(${date_de_debut_date} AS TIMESTAMP)  {% endcondition %}
+                or {% condition date_filter %} CAST(${date_de_fin_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.Qte_tracts
+          END ;;
       view_label: "Tracts"
     }
 
@@ -296,8 +300,12 @@ select
     dimension: Digital_tract {
     type: number
     sql: CASE
-            WHEN ${web} = 1 or ${booster_bonial} = 1 THEN 1
-          END ;;
+            WHEN {% condition date_filter %} CAST(${date_de_debut_date} AS TIMESTAMP)  {% endcondition %}
+                or {% condition date_filter %} CAST(${date_de_fin_date} AS TIMESTAMP)  {% endcondition %}
+            THEN (CASE
+                    WHEN ${web} = 1 or ${booster_bonial} = 1 THEN 1
+                  END )
+        END;;
       view_label: "Tracts"
     }
 
