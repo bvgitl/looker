@@ -14,13 +14,13 @@ view: log_bcp {
 
   dimension: moisfichier {
     type: string
-    sql: ${TABLE}.magasin ;;
-  }
+    sql: substring(${datefichier},5,2) ;;
+    }
 
   dimension: jourfichier {
     type: string
-    sql: ${TABLE}.magasin ;;
-  }
+    sql: substring(${datefichier},7,4) ;;
+    }
 
   dimension: magasin {
     type: string
