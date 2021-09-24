@@ -7,6 +7,21 @@ view: log_bcp {
     sql: ${TABLE}.magasin ;;
   }
 
+  dimension: anneefichier {
+    type: string
+    sql: substring(${datefichier},1,4) ;;
+  }
+
+  dimension: moisfichier {
+    type: string
+    sql: ${TABLE}.magasin ;;
+  }
+
+  dimension: jourfichier {
+    type: string
+    sql: ${TABLE}.magasin ;;
+  }
+
   dimension: magasin {
     type: string
     sql: ${TABLE}.datefichier ;;
