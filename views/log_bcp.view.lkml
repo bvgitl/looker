@@ -4,12 +4,12 @@ view: log_bcp {
 
   dimension: datefichier {
     type: string
-    sql: ${TABLE}.datefichier ;;
+    sql: ${TABLE}.magasin ;;
   }
 
   dimension: magasin {
     type: string
-    sql: ${TABLE}.magasin ;;
+    sql: ${TABLE}.datefichier ;;
   }
 
   dimension: nomfichier {
