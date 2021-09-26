@@ -1,4 +1,4 @@
-view: lob_bcp_landing {
+view: log_bcp_landing {
   sql_table_name: `bv-prod.Matillion_Perm_Table.BCP_Landind_Prod`
     ;;
 
