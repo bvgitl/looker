@@ -9,6 +9,7 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 
 explore : test {}
 
+explore: ref_client_mag {}
 
 # explore: order_items {
 #   join: orders {
