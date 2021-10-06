@@ -1,10 +1,15 @@
-view: log_bcp {
-  sql_table_name: `bv-prod.Matillion_Perm_Table.LOG_BCP`
+view: log_bcp_landing {
+  sql_table_name: `bv-prod.Matillion_Perm_Table.BCP_Landind_Prod`
     ;;
+
+  dimension: cd_magasin {
+    type: string
+    sql: ${TABLE}.cd_magasin ;;
+  }
 
   dimension: datefichier {
     type: string
-    sql: ${TABLE}.magasin ;;
+    sql: ${TABLE}.date_fichier ;;
   }
 
   dimension: anneefichier {
@@ -15,21 +20,16 @@ view: log_bcp {
   dimension: moisfichier {
     type: string
     sql: substring(${datefichier},5,2) ;;
-    }
+  }
 
   dimension: jourfichier {
     type: string
     sql: substring(${datefichier},7,4) ;;
-    }
-
-  dimension: magasin {
-    type: string
-    sql: ${TABLE}.datefichier ;;
   }
 
-  dimension: nomfichier {
+  dimension: nom_fichier {
     type: string
-    sql: ${TABLE}.nomfichier ;;
+    sql: ${TABLE}.nom_fichier ;;
   }
 
   measure: count {

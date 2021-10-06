@@ -27,7 +27,7 @@ explore: google_sheet {}
 explore: sql_runner_query {}
 
 explore: log_bcp {}
-
+explore: log_bcp_landing {}
 
 explore: tf_vente {
   join: magasins {
