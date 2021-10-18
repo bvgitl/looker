@@ -1,6 +1,7 @@
 view: ref_cmd_produit {
   sql_table_name: `bv-prod.looker_pg.ref_cmd_produit`
     ;;
+
   drill_fields: [customer_id,ca,cd_commande,cd_magasin,cd_produit,dte_commande_date,
     type_client,format,methode_livraison,optin_email,quantite_commandee]
 
