@@ -26,6 +26,7 @@ view: ref_cmd_produit {
 
   dimension: customer_id {
     type: string
+    primary_key: yes
     sql: ${TABLE}.customer_id ;;
   }
 
