@@ -17,6 +17,7 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
+explore : ref_client_mag {}
 
 explore: pdt_vente {}
 

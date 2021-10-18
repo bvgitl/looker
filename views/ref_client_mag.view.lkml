@@ -1,5 +1,11 @@
 view: ref_client_mag {
-  sql_table_name: `bv-prod.looker_pg.ref_client_mag`;;
+  sql_table_name: `bv-prod.looker_pg.ref_client_mag`
+    ;;
+
+  dimension: anciennete_mois {
+    type: number
+    sql: ${TABLE}.anciennete_mois ;;
+  }
 
   dimension: cd_magasin {
     type: string
@@ -13,7 +19,6 @@ view: ref_client_mag {
 
   dimension: customer_id {
     type: string
-    primary_key: yes
     sql: ${TABLE}.customer_id ;;
   }
 
