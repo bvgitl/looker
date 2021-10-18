@@ -1,7 +1,7 @@
 view: ref_client_mag {
   sql_table_name: `bv-prod.looker_pg.ref_client_mag`
     ;;
-  drill_fields: [anciennete_mois,cd_magasin,civilite,customer_id,
+  drill_fields: [civilite,anciennete_mois,cd_magasin,customer_id,
                 date_creation_date,email,format,nom,optin_email,
                 optin_sms,type_client,count,date_creation_date]
 
