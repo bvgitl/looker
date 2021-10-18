@@ -1,6 +1,9 @@
 view: ref_client_mag {
   sql_table_name: `bv-prod.looker_pg.ref_client_mag`
     ;;
+  drill_fields: [anciennete_mois,cd_magasin,civilite,customer_id,
+                date_creation_date,email,format,nom,optin_email,
+                optin_sms,type_client]
 
   dimension: anciennete_mois {
     type: number
@@ -18,6 +21,7 @@ view: ref_client_mag {
   }
 
   dimension: customer_id {
+    primary_key: yes
     type: string
     sql: ${TABLE}.customer_id ;;
   }
