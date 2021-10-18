@@ -3,7 +3,7 @@ view: ref_client_mag {
     ;;
   drill_fields: [anciennete_mois,cd_magasin,civilite,customer_id,
                 date_creation_date,email,format,nom,optin_email,
-                optin_sms,type_client]
+                optin_sms,type_client,count,date_creation_date]
 
   dimension: anciennete_mois {
     type: number
