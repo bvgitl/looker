@@ -2,9 +2,6 @@ view: ref_cmd_produit {
   sql_table_name: `bv-prod.looker_pg.ref_cmd_produit`
     ;;
 
-  drill_fields: [customer_id,ca,cd_commande,cd_magasin,cd_produit,dte_commande_date,
-    type_client,format,methode_livraison,optin_email,quantite_commandee]
-
   dimension: ca {
     type: number
     sql: ${TABLE}.ca ;;
@@ -20,14 +17,8 @@ view: ref_cmd_produit {
     sql: ${TABLE}.cd_magasin ;;
   }
 
-  dimension: cd_produit {
-    type: string
-    sql: ${TABLE}.cd_produit ;;
-  }
-
   dimension: customer_id {
     type: string
-    primary_key: yes
     sql: ${TABLE}.customer_id ;;
   }
 
@@ -55,6 +46,16 @@ view: ref_cmd_produit {
     sql: ${TABLE}.methode_livraison ;;
   }
 
+  dimension: nb_article {
+    type: number
+    sql: ${TABLE}.nb_article ;;
+  }
+
+  dimension: nb_ref_produit {
+    type: number
+    sql: ${TABLE}.nb_ref_produit ;;
+  }
+
   dimension: optin_email {
     type: string
     sql: ${TABLE}.optin_email ;;
@@ -63,11 +64,6 @@ view: ref_cmd_produit {
   dimension: optin_sms {
     type: string
     sql: ${TABLE}.optin_sms ;;
-  }
-
-  dimension: quantite_commandee {
-    type: number
-    sql: ${TABLE}.Quantite_commandee ;;
   }
 
   dimension: type_client {
