@@ -19,6 +19,8 @@ persist_with: bv_vente_datagroup
 
 explore : ref_client_mag {}
 explore : ref_cmd_produit {}
+explore : ref_campagne {}
+
 
 explore: pdt_vente {}
 
