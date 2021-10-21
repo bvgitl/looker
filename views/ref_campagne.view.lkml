@@ -2,6 +2,8 @@ view: ref_campagne {
   sql_table_name: `bv-prod.looker_pg.ref_campagne`
     ;;
 
+  drill_fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
+
   dimension: bounce_type {
     type: string
     sql: ${TABLE}.bounce_type ;;
