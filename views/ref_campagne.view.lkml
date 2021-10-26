@@ -129,7 +129,7 @@ view: ref_campagne {
 
   measure: count {
     type: count
-    drill_fields: [category_name, camp_name]
+    drill_fields: [sheet_client*]
   }
 
   set: sheet_client {
