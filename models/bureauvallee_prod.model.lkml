@@ -17,6 +17,7 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
+explore : factu_campagne {}
 explore : ref_client_mag {}
 explore : ref_cmd_produit {}
 explore : ref_campagne {}
