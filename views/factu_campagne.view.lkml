@@ -47,11 +47,11 @@ view: factu_campagne {
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
-    drill_fields: [customer_id,camp_name,date_creation_date,email,id_mag_rattachement,optin_email,type_client]
+   # drill_fields: [customer_id,camp_name,date_creation_date,email,id_mag_rattachement,optin_email,type_client]
   }
 
   measure: count {
     type: count
-    drill_fields: [camp_name]
+    drill_fields: [customer_id,camp_name,date_creation_date,email,id_mag_rattachement,optin_email,type_client]
   }
 }
