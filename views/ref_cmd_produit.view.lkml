@@ -2,28 +2,30 @@ view: ref_cmd_produit {
   sql_table_name: `bv-prod.looker_pg.ref_cmd_produit`
     ;;
 
+  drill_fields: [cd_commande,ca,count,customer_id,dte_commande_date,cd_magasin,format,type_client,nb_article,nb_ref_produit]
+
   dimension: ca {
     type: number
     sql: ${TABLE}.ca ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: cd_commande {
     type: string
     sql: ${TABLE}.cd_commande ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.cd_magasin ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension_group: dte_commande {
@@ -38,56 +40,56 @@ view: ref_cmd_produit {
       year
     ]
     sql: cast (${TABLE}.dte_commande as TIMESTAMP);;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: format {
     type: string
     sql: ${TABLE}.Format ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: methode_livraison {
     type: string
     sql: ${TABLE}.methode_livraison ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: nb_article {
     type: number
     sql: ${TABLE}.nb_article ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: nb_ref_produit {
     type: number
     sql: ${TABLE}.nb_ref_produit ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: optin_email {
     type: string
     sql: ${TABLE}.optin_email ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: optin_sms {
     type: string
     sql: ${TABLE}.optin_sms ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
-    drill_fields: [sheet_client*]
+    #drill_fields: [sheet_client*]
   }
 
   measure: count {
     type: count
-    drill_fields: [sheet_client*]
+    drill_fields: [customer_id]
   }
-  set :sheet_client {
-  fields :  [cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
-  }
+  #set :sheet_client {
+  #fields :  [cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
+  #}
 }
