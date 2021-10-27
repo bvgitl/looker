@@ -38,7 +38,7 @@ view: ref_client_mag {
       quarter,
       year
     ]
-    sql: ${TABLE}.date_creation ;;
+    sql: cast(${TABLE}.date_creation as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
