@@ -82,7 +82,7 @@ view: ref_cmd_produit {
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
-    #drill_fields: [sheet_client*]
+    drill_fields: [sheet_client*]
   }
 
   measure: count {
