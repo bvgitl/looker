@@ -87,6 +87,6 @@ view: ref_cmd_produit {
     drill_fields: [sheet_cmd_pdt*]
   }
   set :sheet_cmd_pdt {
-  fields :  [type_client,cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
+  fields :  [cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
   }
 }
