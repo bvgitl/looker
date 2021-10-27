@@ -2,7 +2,7 @@ view: ref_cmd_produit {
   sql_table_name: `bv-prod.looker_pg.ref_cmd_produit`
     ;;
 
-  drill_fields: [cd_commande,ca,count,customer_id,dte_commande_date,cd_magasin,format,type_client,nb_article,nb_ref_produit]
+  #drill_fields: [cd_commande,ca,count,customer_id,dte_commande_date,cd_magasin,format,type_client,nb_article,nb_ref_produit]
 
   dimension: ca {
     type: number
@@ -87,9 +87,9 @@ view: ref_cmd_produit {
 
   measure: count {
     type: count
-    drill_fields: [customer_id]
+    drill_fields: [sheet_client*]
   }
-  #set :sheet_client {
-  #fields :  [cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
-  #}
+  set :sheet_client {
+  fields :  [cd_commande,cd_magasin,ca,customer_id,dte_commande_date,nb_article,count]
+  }
 }
