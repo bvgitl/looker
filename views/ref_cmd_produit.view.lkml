@@ -90,6 +90,6 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
   set :sheet_client {
-  fields :  [ca,cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,nb_article,nb_ref_produit,optin_email,optin_sms,type_client]
+  fields :  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, count]
   }
 }
