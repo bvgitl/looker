@@ -17,10 +17,18 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
-explore : factu_campagne {}
-explore : ref_client_mag {}
-explore : ref_cmd_produit {}
-explore : ref_campagne {}
+explore : factu_campagne {
+  fields: [ALL_FIELDS*]
+}
+explore : ref_client_mag {
+  fields: [ALL_FIELDS*]
+}
+explore : ref_cmd_produit {
+  fields: [ALL_FIELDS*]
+}
+explore : ref_campagne {
+  fields: [ALL_FIELDS*]
+}
 
 
 explore: pdt_vente {}
