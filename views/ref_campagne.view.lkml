@@ -51,7 +51,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_bounce_time ;;
+    sql: cast(${TABLE}.dt_bounce_time as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -81,7 +81,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_send_time ;;
+    sql: cast(${TABLE}.dt_send_time as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
