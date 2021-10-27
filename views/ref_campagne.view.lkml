@@ -66,7 +66,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_click_time ;;
+    sql: cast (${TABLE}.dt_click_time as TIMESTAMP ) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -96,7 +96,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_unsub_time ;;
+    sql: cast(${TABLE}.dt_unsub_time as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -111,7 +111,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dte_open ;;
+    sql: cast(${TABLE}.dte_open as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
