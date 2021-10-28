@@ -109,7 +109,32 @@ view: ref_cmd_produit {
     sql:  ${somme_ca} / ${customer_count} ;;
   }
 
+  measure: pm_client {
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  ${somme_ca} / ${cmd_count} ;;
+  }
+
+  measure: freq_achat {
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  ${cmd_count} / ${customer_count} ;;
+  }
+
+  measure: moy_article {
+    type: average
+    drill_fields: [sheet_client*]
+    sql:  ${TABLE}.nb_article ;;
+  }
+
+  measure: moy_reference {
+    type: average
+    drill_fields: [sheet_client*]
+    sql:  ${TABLE}.nb_ref_produit ;;
+  }
   set :sheet_client {
-  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, customer_count,somme_ca,cmd_count,ca_client]
+  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,
+    methode_livraison,type_client, customer_count,somme_ca,cmd_count,ca_client,
+    pm_client,freq_achat,moy_article,moy_reference]
   }
 }
