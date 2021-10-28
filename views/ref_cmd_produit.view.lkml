@@ -136,8 +136,8 @@ view: ref_cmd_produit {
   measure: cat_cmd_client {
     type: number
     drill_fields: [sheet_client*]
-    sql:case(when $(${cmd_count} = 1, 1),
-              when $(${cmd_count} = 2, 2),
+    sql:case(when( $(${cmd_count} = 1), 1),
+              when ($(${cmd_count} = 2), 2),
               3);;
   }
 
