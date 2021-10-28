@@ -110,6 +110,6 @@ view: ref_cmd_produit {
   }
 
   set :sheet_client {
-  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, customer_count,somme_ca,cmd_count]
+  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, customer_count,somme_ca,cmd_count,ca_client]
   }
 }
