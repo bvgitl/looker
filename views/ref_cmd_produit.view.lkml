@@ -85,13 +85,31 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
-  measure: count {
+  measure: customer_count {
     type: count_distinct
     drill_fields: [sheet_client*]
     sql:  ${TABLE}.customer_id ;;
   }
 
+  measure: cmd_count {
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql:  ${TABLE}.cd_commande ;;
+  }
+
+  measure: somme_ca {
+    type: sum
+    drill_fields: [sheet_client*]
+    sql:  ${TABLE}.ca ;;
+  }
+
+  measure: ca_client {
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  ${somme_ca} / ${customer_count} ;;
+  }
+
   set :sheet_client {
-  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, count]
+  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, customer_count,somme_ca,cmd_count]
   }
 }
