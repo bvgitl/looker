@@ -138,9 +138,9 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
     sql:
       CASE
-        WHEN ${cmd_count} = 1  THEN  1
-        WHEN ${cmd_count} = 2  THEN  2
-        ELSE 3 END;;
+        WHEN ${cmd_count} = 1  THEN  ${customer_count}
+        WHEN ${cmd_count} = 2  THEN  ${customer_count}
+        ELSE ${customer_count} END;;
   }
 
 
