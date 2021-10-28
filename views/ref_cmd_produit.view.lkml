@@ -86,10 +86,12 @@ view: ref_cmd_produit {
   }
 
   measure: count {
-    type: count
+    type: count_distinct
     drill_fields: [sheet_client*]
+    sql:  ${TABLE}.customer_id ;;
   }
+
   set :sheet_client {
-  fields :  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, count]
+  fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,methode_livraison,type_client, count]
   }
 }
