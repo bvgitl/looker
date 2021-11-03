@@ -30,6 +30,7 @@ explore : ref_campagne {
   #fields: [ALL_FIELDS*]
 }
 
+explore: ref_client_cmd {}
 
 explore: pdt_vente {}
 
