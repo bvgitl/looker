@@ -134,13 +134,14 @@ view: ref_cmd_produit {
   }
 
   measure: cat_cmd_client {
-    type: number
+    type: string
     drill_fields: [sheet_client*]
     sql:
       CASE
         WHEN ${cmd_count} = 1  THEN  "Petit"
         WHEN ${cmd_count} = 2  THEN  "Moyen"
-        when ${cmd_count} >= 3 THEN  "Gros" END;;
+        when ${cmd_count} >= 3 THEN  "Gros"
+        END;;
   }
 
 
