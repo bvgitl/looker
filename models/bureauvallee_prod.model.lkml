@@ -30,7 +30,7 @@ explore : ref_campagne {
   #fields: [ALL_FIELDS*]
 }
 
-explore: anciennete_mois {}
+
 
 explore: ref_client_cmd {}
 
