@@ -12,6 +12,20 @@ view: ref_client_cmd {
     sql: ${TABLE}.customer_id ;;
   }
 
+  dimension_group: dte_commande {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.dte_commande ;;
+  }
+
   dimension: format {
     type: string
     sql: ${TABLE}.Format ;;
