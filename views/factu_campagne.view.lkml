@@ -5,6 +5,7 @@ view: Factu_campagne {
   dimension: camp_name {
     type: string
     sql: ${TABLE}.camp_name ;;
+    drill_fields: [sheet_factu*]
   }
 
   dimension: customer_id {
@@ -24,6 +25,7 @@ view: Factu_campagne {
       year
     ]
     sql: ${TABLE}.dte_camp ;;
+    drill_fields: [sheet_factu*]
   }
 
   dimension: email {
@@ -39,6 +41,7 @@ view: Factu_campagne {
   dimension: store_code {
     type: string
     sql: ${TABLE}.store_code ;;
+    drill_fields: [sheet_factu*]
   }
 
   dimension: type_client {
@@ -48,6 +51,10 @@ view: Factu_campagne {
 
   measure: count {
     type: count
-    drill_fields: [camp_name]
+    drill_fields: [sheet_factu*]
+  }
+
+  set: sheet_factu {
+    fields: [camp_name,count,customer_id,dte_camp_date,email,optin_email,store_code,type_client]
   }
 }
