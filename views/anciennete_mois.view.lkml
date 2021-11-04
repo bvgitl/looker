@@ -1,4 +1,4 @@
-view: sql_runner_query {
+view: anciennete_mois {
   derived_table: {
     sql: SELECT
           CASE
