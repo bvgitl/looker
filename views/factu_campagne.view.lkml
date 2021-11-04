@@ -5,16 +5,14 @@ view: factu_campagne {
   dimension: camp_name {
     type: string
     sql: ${TABLE}.camp_name ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
-    drill_fields: [sheet_client*]
   }
 
-  dimension_group: date_creation {
+  dimension_group: dte_camp {
     type: time
     timeframes: [
       raw,
@@ -25,7 +23,7 @@ view: factu_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.date_creation ;;
+    sql: ${TABLE}.dte_camp ;;
   }
 
   dimension: email {
@@ -33,28 +31,23 @@ view: factu_campagne {
     sql: ${TABLE}.email ;;
   }
 
-  dimension: id_mag_rattachement {
-    type: string
-    sql: ${TABLE}.id_mag_rattachement ;;
-    drill_fields: [sheet_client*]
-  }
-
   dimension: optin_email {
     type: string
     sql: ${TABLE}.optin_email ;;
   }
 
+  dimension: store_code {
+    type: string
+    sql: ${TABLE}.store_code ;;
+  }
+
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
-
   }
 
   measure: count {
     type: count
-    drill_fields: [sheet_client*]
-  }
-  set: sheet_client {
-    fields: [customer_id,type_client,date_creation_date,camp_name,email,id_mag_rattachement,optin_email, count]
+    drill_fields: [camp_name]
   }
 }
