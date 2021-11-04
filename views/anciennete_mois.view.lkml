@@ -60,6 +60,106 @@ LIMIT 500
     sql: ${TABLE}.tri ;;
   }
 
+  dimension: cd_magasin {
+    type: string
+    sql: ${TABLE}.CD_Magasin ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: civilite {
+    type: string
+    sql: ${TABLE}.civilite ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: customer_id {
+    primary_key: yes
+    type: string
+    sql: ${TABLE}.customer_id ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension_group: date_creation {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: cast(${TABLE}.date_creation as TIMESTAMP) ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: email {
+    type: string
+    sql: ${TABLE}.email ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: format {
+    type: string
+    sql: ${TABLE}.Format ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: nom {
+    type: string
+    sql: ${TABLE}.NOM ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: optin_email {
+    type: string
+    sql: ${TABLE}.optin_email ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: optin_sms {
+    type: string
+    sql: ${TABLE}.optin_sms ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: region {
+    type: string
+    sql: ${TABLE}.Region ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: typ_mag {
+    type: string
+    sql: ${TABLE}.TYP_MAG ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: type_client {
+    type: string
+    sql: ${TABLE}.type_client ;;
+    #drill_fields: [sheet_client*]
+  }
+
+  dimension: ville {
+    type: string
+    sql: ${TABLE}.Ville ;;
+    #drill_fields: [sheet_client*]
+  }
+
   set: detail {
     fields: [volume, anciennete_par_mois, tri]
   }
