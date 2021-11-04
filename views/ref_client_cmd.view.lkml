@@ -23,7 +23,7 @@ view: ref_client_cmd {
       quarter,
       year
     ]
-    sql: ${TABLE}.dte_commande ;;
+    sql: cast(${TABLE}.dte_commande as TIMESTAMP);;
   }
 
   dimension: format {
