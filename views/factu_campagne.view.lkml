@@ -1,17 +1,15 @@
-view: factu_campagne {
+view: Factu_campagne {
   sql_table_name: `bv-prod.looker_pg.factu_campagne`
     ;;
 
   dimension: camp_name {
     type: string
     sql: ${TABLE}.camp_name ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension_group: dte_camp {
@@ -26,7 +24,6 @@ view: factu_campagne {
       year
     ]
     sql: ${TABLE}.dte_camp ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: email {
@@ -42,7 +39,6 @@ view: factu_campagne {
   dimension: store_code {
     type: string
     sql: ${TABLE}.store_code ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: type_client {
@@ -52,10 +48,6 @@ view: factu_campagne {
 
   measure: count {
     type: count
-    drill_fields: [sheet_client*]
+    drill_fields: [camp_name]
   }
-
-  set: sheet_client {
-    fields: [customer_id,type_client,dte_camp_date,camp_name,email,store_code,optin_email, count]
-    }
 }
