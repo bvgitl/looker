@@ -36,12 +36,13 @@ view: ref_client_cmd {
   }
 
   measure: Volume {
-    type: number
-    sql: ${TABLE}.customer_id ;;
     drill_fields: [sheet_client_cmd*]
+    type: count_distinct
+    sql: ${TABLE}.customer_id ;;
+
   }
 
   set :sheet_client_cmd {
-    fields:  [ca,customer_id,format,total_commande,type_client]
+    fields:  [ca,customer_id,format,total_commande,type_client,Volume]
   }
 }
