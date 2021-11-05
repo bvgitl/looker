@@ -175,7 +175,7 @@ view: ref_campagne {
   }
 
   measure: taux_bounce{
-    type: percent_of_total
+    type: number
     drill_fields: [sheet_client*]
     sql:  ${count_volume_bounce}/${count_volume_email} ;;
   }
