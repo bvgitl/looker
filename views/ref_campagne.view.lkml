@@ -207,7 +207,9 @@ view: ref_campagne {
   measure: taux_reactivite{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_click}/${count_volume_open}) ;;
+    sql:  case when ${count_volume_open} is not null
+                then ${count_volume_click}/${count_volume_open}
+                end;;
   }
 
   set: sheet_client {
