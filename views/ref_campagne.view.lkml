@@ -141,8 +141,10 @@ view: ref_campagne {
   measure: count_volume_bounce {
     type: count_distinct
     drill_fields: [sheet_client*]
-    sql: ${TABLE}.email_address
-      case when ${dt_bounce_date} not null ;;
+    sql: CASE
+         WHEN ${dt_bounce_date} not null
+         THEN ${TABLE}.email_address
+         END;;
   }
 
 
