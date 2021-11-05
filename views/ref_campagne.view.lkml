@@ -198,6 +198,12 @@ view: ref_campagne {
     sql:  (${count_volume_click}/${count_volume_email}) ;;
   }
 
+  measure: percent_of_column{
+    type: percent_of_total
+    drill_fields: [sheet_client*]
+    sql:  ${count_volume_email} ;;
+  }
+
   set: sheet_client {
     fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
   }
