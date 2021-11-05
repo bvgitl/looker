@@ -57,13 +57,13 @@ view: ref_client_mag {
   dimension: latitude {
     type: string
     sql: ${TABLE}.Latitude ;;
-    drill_fields: [sheet_client*]
+
   }
 
   dimension: longitude {
     type: string
     sql: ${TABLE}.Longitude ;;
-    drill_fields: [sheet_client*]
+
   }
 
   dimension: nom {
@@ -81,13 +81,13 @@ view: ref_client_mag {
   dimension: optin_sms {
     type: string
     sql: ${TABLE}.optin_sms ;;
-    drill_fields: [sheet_client*]
+
   }
 
   dimension: region {
     type: string
     sql: ${TABLE}.Region ;;
-    drill_fields: [sheet_client*]
+
   }
 
   dimension: typ_mag {
@@ -112,6 +112,13 @@ view: ref_client_mag {
     type: count
     drill_fields: [sheet_client*]
   }
+
+  measure: Volume {
+    type: number
+    drill_fields: [sheet_client*]
+    sql: ${TABLE}.customer_id ;;
+  }
+
 
   set: sheet_client {
     fields: [customer_id,optin_email,optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
