@@ -132,6 +132,22 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_volume_email {
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql: ${TABLE}.email_address ;;
+  }
+
+  measure: count_volume_bounce {
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql: ${TABLE}.email_address
+      case when ${dt_bounce_date} not null ;;
+  }
+
+
+
+
   set: sheet_client {
     fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
   }
