@@ -201,7 +201,7 @@ view: ref_campagne {
   measure: percent_of_column{
     type: percent_of_total
     drill_fields: [sheet_client*]
-    sql:  ${count_volume_email} ;;
+    sql:  ${count_volume_bounce} ;;
   }
 
   set: sheet_client {
