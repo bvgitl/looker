@@ -142,7 +142,7 @@ view: ref_campagne {
     type: count_distinct
     drill_fields: [sheet_client*]
     sql: CASE
-         WHEN ${dt_bounce_date} not null
+         WHEN ${dt_bounce_date} is not null
          THEN ${TABLE}.email_address
          END;;
   }
