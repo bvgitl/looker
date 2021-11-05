@@ -147,7 +147,38 @@ view: ref_campagne {
          END;;
   }
 
+  measure: count_volume_click{
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql: CASE
+         WHEN ${dt_click_date} is not null
+         THEN ${TABLE}.email_address
+         END;;
+  }
 
+  measure: count_volume_open{
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql: CASE
+         WHEN ${dte_open_date} is not null
+         THEN ${TABLE}.email_address
+         END;;
+  }
+
+  measure: count_volume_desabo{
+    type: count_distinct
+    drill_fields: [sheet_client*]
+    sql: CASE
+         WHEN ${dt_unsub_date} is not null
+         THEN ${TABLE}.email_address
+         END;;
+  }
+
+  measure: taux_bounce{
+    type: percent_of_total
+    drill_fields: [sheet_client*]
+    sql:  ${count_volume_bounce}/${count_volume_email} ;;
+  }
 
 
   set: sheet_client {
