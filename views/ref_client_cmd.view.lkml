@@ -43,6 +43,6 @@ view: ref_client_cmd {
   }
 
   set :sheet_client_cmd {
-    fields:  [ca,customer_id,format,total_commande,type_client,Volume]
+    fields:  [customer_id, ref_client_mag.civilite, ca,format,total_commande,type_client]
   }
 }
