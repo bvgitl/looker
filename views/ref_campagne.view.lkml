@@ -209,6 +209,7 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
     sql:  case when ${count_volume_open} is not null
                 then ${count_volume_click}/${count_volume_open}
+                else null
                 end;;
   }
 
