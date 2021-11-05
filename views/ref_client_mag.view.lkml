@@ -114,7 +114,7 @@ view: ref_client_mag {
   }
 
   measure: Volume {
-    type: number
+    type: count_distinct
     drill_fields: [sheet_client*]
     sql: ${TABLE}.customer_id ;;
   }
