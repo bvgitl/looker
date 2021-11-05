@@ -10,6 +10,7 @@ view: ref_client_cmd {
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
+    drill_fields: [sheet_client_cmd*]
   }
 
   dimension: format {
@@ -25,15 +26,22 @@ view: ref_client_cmd {
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
+    drill_fields: [sheet_client_cmd*]
   }
 
   dimension: type_client_cmd {
     type: string
     sql: ${TABLE}.type_client_cmd ;;
+    drill_fields: [sheet_client_cmd*]
   }
 
-  measure: count {
-    type: count
-    drill_fields: []
+  measure: Volume {
+    type: number
+    sql: ${TABLE}.customer_id ;;
+    drill_fields: [sheet_client_cmd*]
+  }
+
+  set :sheet_client_cmd {
+    fields:  [ca,customer_id,format,total_commande,type_client]
   }
 }
