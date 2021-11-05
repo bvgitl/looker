@@ -177,9 +177,26 @@ view: ref_campagne {
   measure: taux_bounce{
     type: number
     drill_fields: [sheet_client*]
-    sql:  ${count_volume_bounce}/${count_volume_email} ;;
+    sql:  (${count_volume_bounce}/${count_volume_email})*100 ;;
   }
 
+  measure: taux_desabo{
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  (${count_volume_desabo}/${count_volume_email})*100 ;;
+  }
+
+  measure: taux_ouvreur{
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  (${count_volume_open}/${count_volume_email})*100 ;;
+  }
+
+  measure: taux_cliqueur{
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  (${count_volume_click}/${count_volume_email})*100 ;;
+  }
 
   set: sheet_client {
     fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
