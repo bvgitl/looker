@@ -204,6 +204,12 @@ view: ref_campagne {
     sql:  ${count_volume_bounce} ;;
   }
 
+  measure: taux_reactivite{
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  (${count_volume_click}/${count_volume_open}) ;;
+  }
+
   set: sheet_client {
     fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
   }
