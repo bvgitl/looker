@@ -57,7 +57,7 @@ view: Factu_campagne {
 
   measure: count {
     type: count
-    drill_fields: [camp_name]
+    drill_fields: [sheet_factu*]
   }
 
   set: sheet_factu {
