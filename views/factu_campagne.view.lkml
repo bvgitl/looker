@@ -8,6 +8,12 @@ view: Factu_campagne {
     drill_fields: [sheet_factu*]
   }
 
+  dimension: camp_type {
+    type: string
+    sql: ${TABLE}.camp_type ;;
+    drill_fields: [sheet_factu*]
+  }
+
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
@@ -55,6 +61,6 @@ view: Factu_campagne {
   }
 
   set: sheet_factu {
-    fields: [camp_name,count,customer_id,dte_camp_date,email,optin_email,store_code,type_client, count]
+    fields: [camp_name,camp_type,count,customer_id,dte_camp_date,email,optin_email,store_code,type_client, count]
   }
 }
