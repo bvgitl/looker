@@ -1,9 +1,16 @@
 view: monitoring {
   sql_table_name: Matillion_Monitoring.MonitoringFichier ;;
 
-  dimension: DateFichier {
-     type: date
-     sql: ${TABLE}.DateFichier ;;
+  dimension_group: DateFichier {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.DateFichier ;;
   }
 
   dimension: Flux {
