@@ -94,3 +94,5 @@ explore: article_dwh {
   }
 
 }
+
+explore:  monitoring {}
