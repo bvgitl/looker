@@ -61,6 +61,6 @@ view: Factu_campagne {
   }
 
   set: sheet_factu {
-    fields: [camp_name,customer_id,dte_camp_date,email,optin_email,store_code,type_client]
+    fields: [camp_name,customer_id,dte_camp_date,email,optin_email,store_code,type_client,count]
   }
 }
