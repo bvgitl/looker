@@ -56,7 +56,7 @@ view: test_factu_campagne {
 
   measure: count {
     type: count
-    drill_fields: [camp_name]
+    drill_fields: [sheet_client*]
   }
   set: sheet_client {
     fields: [customer_id,type_client,date_creation_date,camp_name,email,id_mag_rattachement,optin_email, count]
