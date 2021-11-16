@@ -56,6 +56,6 @@ view: test_factu_campagne {
 
   measure: count {
     type: count
-    drill_fields: [camp_name]
+    drill_fields: [customer_id,camp_name,date_creation_date,email,id_mag_rattachement,optin_email,type_client]
   }
 }
