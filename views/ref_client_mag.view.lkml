@@ -121,6 +121,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,optin_email,optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
+    fields: [customer_id,email,optin_email,optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
   }
 }
