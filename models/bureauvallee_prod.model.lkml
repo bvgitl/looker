@@ -24,11 +24,13 @@ explore : ref_client_mag {
   #fields: [ALL_FIELDS*]
 }
 explore : ref_cmd_produit {
-  fields: [ALL_FIELDS*]
+  #fields: [ALL_FIELDS*]
 }
 explore : ref_campagne {
   #fields: [ALL_FIELDS*]
 }
+
+explore: test_factu_campagne {}
 
 
 
