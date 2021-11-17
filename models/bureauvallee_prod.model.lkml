@@ -95,4 +95,10 @@ explore: article_dwh {
 
 }
 
-explore:  monitoring {}
+explore:  monitoring {
+  join: magasin_dwh_histo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${magasin_dwh_histo.CodeExterne} = ${monitoring.CodeMagasin} AND ${magasin_dwh_histo.DateDebut_raw} <= ${monitoring.DateFichier_raw} AND ${monitoring.DateFichier_raw} < ${magasin_dwh_histo.DateFin_raw} ;;
+  }
+}
