@@ -84,6 +84,11 @@ view: ref_client_mag {
 
   }
 
+  dimension: portable_ok {
+    type: string
+    sql: ${TABLE}.portable_ok ;;
+  }
+
   dimension: region {
     type: string
     sql: ${TABLE}.Region ;;
@@ -121,6 +126,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
   }
 }
