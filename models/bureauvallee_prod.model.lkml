@@ -30,10 +30,6 @@ explore : ref_campagne {
   #fields: [ALL_FIELDS*]
 }
 
-explore: test_factu_campagne {
-  fields: [ALL_FIELDS*]
-}
-
 
 
 explore: ref_client_cmd {}
