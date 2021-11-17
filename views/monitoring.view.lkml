@@ -40,4 +40,16 @@ view: monitoring {
     drill_fields: []
   }
 
+  measure: count_ok {
+    type: count
+    filters: [EstOK: "yes"]
+    drill_fields: []
+  }
+
+  measure: count_ko {
+    type: count
+    filters: [EstOK: "no"]
+    drill_fields: []
+  }
+
 }
