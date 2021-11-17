@@ -103,9 +103,7 @@ view: ref_client_mag {
 
   dimension: type_client {
     type: string
-    sql: ${TABLE}.type_client where ${TABLE}.type_client = 'Professionnel'
-                              or  ${TABLE}.type_client = 'Particulier'
-                              or  ${TABLE}.type_client is null ;;
+    sql: ${TABLE}.type_client ;;
     drill_fields: [sheet_client*]
   }
 
