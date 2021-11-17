@@ -30,7 +30,9 @@ explore : ref_campagne {
   #fields: [ALL_FIELDS*]
 }
 
-explore: test_factu_campagne {}
+explore: test_factu_campagne {
+  fields: [ALL_FIELDS*]
+}
 
 
 
