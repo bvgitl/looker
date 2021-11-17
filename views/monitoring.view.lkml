@@ -35,4 +35,9 @@ view: monitoring {
     sql: ${TABLE}.Erreur ;;
   }
 
+  measure: count {
+    type: count
+    drill_fields: []
+  }
+
 }
