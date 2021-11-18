@@ -3,12 +3,12 @@ view: suivi_ga {
     ;;
 
   dimension: _ca_indirect_ {
-    type: string
+    type: number
     sql: ${TABLE}._CA_indirect_ ;;
   }
 
   dimension: _visites_en_magasin_ {
-    type: string
+    type: number
     sql: ${TABLE}._Visites_en_magasin_ ;;
   }
 
@@ -53,12 +53,12 @@ view: suivi_ga {
   }
 
   dimension: pourcentage_nouvelles_sessions {
-    type: string
+    type: number
     sql: ${TABLE}.Pourcentage_nouvelles_sessions ;;
   }
 
   dimension: session {
-    type: string
+    type: number
     sql: ${TABLE}.Session ;;
   }
 
@@ -68,7 +68,7 @@ view: suivi_ga {
   }
 
   dimension: volume_d_email_envoy__s {
-    type: string
+    type: number
     sql: ${TABLE}.Volume_d_email_envoy__s ;;
   }
 
