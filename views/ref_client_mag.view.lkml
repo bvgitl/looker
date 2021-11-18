@@ -105,6 +105,7 @@ view: ref_client_mag {
     type: string
     sql: ${TABLE}.type_client ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: ville {
