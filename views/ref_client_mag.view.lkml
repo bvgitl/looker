@@ -27,6 +27,12 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
+
+  dimension: neighborhood {
+    map_layer_name: my_neighborhood_layer
+
+
+  }
   dimension_group: date_creation {
     type: time
     timeframes: [
