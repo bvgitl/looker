@@ -54,17 +54,13 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
-  dimension: latitude {
-    type: string
-    sql: ${TABLE}.Latitude ;;
+  dimension: coord {
+    type: location
+    sql_latitude: ${TABLE}.Latitude ;;
+    sql_longitude: ${TABLE}.Longitude ;;
 
   }
 
-  dimension: longitude {
-    type: string
-    sql: ${TABLE}.Longitude ;;
-
-  }
 
   dimension: nom {
     type: string
