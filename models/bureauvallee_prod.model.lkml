@@ -24,6 +24,13 @@ explore : ref_campagne {}
 explore: ref_client_cmd {}
 explore : suivi_ga {}
 
+
+map_layer: my_neighborhood_layer {
+  url: "https://france-geojson.gregoiredavid.fr/repo/regions.geojson"
+  property_key: "neighborhood"
+}
+
+
 explore: pdt_vente {}
 
 explore: pdt_famille {}
