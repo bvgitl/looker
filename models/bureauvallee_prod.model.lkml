@@ -26,7 +26,7 @@ explore : suivi_ga {}
 
 
 map_layer: my_neighborhood_layer {
-  url: "https://france-geojson.gregoiredavid.fr/repo/regions.geojson"
+  url: "https://github.com/deldersveld/topojson/blob/master/countries/france/fr-departments.json"
   property_key: "neighborhood"
 }
 
