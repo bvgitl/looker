@@ -55,7 +55,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.date_creation ;;
+    sql:cast( ${TABLE}.date_creation  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -70,7 +70,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_bounce_time ;;
+    sql: cast( ${TABLE}.dt_bounce_time  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -85,7 +85,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_click_time ;;
+    sql: cast(${TABLE}.dt_click_time  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -100,7 +100,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_send_time ;;
+    sql: cast(${TABLE}.dt_send_time  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -115,7 +115,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dt_unsub_time ;;
+    sql:cast( ${TABLE}.dt_unsub_time  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -130,7 +130,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: ${TABLE}.dte_open ;;
+    sql: cast( ${TABLE}.dte_open  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
