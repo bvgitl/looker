@@ -2,8 +2,6 @@ view: ref_campagne {
   sql_table_name: `bv-prod.looker_pg.ref_campagne`
     ;;
 
-  #drill_fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
-
   dimension: bounce_type {
     type: string
     sql: ${TABLE}.bounce_type ;;
@@ -34,9 +32,30 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
   }
 
+  dimension: cd_magasin {
+    type: string
+    sql: ${TABLE}.CD_Magasin ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension_group: date_creation {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql:cast( ${TABLE}.date_creation  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -51,7 +70,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: cast(${TABLE}.dt_bounce_time as TIMESTAMP) ;;
+    sql: cast( ${TABLE}.dt_bounce_time  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -66,7 +85,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: cast (${TABLE}.dt_click_time as TIMESTAMP ) ;;
+    sql: cast(${TABLE}.dt_click_time  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -81,7 +100,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: cast(${TABLE}.dt_send_time as TIMESTAMP);;
+    sql: cast(${TABLE}.dt_send_time  as TIMESTAMP);;
     drill_fields: [sheet_client*]
   }
 
@@ -96,7 +115,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: cast(${TABLE}.dt_unsub_time as TIMESTAMP);;
+    sql:cast( ${TABLE}.dt_unsub_time  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -111,7 +130,7 @@ view: ref_campagne {
       quarter,
       year
     ]
-    sql: cast(${TABLE}.dte_open as TIMESTAMP) ;;
+    sql: cast( ${TABLE}.dte_open  as TIMESTAMP) ;;
     drill_fields: [sheet_client*]
   }
 
@@ -121,22 +140,36 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
   }
 
+  dimension: format {
+    type: string
+    sql: ${TABLE}.Format ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: optin_email {
+    type: string
+    sql: ${TABLE}.optin_email ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
     drill_fields: [sheet_client*]
   }
 
+
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
-  }
+      }
 
   measure: count_volume_email {
     type: count_distinct
     drill_fields: [sheet_client*]
     sql: ${TABLE}.email_address ;;
-  }
+    }
 
   measure: count_volume_bounce {
     type: count_distinct
@@ -160,19 +193,19 @@ view: ref_campagne {
     type: count_distinct
     drill_fields: [sheet_client*]
     sql: CASE
-         WHEN ${dte_open_date} is not null
-         THEN ${TABLE}.email_address
-         END;;
-  }
+           WHEN ${dte_open_date} is not null
+           THEN ${TABLE}.email_address
+           END;;
+    }
 
   measure: count_volume_desabo{
     type: count_distinct
     drill_fields: [sheet_client*]
     sql: CASE
-         WHEN ${dt_unsub_date} is not null
-         THEN ${TABLE}.email_address
-         END;;
-  }
+           WHEN ${dt_unsub_date} is not null
+          THEN ${TABLE}.email_address
+           END;;
+   }
 
   measure: taux_bounce{
     type: number
@@ -208,11 +241,11 @@ view: ref_campagne {
     type: number
     drill_fields: [sheet_client*]
     sql:  case when ${count_volume_open} != 0
-                then ${count_volume_click}/${count_volume_open}
-                end;;
+                  then ${count_volume_click}/${count_volume_open}
+                  end;;
   }
 
   set: sheet_client {
-    fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client]
+    fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client,optin_email]
   }
 }

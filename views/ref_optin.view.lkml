@@ -1,30 +1,20 @@
-view: ref_client_mag {
-  sql_table_name: `bv-prod.looker_pg.ref_client_mag`
+view: ref_optin {
+  sql_table_name: `bv-prod.looker_pg.ref_optin`
     ;;
-
-  dimension: anciennete_mois {
-    type: number
-    sql: ${TABLE}.anciennete_mois ;;
-    drill_fields: [sheet_client*]
-  }
 
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.CD_Magasin ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: civilite {
     type: string
     sql: ${TABLE}.civilite ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: customer_id {
-    primary_key: yes
     type: string
     sql: ${TABLE}.customer_id ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension_group: date_creation {
@@ -38,47 +28,77 @@ view: ref_client_mag {
       quarter,
       year
     ]
-    sql: cast(${TABLE}.date_creation as TIMESTAMP) ;;
-    drill_fields: [sheet_client*]
+    sql: ${TABLE}.date_creation ;;
   }
 
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
-    drill_fields: [sheet_client*]
+  }
+
+  dimension: flag_click_12m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_click_12m_sans_activite ;;
+  }
+
+  dimension: flag_click_24m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_click_24m_sans_activite ;;
+  }
+
+  dimension: flag_click_36m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_click_36m_sans_activite ;;
+  }
+
+  dimension: flag_desabo {
+    type: string
+    sql: ${TABLE}.flag_desabo ;;
+  }
+
+  dimension: flag_open_12m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_open_12m_sans_activite ;;
+  }
+
+  dimension: flag_open_24m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_open_24m_sans_activite ;;
+  }
+
+  dimension: flag_open_36m_sans_activite {
+    type: string
+    sql: ${TABLE}.flag_open_36m_sans_activite ;;
   }
 
   dimension: format {
     type: string
     sql: ${TABLE}.Format ;;
-    drill_fields: [sheet_client*]
   }
 
-  dimension: coord {
-    type: location
-    map_layer_name: my_neighborhood_layer
-    sql_latitude: ${TABLE}.Latitude ;;
-    sql_longitude: ${TABLE}.Longitude ;;
-
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
   }
 
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+  }
 
   dimension: nom {
     type: string
     sql: ${TABLE}.NOM ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: optin_email {
     type: string
     sql: ${TABLE}.optin_email ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: optin_sms {
     type: string
     sql: ${TABLE}.optin_sms ;;
-
   }
 
   dimension: portable_ok {
@@ -89,41 +109,25 @@ view: ref_client_mag {
   dimension: region {
     type: string
     sql: ${TABLE}.Region ;;
-
   }
 
   dimension: typ_mag {
     type: string
     sql: ${TABLE}.TYP_MAG ;;
-    drill_fields: [sheet_client*]
   }
 
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
-    drill_fields: [sheet_client*]
-    suggest_persist_for: "2 seconds"
   }
 
   dimension: ville {
     type: string
     sql: ${TABLE}.Ville ;;
-    drill_fields: [sheet_client*]
   }
 
   measure: count {
     type: count
-    drill_fields: [sheet_client*]
-  }
-
-  measure: Volume {
-    type: count_distinct
-    drill_fields: [sheet_client*]
-    sql: ${TABLE}.customer_id ;;
-  }
-
-
-  set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
+    drill_fields: []
   }
 }

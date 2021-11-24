@@ -22,6 +22,13 @@ explore : ref_client_mag {}
 explore : ref_cmd_produit {}
 explore : ref_campagne {}
 explore: ref_client_cmd {}
+explore : suivi_ga {}
+explore : ref_optin {}
+
+map_layer: my_neighborhood_layer {
+  url: "https://github.com/deldersveld/topojson/blob/master/countries/france/fr-departments.json"
+  property_key: "neighborhood"
+}
 
 
 explore: pdt_vente {}
