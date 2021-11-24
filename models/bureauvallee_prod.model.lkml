@@ -26,7 +26,7 @@ explore : suivi_ga {}
 explore : ref_optin {}
 
 map_layer: my_map {
-  url: "https://github.com/deldersveld/topojson/blob/master/countries/france/fr-departments.json"
+  url: "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/france/fr-departments.json"
   property_key: "neighborhood"
 }
 
