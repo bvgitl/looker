@@ -1,5 +1,5 @@
 view: magasin_dwh_histo {
-    sql_table_name: Matillion_perm_Table.Magasin_DWH_Histo ;;
+    sql_table_name: Matillion_Perm_Table.Magasin_DWH_Histo ;;
 
     dimension_group: DateDebut {
       type: time

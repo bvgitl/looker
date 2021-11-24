@@ -1,5 +1,5 @@
 view: magasin_dwh_utd {
-  sql_table_name: Matillion_perm_Table.Magasin_DWH_UTD ;;
+  sql_table_name: Matillion_Perm_Table.Magasin_DWH_UTD ;;
 
   dimension: CodeActeur {
     type: string
