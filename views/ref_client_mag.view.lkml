@@ -56,7 +56,7 @@ view: ref_client_mag {
 
   dimension: coord {
     type: location
-    map_layer_name: my_neighborhood_layer
+    map_layer_name: my_map
     sql_latitude: ${TABLE}.Latitude ;;
     sql_longitude: ${TABLE}.Longitude ;;
 
