@@ -81,6 +81,14 @@ view: ref_optin {
     sql: ${TABLE}.flag_open_36m_sans_activite ;;
   }
 
+  dimension: coord {
+    type: location
+    map_layer_name: my_map
+    sql_latitude: ${TABLE}.Latitude ;;
+    sql_longitude: ${TABLE}.Longitude ;;
+
+  }
+
   dimension: format {
     type: string
     sql: ${TABLE}.Format ;;
