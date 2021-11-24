@@ -45,6 +45,21 @@ view: monitoring {
     sql: ${TABLE}.NomFichier ;;
   }
 
+  dimension: Flux_Global {
+    type: yesno
+    sql: ${TABLE}.Flux NOT IN ('BCP10_BCP13', 'Clients Retail') ;;
+  }
+
+  dimension: Flux_ClientRetail {
+    type: yesno
+    sql: ${TABLE}.Flux = 'Clients Retail' ;;
+  }
+
+  dimension: Flux_BCP10_BCP13 {
+    type: yesno
+    sql: ${TABLE}.Flux = 'BCP10_BCP13' ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
