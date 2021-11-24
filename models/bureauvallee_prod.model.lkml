@@ -48,6 +48,11 @@ explore: tf_vente {
     relationship: many_to_one
     sql_on: ${tf_vente.cd_site_ext}=${magasins.cd_logiciel} ;;
   }
+  join: magasin_dwh_histo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${magasin_dwh_histo.CodeExterne} = ${tf_vente.cd_site_ext} AND ${magasin_dwh_histo.DateDebut_raw} <= ${tf_vente.dte_vte_raw} AND ${tf_vente.dte_vte_raw} < ${magasin_dwh_histo.DateFin_raw} ;;
+  }
 }
 
 
