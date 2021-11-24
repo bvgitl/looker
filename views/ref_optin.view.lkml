@@ -17,6 +17,21 @@ view: ref_optin {
     sql: ${TABLE}.customer_id ;;
   }
 
+  dimension_group: d_unsub {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.d_unsub_time as TIMESTAMP )  ;;
+  }
+
   dimension_group: date_creation {
     type: time
     timeframes: [
@@ -28,7 +43,7 @@ view: ref_optin {
       quarter,
       year
     ]
-    sql: ${TABLE}.date_creation ;;
+    sql: cast( ${TABLE}.date_creation as TIMESTAMP ) ;;
   }
 
   dimension: email {
@@ -49,11 +64,6 @@ view: ref_optin {
   dimension: flag_click_36m_sans_activite {
     type: string
     sql: ${TABLE}.flag_click_36m_sans_activite ;;
-  }
-
-  dimension: flag_desabo {
-    type: string
-    sql: ${TABLE}.flag_desabo ;;
   }
 
   dimension: flag_open_12m_sans_activite {
