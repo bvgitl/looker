@@ -163,12 +163,13 @@ view: ref_optin {
     drill_fields: [sheet_client*]
   }
 
-  measure: count {
-    type: count
+  measure: Volume {
+    type: count_distinct
     drill_fields: [sheet_client*]
+    sql: ${TABLE}.email ;;
   }
 
   set: sheet_client {
-    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,tranche_age,count]
+    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,tranche_age,Volume]
   }
 }
