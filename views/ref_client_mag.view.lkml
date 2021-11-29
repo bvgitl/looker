@@ -92,6 +92,12 @@ view: ref_client_mag {
 
   }
 
+  dimension: tranche_age {
+    type:  string
+    sql: ${TABLE}.Tranche_age ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: typ_mag {
     type: string
     sql: ${TABLE}.TYP_MAG ;;
@@ -124,6 +130,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, tranche_age,region]
   }
 }
