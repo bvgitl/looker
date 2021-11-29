@@ -62,6 +62,15 @@ view: ref_client_mag {
 
   }
 
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+  }
+
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+  }
 
   dimension: nom {
     type: string
