@@ -175,6 +175,6 @@ view: ref_optin {
   }
 
   set: sheet_client {
-    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,tranche_age]
+    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,tranche_age,region]
   }
 }
