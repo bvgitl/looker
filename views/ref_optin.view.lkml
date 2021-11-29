@@ -166,7 +166,7 @@ view: ref_optin {
   measure: Volume {
     type: count_distinct
     drill_fields: [sheet_client*]
-    sql: ${TABLE}.email ;;
+    sql: ${TABLE}.customer_id ;;
   }
 
   set: sheet_client {
