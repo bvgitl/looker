@@ -66,6 +66,7 @@ view: ref_cmd_division {
     sql: ${TABLE}.SousFamille ;;
   }
 
+
   measure: count {
     type: count
     drill_fields: []
