@@ -24,6 +24,7 @@ explore : ref_campagne {}
 explore: ref_client_cmd {}
 explore : suivi_ga {}
 explore : ref_optin {}
+explore: ref_cmd_division {}
 
 map_layer: my_map {
   url: "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/france/fr-departments.json"
