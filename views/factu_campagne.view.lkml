@@ -6,12 +6,14 @@ view: Factu_campagne {
     type: string
     sql: ${TABLE}.camp_name ;;
     drill_fields: [sheet_factu*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: camp_type {
     type: string
     sql: ${TABLE}.camp_type ;;
     drill_fields: [sheet_factu*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: customer_id {
@@ -48,6 +50,7 @@ view: Factu_campagne {
     type: string
     sql: ${TABLE}.store_code ;;
     drill_fields: [sheet_factu*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: type_client {

@@ -62,6 +62,15 @@ view: ref_client_mag {
 
   }
 
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+  }
+
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+  }
 
   dimension: nom {
     type: string
@@ -90,6 +99,12 @@ view: ref_client_mag {
     type: string
     sql: ${TABLE}.Region ;;
 
+  }
+
+  dimension: tranche_age {
+    type:  string
+    sql: ${TABLE}.Tranche_age ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: typ_mag {
@@ -124,6 +139,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, tranche_age,region]
   }
 }

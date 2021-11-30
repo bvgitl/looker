@@ -27,7 +27,10 @@ explore : ref_optin {}
 
 map_layer: my_map {
   url: "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/france/fr-departments.json"
+  #url: "https://raw.githubusercontent.com/brechtv/looker_map_layers/master/fr-departments.json"
   property_key: "neighborhood"
+ # max_zoom_level: 12
+#  min_zoom_level: 2
 }
 
 

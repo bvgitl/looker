@@ -3,12 +3,12 @@ view: suivi_ga {
     ;;
 
   dimension: _ca_indirect_ {
-    type: number
+    type: string
     sql: ${TABLE}._CA_indirect_ ;;
   }
 
   dimension: _visites_en_magasin_ {
-    type: number
+    type: string
     sql: ${TABLE}._Visites_en_magasin_ ;;
   }
 
@@ -25,11 +25,6 @@ view: suivi_ga {
   dimension: conversions {
     type: number
     sql: ${TABLE}.Conversions ;;
-  }
-
-  dimension: cr {
-    type: number
-    sql: ${TABLE}.CR ;;
   }
 
   dimension_group: date_d_envoi {
@@ -53,7 +48,7 @@ view: suivi_ga {
   }
 
   dimension: pourcentage_nouvelles_sessions {
-    type: number
+    type: string
     sql: ${TABLE}.Pourcentage_nouvelles_sessions ;;
   }
 
@@ -62,14 +57,19 @@ view: suivi_ga {
     sql: ${TABLE}.Session ;;
   }
 
-  dimension: tx_de_rebond {
+  dimension: taux_de_conversion {
+    type: number
+    sql: ${TABLE}.Taux_de_conversion ;;
+  }
+
+  dimension: taux_de_rebond {
     type: number
     sql: ${TABLE}.Tx_de_rebond ;;
   }
 
-  dimension: volume_d_email_envoy__s {
+  dimension: volume_envoye {
     type: number
-    sql: ${TABLE}.Volume_d_email_envoy__s ;;
+    sql: ${TABLE}.Volume_envoye ;;
   }
 
   measure: count {
