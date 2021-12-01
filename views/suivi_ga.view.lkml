@@ -3,12 +3,12 @@ view: suivi_ga {
     ;;
 
   dimension: _ca_indirect_ {
-    type: string
+    type: number
     sql: ${TABLE}._CA_indirect_ ;;
   }
 
   dimension: _visites_en_magasin_ {
-    type: string
+    type: number
     sql: ${TABLE}._Visites_en_magasin_ ;;
   }
 
