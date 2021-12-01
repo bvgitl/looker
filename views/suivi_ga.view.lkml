@@ -89,6 +89,12 @@ view: suivi_ga {
     drill_fields: [sheet_client*]
   }
 
+  measure: somme_volume_envoye {
+    type: sum
+    sql: ${volume_envoye} ;;
+    drill_fields: [sheet_client*]
+  }
+
   set: sheet_client {
     fields: [nom_de_la_campagne,volume_envoye,session,date_d_envoi_date,ca,conversions,taux_de_conversion,taux_de_rebond]
     }
