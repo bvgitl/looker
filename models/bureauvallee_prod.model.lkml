@@ -26,6 +26,7 @@ explore : suivi_ga {}
 explore : ref_optin {}
 explore: ref_cmd_division {}
 explore: sql_runner_query_division {}
+explore: sql_runner_query_moy_div {}
 
 map_layer: my_map {
   url: "https://raw.githubusercontent.com/deldersveld/topojson/master/countries/france/fr-departments.json"
