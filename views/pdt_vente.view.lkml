@@ -12,7 +12,6 @@ view: pdt_vente {
         m.TYP_MAG as TYP_MAG,
         m.Tranche_age as Anciennete,
         m.CD_Magasin as CD_Magasin ,
-        v.CD_Site_Ext as CD_Site_Ext ,
         day as Dte_Vte ,
         v.Typ_Vente as Typ_Vente ,
         v.Val_Achat_Gbl as Val_Achat_Gbl,
@@ -42,7 +41,7 @@ LEFT JOIN (
 
 
 (select
-        RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+        CD_Magasin,
         Dte_Vte ,
         Typ_Vente ,
         sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
@@ -55,7 +54,7 @@ LEFT JOIN (
       UNION ALL
 
 select
-        CD_SITE_EXT ,
+        CD_SITE_EXT AS CD_Magasin,
         DTE_VENTE ,
         TYP_VENTE ,
         sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
@@ -75,7 +74,7 @@ select
 
   (
     select
-    RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+    CD_Magasin,
     Dte_Vte,
     Typ_vente,
     sum(nb_ticket) as nb_ticket
@@ -83,7 +82,7 @@ select
     group by 1,2,3
   ) mag
 
-  ON mag.CD_Site_Ext = v.CD_Site_Ext
+  ON mag.CD_Magasin = v.CD_Magasin
 
   AND mag.Dte_Vte = v.Dte_Vte
 
@@ -191,12 +190,6 @@ select
       type: string
       sql: ${TABLE}.Anciennete ;;
       view_label: "Magasins"
-    }
-
-    dimension: cd_site_ext {
-      hidden: yes
-      type: string
-      sql: ${TABLE}.CD_Site_Ext ;;
     }
 
     dimension_group: dte_ouverture {
@@ -374,7 +367,6 @@ select
         surface,
         typ_mag,
         anciennete,
-        cd_site_ext,
         typ_vente,
         val_achat_gbl,
         qtite,

@@ -32,11 +32,6 @@ view: tf_vente_mag {
     sql: ${TABLE}.CD_Pays ;;
   }
 
-  dimension: cd_site_ext {
-    type: string
-    sql: ${TABLE}.CD_Site_Ext ;;
-  }
-
   dimension_group: dte_creat {
     type: time
     timeframes: [

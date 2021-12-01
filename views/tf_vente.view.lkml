@@ -6,7 +6,7 @@ view: tf_vente {
     primary_key: yes
     hidden: yes
     type: string
-    sql: CONCAT(${cd_site_ext}, ' ',${dte_vte_date}, ' ',${typ_vente}, ' ',${cd_article}) ;;
+    sql: CONCAT(${cd_magasin}, ' ',${dte_vte_date}, ' ',${typ_vente}, ' ',${cd_article}) ;;
   }
 
 
@@ -58,11 +58,6 @@ view: tf_vente {
   dimension: cd_pays {
     type: string
     sql: ${TABLE}.CD_Pays ;;
-  }
-
-  dimension: cd_site_ext {
-    type: string
-    sql: ${TABLE}.CD_Site_Ext ;;
   }
 
   dimension_group: dte_creat {
@@ -198,14 +193,14 @@ view: tf_vente {
   }
 
   set: sheet_diff {
-    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente]
+    fields: [magasins.cd_magasin, dte_vte_date, cd_article, typ_vente]
   }
 
   set: sheet_ca {
-    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente, ca_ht]
+    fields: [magasins.cd_magasin, dte_vte_date, cd_article, typ_vente, ca_ht]
   }
 
   set: sheet_marge {
-    fields: [magasins.cd_magasin, cd_site_ext, dte_vte_date, cd_article, typ_vente, marge_brute]
+    fields: [magasins.cd_magasin, dte_vte_date, cd_article, typ_vente, marge_brute]
   }
 }
