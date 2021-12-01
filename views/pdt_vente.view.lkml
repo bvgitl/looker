@@ -37,7 +37,6 @@ view: pdt_vente {
         from  `bv-prod.Matillion_Perm_Table.Magasins` m,
 
 ( SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day )
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasin_DWH_Histo` mdwh ON m.CD_Magasin = mdwh.c_magasin AND mdwh.ScdDateDebut <= day AND day < mdwh.ScdDateFin
 
 LEFT JOIN (
 
@@ -91,11 +90,11 @@ select
   AND v.Typ_vente = mag.Typ_vente )
 
 
-  ON mdwh.c_externe = v.CD_Site_Ext and day = v.Dte_Vte
+  ON m.CD_Magasin = v.CD_Magasin and day = v.Dte_Vte
 
 
   LEFT JOIN `bv-prod.Matillion_Perm_Table.TRACTS` t
-    ON  mdwh.c_magasin = t.code_bv and day between t.Date_de_debut and t.Date_de_fin
+    ON  m.CD_Magasin = t.code_bv and day between t.Date_de_debut and t.Date_de_fin
 
 
   LEFT JOIN
@@ -112,7 +111,7 @@ select
 ) as c
 
 
-  ON c.cd_magasin = mdwh.c_magasin  and day = c.dte_cde
+  ON c.cd_magasin = m.CD_Magasin  and day = c.dte_cde
 
 
 
