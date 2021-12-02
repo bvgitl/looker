@@ -18,6 +18,7 @@ view: ref_campagne {
     type: string
     sql: ${TABLE}.camp_name ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: category_id {
