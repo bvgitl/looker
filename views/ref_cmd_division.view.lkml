@@ -66,9 +66,18 @@ view: ref_cmd_division {
     sql: ${TABLE}.SousFamille ;;
   }
 
+  measure: count_division {
+    type: number
+    sql: ${TABLE}.division ;;
+    drill_fields: [division]
+  }
 
   measure: count {
     type: count
     drill_fields: []
+  }
+
+  set: sheet_client {
+    fields: [customer_id,cd_commande,cd_magasin,cd_produit,dte_commande_date,ca,division,famille,sous_famille,niveau4]
   }
 }
