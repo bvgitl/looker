@@ -49,6 +49,27 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
+  dimension: coord {
+    type: location
+    map_layer_name: my_map
+    sql_latitude: ${TABLE}.Latitude ;;
+    sql_longitude: ${TABLE}.Longitude ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: methode_livraison {
     type: string
     sql: ${TABLE}.methode_livraison ;;
