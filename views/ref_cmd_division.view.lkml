@@ -2,9 +2,9 @@ view: ref_cmd_division {
   sql_table_name: `bv-prod.looker_pg.ref_cmd_division`
     ;;
 
-  dimension: ca {
+  dimension: ca_produit {
     type: number
-    sql: ${TABLE}.ca ;;
+    sql: ${TABLE}.ca_produit ;;
     drill_fields: [sheet_client*]
   }
 
@@ -98,7 +98,7 @@ view: ref_cmd_division {
 
   measure: somme_ca {
     type: sum
-    sql: ${TABLE}.Ca ;;
+    sql: ${TABLE}.ca_produit ;;
     drill_fields: [sheet_client*]
   }
 
@@ -109,6 +109,6 @@ view: ref_cmd_division {
 
 
   set: sheet_client {
-    fields: [customer_id,cd_commande,cd_magasin,cd_produit,dte_commande_date,ca,division,famille,sous_famille,niveau4]
+    fields: [customer_id,cd_commande,cd_magasin,cd_produit,dte_commande_date,ca_produit,division,famille,sous_famille,niveau4]
   }
 }
