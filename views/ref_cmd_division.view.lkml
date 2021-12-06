@@ -80,19 +80,19 @@ view: ref_cmd_division {
 
   measure: count_Famille {
     type: count_distinct
-    sql: ${TABLE}.famille ;;
+    sql: ${TABLE}.Famille ;;
     drill_fields: [division, famille]
   }
 
   measure: count_sous_famille {
     type: count_distinct
-    sql: ${TABLE}.sous_famille ;;
+    sql: ${TABLE}.SousFamille ;;
     drill_fields: [division, famille,sous_famille]
   }
 
   measure: count_marque {
     type: count_distinct
-    sql: ${TABLE}.niveau4 ;;
+    sql: ${TABLE}.Niveau4 ;;
     drill_fields: [division, famille,sous_famille,niveau4]
   }
 
