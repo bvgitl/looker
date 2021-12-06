@@ -96,10 +96,17 @@ view: ref_cmd_division {
     drill_fields: [division, famille,sous_famille,niveau4]
   }
 
+  measure: somme_ca {
+    type: sum
+    sql: ${TABLE}.Ca ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
   }
+
 
   set: sheet_client {
     fields: [customer_id,cd_commande,cd_magasin,cd_produit,dte_commande_date,ca,division,famille,sous_famille,niveau4]
