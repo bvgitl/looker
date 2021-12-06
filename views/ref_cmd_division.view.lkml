@@ -67,7 +67,7 @@ view: ref_cmd_division {
   }
 
   measure: count_division {
-    type: number
+    type: count_distinct
     sql: ${TABLE}.division ;;
     drill_fields: [division]
   }
