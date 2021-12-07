@@ -51,7 +51,7 @@ view: ref_cmd_produit {
 
   dimension: format {
     type: string
-    sql: case when ${TABLE}.Format is not null;;
+    sql: case when ${TABLE}.Format is not null then ${TABLE}.Format end ;;
     drill_fields: [sheet_client*]
     suggest_persist_for: "2 seconds"
   }
