@@ -139,7 +139,7 @@ view: ref_cmd_produit {
 
   measure: pm_client {
     type: number
-    drill_fields: [sheet_client*]
+    drill_fields: [sheet_client*,ref_cmd_division.division]
     sql:  ${somme_ca} / ${cmd_count} ;;
   }
 
