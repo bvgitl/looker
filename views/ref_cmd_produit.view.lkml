@@ -51,7 +51,7 @@ view: ref_cmd_produit {
 
   dimension: format {
     type: string
-    sql: ${TABLE}.Format ;;
+    sql: case when ${TABLE}.Format not null ;;
     drill_fields: [sheet_client*]
   }
 
