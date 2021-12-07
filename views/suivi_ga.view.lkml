@@ -96,6 +96,6 @@ view: suivi_ga {
   }
 
   set: sheet_client {
-    fields: [nom_de_la_campagne,volume_envoye,session,date_d_envoi_date,ca,conversions,taux_de_conversion,taux_de_rebond]
+    fields: [nom_de_la_campagne,volume_envoye,session,date_d_envoi_date,ca,conversions,taux_de_conversion,taux_de_rebond,_ca_indirect_,somme_volume_envoye, count]
     }
 }
