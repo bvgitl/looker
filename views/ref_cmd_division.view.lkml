@@ -48,7 +48,7 @@ view: ref_cmd_division {
       quarter,
       year
     ]
-    sql: ${TABLE}.dte_commande ;;
+    sql: cast(${TABLE}.dte_commande as timestamp );;
     drill_fields: [sheet_client*]
   }
 
