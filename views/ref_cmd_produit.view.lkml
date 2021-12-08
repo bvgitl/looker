@@ -28,6 +28,12 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
+  dimension: canal_commande {
+    type: string
+    sql: ${TABLE}.Canal_commande ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension_group: dte_commande {
     type: time
     timeframes: [
@@ -45,7 +51,29 @@ view: ref_cmd_produit {
 
   dimension: format {
     type: string
-    sql: ${TABLE}.Format ;;
+    sql: ${TABLE}.Format;;
+    drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
+  }
+
+  dimension: coord {
+    type: location
+    map_layer_name: my_map
+    sql_latitude: ${TABLE}.Latitude ;;
+    sql_longitude: ${TABLE}.Longitude ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+  dimension: latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
     drill_fields: [sheet_client*]
   }
 
@@ -111,7 +139,7 @@ view: ref_cmd_produit {
 
   measure: pm_client {
     type: number
-    drill_fields: [sheet_client*]
+    drill_fields: [sheet_client*,ref_cmd_division.division]
     sql:  ${somme_ca} / ${cmd_count} ;;
   }
 
@@ -147,6 +175,6 @@ view: ref_cmd_produit {
 
   set :sheet_client {
   fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,
-    methode_livraison,type_client]
+    methode_livraison,type_client,canal_commande]
   }
 }

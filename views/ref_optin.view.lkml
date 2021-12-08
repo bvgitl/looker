@@ -20,6 +20,13 @@ view: ref_optin {
     drill_fields: [sheet_client*]
   }
 
+  dimension: animateur {
+    type: string
+    sql: ${TABLE}.Animateur ;;
+    drill_fields: [sheet_client*]
+  }
+
+
   dimension_group: d_unsub {
     type: time
     timeframes: [
@@ -175,6 +182,6 @@ view: ref_optin {
   }
 
   set: sheet_client {
-    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,tranche_age,region]
+    fields: [customer_id,type_client,email,civilite,optin_sms,optin_email,date_creation_date, d_unsub_date,cd_magasin,format,animateur,tranche_age,region]
   }
 }

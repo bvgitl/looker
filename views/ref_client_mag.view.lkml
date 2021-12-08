@@ -54,6 +54,13 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
+  dimension: animateur {
+    type: string
+    sql: ${TABLE}.Animateur ;;
+    drill_fields: [sheet_client*]
+  }
+
+
   dimension: coord {
     type: location
     map_layer_name: my_map
@@ -139,6 +146,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, tranche_age,region]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
   }
 }
