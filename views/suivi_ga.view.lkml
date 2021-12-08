@@ -98,6 +98,14 @@ view: suivi_ga {
   measure: ca_measure {
     type: number
     sql: ${ca} ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: volume_env_m {
+    type: number
+    sql: ${volume_envoye} ;;
+    drill_fields: [sheet_client*]
+
   }
 
   set: sheet_client {
