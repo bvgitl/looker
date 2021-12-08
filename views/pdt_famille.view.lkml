@@ -104,7 +104,7 @@ ON  v.CD_Article = a.c_Article
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art
 
-ON CAST(v.CD_Article as INT64) = art.ID_ARTICLE
+ON v.CD_Article = CAST(art.ID_ARTICLE AS STRING)
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
 
@@ -162,7 +162,7 @@ FULL JOIN
       sum(p.Tarif_Produit_HT) as Tarif_Produit_HT
       FROM `bv-prod.Matillion_Perm_Table.Produit_Commande` p
       INNER JOIN  `bv-prod.Matillion_Perm_Table.COMMANDES` c
-      ON p.cd_commande = cast(c.cd_commande as INT64)
+      ON CAST(p.cd_commande AS STRING) = c.cd_commande
       group by 1,2,3
 ) w
 
