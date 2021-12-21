@@ -71,11 +71,11 @@ view: monitoring {
 
   dimension: NomFichierPretty {
     type: string
-    sql: REPLACE(REPLACE(
+    sql: REPLACE(REPLACE(REPLACE(
         REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
         ${TABLE}.NomFichier
         , '[0-2][0-9][0-9][0-9]', CAST(EXTRACT(YEAR FROM DateFichier) AS STRING)), '[0-1][0-9]', RIGHT('0' || CAST(EXTRACT(MONTH FROM DateFichier) AS STRING), 2)), '[0-3][0-9]', RIGHT('0' || CAST(EXTRACT(DAY FROM DateFichier) AS STRING), 2)), '[0-9][0-9][0-9][0-9][0-9][0-9]', '<hhmmss>')
-        , '[cC][sS][vV]', 'csv'), '[.][tT][xX][tT]', 'txt'), '...', CodeMagasinExterne), '[.]', '.')
+        , '[cC][sS][vV]', 'csv'), '[tT][xX][tT]', 'TXT'), '...', CodeMagasinExterne), '_.._..', '_' || CodeTerritoire), '[.]', '.')
         ;;
   }
 
