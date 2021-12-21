@@ -15,6 +15,20 @@ view: monitoring {
     sql: ${TABLE}.DateFichier ;;
   }
 
+  dimension_group: DateMonitoring {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.DateMonitoring ;;
+  }
+
   dimension: Flux {
     type: string
     sql: ${TABLE}.Flux ;;
@@ -25,9 +39,19 @@ view: monitoring {
     sql: ${TABLE}.GroupeFlux ;;
   }
 
-  dimension: CodeMagasin   {
+  dimension: CodeMagasinExterne   {
     type: string
-    sql: ${TABLE}.CodeMagasin  ;;
+    sql: ${TABLE}.CodeMagasinExterne  ;;
+  }
+
+  dimension: CodeMagasinActeur   {
+    type: string
+    sql: ${TABLE}.CodeMagasinActeur  ;;
+  }
+
+  dimension: CodeTerritoire   {
+    type: string
+    sql: ${TABLE}.CodeTerritoire  ;;
   }
 
   dimension: EstOK {
