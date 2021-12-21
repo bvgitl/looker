@@ -71,7 +71,7 @@ view: monitoring {
 
   dimension: Flux_Global {
     type: yesno
-    sql: ${TABLE}.Flux NOT IN ('BCP10_BCP13', 'Clients Retail') ;;
+    sql: ${TABLE}.Flux NOT IN ('BCP10_BCP13', 'Clients Retail', 'Web Inter') ;;
   }
 
   dimension: Flux_ClientRetail {
