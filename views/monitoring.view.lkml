@@ -19,8 +19,8 @@ view: monitoring {
     type: time
     timeframes: [
       raw,
-      date,
       week,
+      date,
       month,
       year
     ]
