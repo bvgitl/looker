@@ -39,7 +39,7 @@ view: pdt_famille {
        t.Spot_RadioShop as Spot_RadioShop,
        t.PLV_Moyen_Kit as PLV_Moyen_Kit,
        t.PLV_Grand_Kit as PLV_Grand_Kit,
-       s.stock as stock,
+       s.n_stock as stock,
        w.Nbre_commande as Nbre_commande,
        w.Quantite_commandee as Quantite_commandee,
        w.Tarif_Produit_HT as Tarif_Produit_HT
@@ -49,7 +49,7 @@ view: pdt_famille {
 FROM  (
 
 (select
-        RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+        CD_Magasin,
         Dte_Vte ,
         Typ_Vente ,
         CD_Article,
@@ -63,7 +63,7 @@ group by 1,2,3,4
       UNION ALL
 
 select
-        RIGHT(CONCAT('000', CD_SITE_EXT),3)  as CD_Site_Ext ,
+        CODE_ACTEUR as CD_Magasin,
         DTE_VENTE ,
         TYP_VENTE ,
         ID_ARTICLE,
@@ -71,87 +71,41 @@ select
         sum(QTITE) as Qtite ,
         sum(CA_HT) as ca_ht,
         sum(MARGE_BRUTE) as marge_brute
-from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+from `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
 group by 1,2,3,4) v
 
 
 LEFT JOIN
-
-
 (
     select
-    RIGHT(CONCAT('000', CD_Site_Ext),3)  as CD_Site_Ext ,
+    CD_Magasin,
     Dte_Vte,
     Typ_vente,
     sum(nb_ticket) as nb_ticket
     from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
     group by 1,2,3
   ) mag
-
-  ON  v.CD_Site_Ext = mag.CD_Site_Ext
-
+  ON  v.CD_Magasin = mag.CD_Magasin
   AND  v.Dte_Vte = mag.Dte_Vte
-
   AND v.Typ_vente = mag.Typ_vente )
 
-LEFT JOIN   `bv-prod.Matillion_Perm_Table.Magasins` m
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON  v.CD_Article = a.c_Article
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art ON v.CD_Article = CAST(art.ID_ARTICLE AS STRING)
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4 ON art.ID_N4_N4 = n4.ID_N4_N4
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3 ON  n4.ID_N3_SSFAMILLE = n3.ID_N3_SSFAMILLE
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2 ON  n3.ID_N2_FAMILLE = n2.ID_N2_FAMILLE
+LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1 ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
+LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
+LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t ON  m.cd_magasin = t.code_bv
 
-ON   v.CD_Site_Ext = m.cd_logiciel
-
-LEFT JOIN  `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
-
-ON  v.CD_Article = a.c_Article
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art
-
-ON v.CD_Article = CAST(art.ID_ARTICLE AS STRING)
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4
-
-ON art.ID_N4_N4 = n4.ID_N4_N4
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3
-
-ON  n4.ID_N3_SSFAMILLE = n3.ID_N3_SSFAMILLE
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2
-
-ON  n3.ID_N2_FAMILLE = n2.ID_N2_FAMILLE
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1
-
-ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
-
-LEFT JOIN  `bv-prod.Matillion_Perm_Table.Marques` mq
-
-ON a.c_Marque = mq.cd_marque
-
-LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
-
-ON   a.c_Fournisseur = f.c_fournisseur
-
-LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t
-ON  m.cd_magasin = t.code_bv
-
-LEFT JOIN
-(
-        select
-               cd_externe,
-               cd_article,
-               CAST(DATETIME_TRUNC(date_modification, day) AS date) dte_stock,
-               sum(n_stock) as stock
-FROM `bv-prod.Matillion_Perm_Table.Stocks`
-group by 1,2,3
-) s
-
-ON  v.CD_Site_Ext = s.cd_externe
-
-AND  v.CD_Article  = s.cd_article
-
-AND v.Dte_vte = s.dte_stock
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
+ON  v.CD_Magasin = s.cd_acteur
+AND  v.CD_Article  = CAST(s.cd_article AS STRING)
+AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
 
 FULL JOIN
-
 (
     SELECT
       p.cd_produit as cd_produit,
@@ -165,11 +119,8 @@ FULL JOIN
       ON CAST(p.cd_commande AS STRING) = c.cd_commande
       group by 1,2,3
 ) w
-
 ON v.CD_Article = w.cd_produit
-
 AND v.Dte_vte = w.dte_cde
-
 AND m.CD_Magasin = w.cd_magasin
  ;;
 

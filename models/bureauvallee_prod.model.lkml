@@ -41,7 +41,7 @@ explore: pdt_vente {}
 
 explore: pdt_famille {}
 
-explore: google_sheet {}
+explore: data_quality_ventes_google_sheet {}
 
 explore: sql_runner_query {}
 

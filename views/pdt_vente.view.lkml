@@ -54,14 +54,14 @@ LEFT JOIN (
       UNION ALL
 
 select
-        CD_SITE_EXT AS CD_Magasin,
+        CODE_ACTEUR AS CD_Magasin,
         DTE_VENTE ,
         TYP_VENTE ,
         sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
         sum(QTITE) as Qtite ,
         sum(CA_HT) as ca_ht,
         sum(MARGE_BRUTE) as marge_brute
-      from `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+      from `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
       group by 1,2,3
 
       ) v

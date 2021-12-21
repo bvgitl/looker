@@ -1,5 +1,5 @@
-view: google_sheet {
-  sql_table_name: `bv-prod.Matillion_Perm_Table.GOOGLE_SHEET`
+view: data_quality_ventes_google_sheet {
+  sql_table_name: `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
     ;;
 
   dimension: ca_ht {
@@ -7,9 +7,9 @@ view: google_sheet {
     sql: ${TABLE}.CA_HT ;;
   }
 
-  dimension: cd_site_ext {
+  dimension: cd_magasin {
     type: string
-    sql: ${TABLE}.CD_SITE_EXT ;;
+    sql: ${TABLE}.CODE_ACTEUR ;;
   }
 
   dimension_group: dte_vente {
