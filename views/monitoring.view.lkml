@@ -69,6 +69,15 @@ view: monitoring {
     sql: ${TABLE}.NomFichier ;;
   }
 
+  dimension: NomFichierPretty {
+    type: string
+    sql: REPLACE(REPLACE(
+        REPLACE(REPLACE(REPLACE(REPLACE(
+        ${TABLE}.NomFichier, '[0-2][0-9][0-9][0-9]', 'yyyy'), '[0-1][0-9]', 'MM'), '[0-3][0-9]', 'dd'), '[0-9][0-9][0-9][0-9][0-9][0-9]', 'hhmmss')
+        , '[cC][sS][vV]', 'csv'), '[.][tT][xX][tT]', 'txt')
+        ;;
+  }
+
   dimension: Flux_Global {
     type: yesno
     sql: ${TABLE}.Flux NOT IN ('BCP10_BCP13', 'Clients Retail', 'Web Inter') ;;
