@@ -72,9 +72,10 @@ view: monitoring {
   dimension: TypeErreur {
     type:  string
     sql:  CASE
-      WHEN ${TABLE}.Erreur LIKE '%non reçu%' AND ${TABLE}.Obligatoire = true THEN 'Manquant et atttendu'
+      WHEN ${TABLE}.EstOK = true THEN "OK"
+      WHEN ${TABLE}.Erreur LIKE '%non reçu%' AND ${TABLE}.Obligatoire = true THEN 'KO - Manquant et atttendu'
       WHEN ${TABLE}.Erreur LIKE '%non reçu%' AND ${TABLE}.Obligatoire = false THEN 'Manquant mais non-attendu'
-      ELSE 'Erreur'
+      ELSE 'KO - Erreur'
       END;;
   }
 
@@ -127,7 +128,7 @@ view: monitoring {
 
   measure: count_ko_missing_expected {
     type: count
-    filters: [EstOK: "no", TypeErreur: "Manquant et atttendu"]
+    filters: [EstOK: "no", TypeErreur: "KO - Manquant et atttendu"]
     drill_fields: []
   }
 
@@ -139,7 +140,7 @@ view: monitoring {
 
   measure: count_ko_error {
     type: count
-    filters: [EstOK: "no", TypeErreur: "Erreur"]
+    filters: [EstOK: "no", TypeErreur: "KO - Erreur"]
     drill_fields: []
   }
 
