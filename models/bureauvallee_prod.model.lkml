@@ -17,13 +17,13 @@ datagroup: bv_vente_digitale_datagroup {
 
 persist_with: bv_vente_datagroup
 
-explore : Factu_campagne {}
-explore : ref_client_mag {}
-explore : ref_cmd_produit {}
-explore : ref_campagne {}
+explore: Factu_campagne {}
+explore: ref_client_mag {}
+explore: ref_cmd_produit {}
+explore: ref_campagne {}
 explore: ref_client_cmd {}
-explore : suivi_ga {}
-explore : ref_optin {}
+explore: suivi_ga {}
+explore: ref_optin {}
 explore: ref_cmd_division {}
 explore: sql_runner_query_division {}
 explore: sql_runner_query_moy_div {}
@@ -71,6 +71,14 @@ explore: ventes_devise {
     type: left_outer
     relationship: many_to_one
     sql_on: ${ventes_devise.cd_magasin}=${magasins.cd_logiciel} ;;
+  }
+}
+
+explore: tract {
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${tract.CodeActeur}=${magasins.cd_magasin} ;;
   }
 }
 
