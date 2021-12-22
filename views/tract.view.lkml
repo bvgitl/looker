@@ -109,10 +109,16 @@ view: tract {
     sql: CASE WHEN ${TABLE}.QTE_TRACT > 0 THEN true ELSE false END  ;;
   }
 
+  dimension: Quantite {
+    label: "Quantité"
+    type: number
+    sql: ${TABLE}.QTE_TRACT ;;
+  }
+
   measure: QuantiteTract {
     label: "Quantité Tract"
     type: sum
-    sql: ${TABLE}.QTE_TRACT ;;
+    sql: ${Quantite} ;;
     filters: []
     drill_fields: []
   }
