@@ -59,9 +59,23 @@ view: monitoring {
     sql: ${TABLE}.EstOK ;;
   }
 
+  dimension: EstObligatoire {
+    type: yesno
+    sql: ${TABLE}.Obligatoire ;;
+  }
+
   dimension: Erreur {
     type: string
     sql: ${TABLE}.Erreur ;;
+  }
+
+  dimension: TypeErreur {
+    type:  string
+    sql:  CASE
+      WHEN ${TABLE}.Erreur LIKE '%non reçu%' AND ${TABLE}.Obligatoire = true THEN 'Manquant et atttendu'
+      WHEN ${TABLE}.Erreur LIKE '%non reçu%' AND ${TABLE}.Obligatoire = false THEN 'Manquant mais non-attendu'
+      ELSE 'Erreur'
+      END;;
   }
 
   dimension: NomFichier {
@@ -108,6 +122,24 @@ view: monitoring {
   measure: count_ko {
     type: count
     filters: [EstOK: "no"]
+    drill_fields: []
+  }
+
+  measure: count_ko_missing_expected {
+    type: count
+    filters: [EstOK: "no", TypeErreur: "Manquant et atttendu"]
+    drill_fields: []
+  }
+
+  measure: count_ko_missing_unexpected {
+    type: count
+    filters: [EstOK: "no", TypeErreur: "Manquant mais non-attendu"]
+    drill_fields: []
+  }
+
+  measure: count_ko_error {
+    type: count
+    filters: [EstOK: "no", TypeErreur: "Erreur"]
     drill_fields: []
   }
 
