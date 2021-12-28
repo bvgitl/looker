@@ -616,6 +616,15 @@ AND m.CD_Magasin = w.cd_magasin
           END ;;
   }
 
+  measure: prix_vente_select_mois {
+    label: "Prix de vente"
+    value_format_name: eur
+    type: number
+    sql: ${sum_CA_select_mois} / NULLIF(${sum_qte_select_mois}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
 
   ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
 
