@@ -7,10 +7,10 @@ view: pdt_famille {
        a.c_Gencode as Gencode,
        a.c_Validite_1 as Statut_article,
        a.c_Origine as Origine,
-       n4.Niveau4 as Niveau_4,
-       n3.SousFamille as N3_SS_Famille,
-       n2.Famille as N2_Famille,
-       n1.Division as N1_Division,
+       arb.N4 as Niveau_4,
+       arb.N3_SousFamille as N3_SS_Famille,
+       arb.N2_Famille as N2_Famille,
+       arb.N1_Division as N1_Division,
        m.Nom_TBE as NOM,
        m.Type_TBE as Typ ,
        m.DATE_OUV as Dte_Ouverture,
@@ -28,17 +28,8 @@ view: pdt_famille {
        v.Qtite as Qtite,
        v.ca_ht as ca_ht,
        v.marge_brute as marge_brute,
-       mag.nb_ticket as nb_ticket,
        mq.LB_MARQUE as Marque,
        f.l_Fournisseur as Fournisseur,
-       t.Qt_tracts as Qte_tracts,
-       t.Mise_en_avant_web as web,
-       t.E_mail as E_mail,
-       t.SMS as SMS,
-       t.Booster_Bonial as Booster_Bonial,
-       t.Spot_RadioShop as Spot_RadioShop,
-       t.PLV_Moyen_Kit as PLV_Moyen_Kit,
-       t.PLV_Grand_Kit as PLV_Grand_Kit,
        s.n_stock as stock,
        w.Nbre_commande as Nbre_commande,
        w.Quantite_commandee as Quantite_commandee,
@@ -46,8 +37,7 @@ view: pdt_famille {
 
 
 
-FROM  (
-
+FROM
 (select
         CD_Magasin,
         Dte_Vte ,
@@ -75,30 +65,11 @@ from `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
 group by 1,2,3,4) v
 
 
-LEFT JOIN
-(
-    select
-    CD_Magasin,
-    Dte_Vte,
-    Typ_vente,
-    sum(nb_ticket) as nb_ticket
-    from `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-    group by 1,2,3
-  ) mag
-  ON  v.CD_Magasin = mag.CD_Magasin
-  AND  v.Dte_Vte = mag.Dte_Vte
-  AND v.Typ_vente = mag.Typ_vente )
-
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON  v.CD_Article = a.c_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBO` art ON v.CD_Article = CAST(art.ID_ARTICLE AS STRING)
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N4`  n4 ON art.ID_N4_N4 = n4.ID_N4_N4
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N3_SS_Famille` n3 ON  n4.ID_N3_SSFAMILLE = n3.ID_N3_SSFAMILLE
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N2_Famille` n2 ON  n3.ID_N2_FAMILLE = n2.ID_N2_FAMILLE
-LEFT JOIN `bv-prod.Matillion_Perm_Table.N1_Division` n1 ON  n2.ID_N1_DIVISION = n1.ID_N1_DIVISION
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
-LEFT JOIN `bv-prod.Matillion_Temp_Table.TRACTS` t ON  m.cd_magasin = t.code_bv
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
 ON  v.CD_Magasin = s.cd_acteur
@@ -258,12 +229,6 @@ AND m.CD_Magasin = w.cd_magasin
     sql: ${TABLE}.Val_Achat_Gbl ;;
   }
 
-  dimension: nb_ticket {
-    type: number
-    sql: ${TABLE}.nb_ticket ;;
-    view_label: "Ventes"
-  }
-
   dimension: marque {
     type: string
     sql: ${TABLE}.Marque ;;
@@ -274,54 +239,6 @@ AND m.CD_Magasin = w.cd_magasin
     type: string
     sql: ${TABLE}.Fournisseur ;;
     view_label: "Fournisseur"
-  }
-
-  dimension: qte_tracts {
-    type: number
-    sql: ${TABLE}.Qte_tracts ;;
-    view_label: "Tracts"
-  }
-
-  dimension: web {
-    type: number
-    sql: ${TABLE}.web ;;
-    view_label: "Tracts"
-  }
-
-  dimension: e_mail {
-    type: number
-    sql: ${TABLE}.E_mail ;;
-    view_label: "Tracts"
-  }
-
-  dimension: sms {
-    type: number
-    sql: ${TABLE}.SMS ;;
-    view_label: "Tracts"
-  }
-
-  dimension: booster_bonial {
-    type: number
-    sql: ${TABLE}.Booster_Bonial ;;
-    view_label: "Tracts"
-  }
-
-  dimension: spot_radio_shop {
-    type: number
-    sql: ${TABLE}.Spot_RadioShop ;;
-    view_label: "Tracts"
-  }
-
-  dimension: plv_moyen_kit {
-    type: number
-    sql: ${TABLE}.PLV_Moyen_Kit ;;
-    view_label: "Tracts"
-  }
-
-  dimension: plv_grand_kit {
-    type: number
-    sql: ${TABLE}.PLV_Grand_Kit ;;
-    view_label: "Tracts"
   }
 
   dimension: stock {
@@ -373,17 +290,8 @@ AND m.CD_Magasin = w.cd_magasin
       qtite,
       ca_ht,
       marge_brute,
-      nb_ticket,
       marque,
       fournisseur,
-      qte_tracts,
-      web,
-      e_mail,
-      sms,
-      booster_bonial,
-      spot_radio_shop,
-      plv_moyen_kit,
-      plv_grand_kit,
       stock
     ]
   }
