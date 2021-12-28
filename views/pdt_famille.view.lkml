@@ -863,16 +863,4 @@ AND m.CD_Magasin = w.cd_magasin
     group_label: "Année N-1"
   }
 
-
-# Calcul des Poids des divisions, familles, sous-familles
-
-
-  measure: poids_division_sur_total {
-    label: "Poids Division / Total"
-    type: percent_of_total
-    sql:  ${sum_CA_select_mois} ;;
-    view_label: "Ventes"
-    group_label: "Poids"
-  }
-
 }
