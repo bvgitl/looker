@@ -206,7 +206,7 @@ AND m.CD_Magasin = w.cd_magasin
 
   dimension: article_original {
     type: string
-    sql: ${TABLE}.Article ;;
+    sql: ${TABLE}.ArticleOriginal ;;
     view_label: "Article"
     label: "Code Article Original"
   }
