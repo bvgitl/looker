@@ -22,6 +22,7 @@ view: pdt_famille {
        m.Tranche_age as Anciennete,
        m.CD_Magasin as CD_Magasin,
        v.CD_Article as Article,
+       v.CD_Article_Original  AS ArticleOriginal,
        v.Val_Achat_Gbl as Val_Achat_Gbl,
        v.Dte_Vte as Dte_Vte,
        v.Typ_Vente as Typ_Vente ,
@@ -36,33 +37,34 @@ view: pdt_famille {
        w.Tarif_Produit_HT as Tarif_Produit_HT
 
 
-
 FROM
 (select
         CD_Magasin,
-        Dte_Vte ,
-        Typ_Vente ,
+        Dte_Vte,
+        Typ_Vente,
         CD_Article,
+        CD_Article_Original,
         sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
         sum(Qtite) as Qtite ,
         sum(ca_ht) as ca_ht ,
         sum(marge_brute) as marge_brute
 from `bv-prod.Matillion_Perm_Table.TF_VENTE`
-group by 1,2,3,4
+group by 1,2,3,4,5
 
       UNION ALL
 
 select
         CODE_ACTEUR as CD_Magasin,
-        DTE_VENTE ,
-        TYP_VENTE ,
+        DTE_VENTE,
+        TYP_VENTE,
         ID_ARTICLE,
-        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl ,
+        ID_ARTICLE AS CD_Article_Original,
+        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl,
         sum(QTITE) as Qtite ,
         sum(CA_HT) as ca_ht,
         sum(MARGE_BRUTE) as marge_brute
 from `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
-group by 1,2,3,4) v
+group by 1,2,3,4,5) v
 
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
@@ -198,6 +200,14 @@ AND m.CD_Magasin = w.cd_magasin
     type: string
     sql: ${TABLE}.Article ;;
     view_label: "Article"
+    label: "Code Article"
+  }
+
+  dimension: article_original {
+    type: string
+    sql: ${TABLE}.Article ;;
+    view_label: "Article"
+    label: "Code Article Original"
   }
 
   dimension: typ_vente {
@@ -286,6 +296,7 @@ AND m.CD_Magasin = w.cd_magasin
       anciennete,
       cd_magasin,
       article,
+      article_original,
       typ_vente,
       qtite,
       ca_ht,
