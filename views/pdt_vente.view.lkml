@@ -19,16 +19,6 @@ view: pdt_vente {
         v.ca_ht as ca_ht,
         v.marge_brute as marge_brute,
         mag.nb_ticket as nb_ticket,
-        t.Qt_tracts as Qte_tracts,
-        t.Mise_en_avant_web as web,
-        t.E_mail as E_mail,
-        t.SMS as SMS,
-        t.Booster_Bonial as Booster_Bonial,
-        t.Spot_RadioShop as Spot_RadioShop,
-        t.PLV_Moyen_Kit as PLV_Moyen_Kit,
-        t.PLV_Grand_Kit as PLV_Grand_Kit,
-        t.Date_de_debut as Date_de_debut,
-        t.Date_de_fin as Date_de_fin,
         c.nbre_commande as nbre_commande,
         c.Tarif_HT_livraison as Tarif_HT_livraison,
         c.Total_HT as Total_HT
@@ -90,11 +80,6 @@ select
 
 
   ON m.CD_Magasin = v.CD_Magasin and day = v.Dte_Vte
-
-
-  LEFT JOIN `bv-prod.Matillion_Perm_Table.TRACTS` t
-    ON  m.CD_Magasin = t.code_bv and day between t.Date_de_debut and t.Date_de_fin
-
 
   LEFT JOIN
 
@@ -253,88 +238,6 @@ select
       view_label: "Ventes"
     }
 
-    dimension: qte_tracts {
-      type: number
-      sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_de_debut_date} AS TIMESTAMP)  {% endcondition %}
-                or {% condition date_filter %} CAST(${date_de_fin_date} AS TIMESTAMP)  {% endcondition %}
-            THEN ${TABLE}.Qte_tracts
-          END ;;
-      view_label: "Tracts"
-    }
-
-    dimension: web {
-      type: number
-      sql: ${TABLE}.web ;;
-      view_label: "Tracts"
-    }
-
-    dimension: e_mail {
-      type: number
-      sql: ${TABLE}.E_mail ;;
-      view_label: "Tracts"
-    }
-
-    dimension: sms {
-      type: number
-      sql: ${TABLE}.SMS ;;
-      view_label: "Tracts"
-    }
-
-    dimension: booster_bonial {
-      type: number
-      sql: ${TABLE}.Booster_Bonial ;;
-      view_label: "Tracts"
-    }
-
-    dimension: Digital_tract {
-    type: number
-    sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_de_debut_date} AS TIMESTAMP)  {% endcondition %}
-                or {% condition date_filter %} CAST(${date_de_fin_date} AS TIMESTAMP)  {% endcondition %}
-            THEN (CASE
-                    WHEN ${web} = 1 or ${booster_bonial} = 1 THEN 1
-                  END )
-        END;;
-      view_label: "Tracts"
-    }
-
-    dimension: spot_radio_shop {
-      type: number
-      sql: ${TABLE}.Spot_RadioShop ;;
-      view_label: "Tracts"
-    }
-
-    dimension: plv_moyen_kit {
-      type: number
-      sql: ${TABLE}.PLV_Moyen_Kit ;;
-      view_label: "Tracts"
-    }
-
-    dimension: plv_grand_kit {
-      type: number
-      sql: ${TABLE}.PLV_Grand_Kit ;;
-      view_label: "Tracts"
-    }
-
-    dimension_group: date_de_debut {
-      type: time
-      timeframes: [raw,date,year]
-      convert_tz: no
-      datatype: date
-      sql: ${TABLE}.Date_de_debut ;;
-      view_label: "Tracts"
-    }
-
-    dimension_group: date_de_fin {
-      type: time
-      timeframes: [raw,date,year]
-      convert_tz: no
-      datatype: date
-      sql: ${TABLE}.Date_de_fin ;;
-      view_label: "Tracts"
-    }
-
     dimension: total_ht {
       type: number
       sql: ${TABLE}.Total_HT ;;
@@ -373,14 +276,6 @@ select
         ca_ht,
         marge_brute,
         nb_ticket,
-        qte_tracts,
-        web,
-        e_mail,
-        sms,
-        booster_bonial,
-        spot_radio_shop,
-        plv_moyen_kit,
-        plv_grand_kit,
         total_ht,
         nbre_commande
       ]
