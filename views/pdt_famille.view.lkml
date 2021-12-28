@@ -869,7 +869,6 @@ AND m.CD_Magasin = w.cd_magasin
 
   measure: poids_division_sur_total {
     label: "Poids Division / Total"
-    value_format_name: percent_2
     type: percent_of_total
     sql:  ${sum_CA_select_mois} ;;
     view_label: "Ventes"
