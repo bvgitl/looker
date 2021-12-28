@@ -34,6 +34,13 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
+  dimension: statut {
+    type: string
+    sql: ${TABLE}.statut ;;
+    drill_fields: [sheet_client*]
+  }
+
+
   dimension_group: dte_commande {
     type: time
     timeframes: [
@@ -175,6 +182,6 @@ view: ref_cmd_produit {
 
   set :sheet_client {
   fields:  [cd_commande,cd_magasin,customer_id,dte_commande_date,format,
-    methode_livraison,type_client,canal_commande]
+    methode_livraison,type_client,canal_commande, statut]
   }
 }
