@@ -45,8 +45,8 @@ explore: data_quality_ventes_google_sheet {}
 
 explore: sql_runner_query {}
 
-explore: log_bcp {}
-explore: log_bcp_landing {}
+#explore: log_bcp {}
+#explore: log_bcp_landing {}
 
 explore: tf_vente {
   join: magasins {
