@@ -170,6 +170,7 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: region {
     type: string
     sql: ${TABLE}.Region ;;
+    view_label: "Magasins"
   }
 
   dimension: surface {
@@ -237,6 +238,7 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: val_achat_gbl {
     type: number
     sql: ${TABLE}.Val_Achat_Gbl ;;
+    view_label: "Ventes"
   }
 
   dimension: marque {
@@ -407,6 +409,7 @@ AND m.CD_Magasin = w.cd_magasin
           WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_1 %} AS DATETIME) THEN "P.Comparable"
         END
     ;;
+    view_label: "Ventes"
   }
 
 
