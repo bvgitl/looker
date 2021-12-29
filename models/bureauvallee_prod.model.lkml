@@ -19,7 +19,12 @@ persist_with: bv_vente_datagroup
 
 explore: Factu_campagne {}
 explore: ref_client_mag {}
-explore: ref_cmd_produit {}
+explore: ref_cmd_produit {
+  join: ref_cmd_division {
+    relationship: many_to_one
+    sql_on: ${ref_cmd_division.cd_commande} = ${ref_cmd_produit.cd_commande} ;;
+  }
+}
 explore: ref_campagne {}
 explore: ref_client_cmd {}
 explore: suivi_ga {}
