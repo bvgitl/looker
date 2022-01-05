@@ -38,6 +38,7 @@ view: ref_cmd_produit {
     type: string
     sql: ${TABLE}.statut ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
 
