@@ -89,6 +89,7 @@ view: ref_cmd_produit {
     type: string
     sql: ${TABLE}.methode_livraison ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: nb_article {
