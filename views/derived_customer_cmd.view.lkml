@@ -5,7 +5,7 @@ view: derived_customer_cmd {
      sql: SELECT
          customer_id as customer_id,
          nb_article
-       FROM `bv-prod.Looker_pg.ref_cmd_produit`
+       FROM `bv-prod.looker_pg.ref_cmd_produit`
        GROUP BY user_id
        ;;
    }
