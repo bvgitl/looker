@@ -4,7 +4,15 @@ view: derived_customer_cmd {
    derived_table: {
      sql: SELECT
          distinct customer_id as customer_id,
-         nb_article
+         nb_article,
+         nb_ref_produit,
+        cd_magasin,
+        Format,
+        dte_commande,
+        statut,
+        type_client,
+        methode_livraison,
+       Canal_commande,
        FROM `bv-prod.looker_pg.ref_cmd_produit`
        ;;
    }
