@@ -149,7 +149,7 @@ view: ref_cmd_produit {
 
   measure: pm_client {
     type: number
-    drill_fields: [ref_cmd_division.division,sheet_client*]
+    drill_fields: [sheet_client*]
     sql:  ${somme_ca} / ${cmd_count} ;;
   }
 
@@ -165,6 +165,12 @@ view: ref_cmd_produit {
     sql:  ${TABLE}.nb_article ;;
   }
 
+  measure: moy_article_par_client {
+    type: average
+    drill_fields: [sheet_client*, nb_article]
+    sql:  select distinct ${customer_id} ;;
+
+  }
   measure: moy_reference {
     type: average
     drill_fields: [sheet_client*, nb_ref_produit]
