@@ -3,7 +3,7 @@ view: derived_customer_cmd {
 #   # Or, you could make this view a derived table, like this:
    derived_table: {
      sql: SELECT
-         customer_id as customer_id,
+         distinct customer_id as customer_id,
          nb_article
        FROM `bv-prod.looker_pg.ref_cmd_produit`
        ;;
