@@ -20,6 +20,13 @@ view: ref_cmd_division {
     drill_fields: [sheet_client*]
   }
 
+  dimension: Format {
+    type: string
+    sql: ${TABLE}.format ;;
+    drill_fields: [sheet_client*]
+  }
+
+
   dimension: cd_produit {
     type: string
     sql: ${TABLE}.cd_produit ;;
@@ -32,6 +39,11 @@ view: ref_cmd_division {
     drill_fields: [sheet_client*]
   }
 
+  dimension: type_client {
+    type: string
+    sql: ${TABLE}.type_client ;;
+    drill_fields: [sheet_client*]
+  }
   dimension: division {
     type: string
     sql: ${TABLE}.division ;;
