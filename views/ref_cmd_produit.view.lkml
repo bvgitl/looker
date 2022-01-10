@@ -13,6 +13,7 @@ view: ref_cmd_produit {
   dimension: cd_commande {
     type: string
     sql: ${TABLE}.cd_commande ;;
+    primary_key: yes
     drill_fields: [sheet_client*]
   }
 
