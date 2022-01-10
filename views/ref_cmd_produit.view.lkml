@@ -13,7 +13,7 @@ view: ref_cmd_produit {
   dimension: cd_commande {
     type: string
     sql: ${TABLE}.cd_commande ;;
-
+    primary_key: yes
     drill_fields: [sheet_client*]
   }
 
@@ -25,7 +25,6 @@ view: ref_cmd_produit {
 
   dimension: customer_id {
     type: string
-    primary_key: yes
     sql: ${TABLE}.customer_id ;;
     drill_fields: [sheet_client*]
   }
