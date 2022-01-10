@@ -160,22 +160,40 @@ view: ref_cmd_produit {
     sql:  ${cmd_count} / ${customer_count} ;;
   }
 
-  measure: moy_article {
-    type: average
+  measure: somme_article {
+   type: sum
+   drill_fields: [sheet_client*]
+   sql: ${nb_article} ;;
+  }
+
+  measure: somme_ref {
+    type: sum
+    drill_fields: [sheet_client*]
+    sql: ${nb_ref_produit} ;;
+  }
+
+  measure: moy_article_cmd {
+    type: number
     drill_fields: [sheet_client*, nb_article]
-    sql:  ${TABLE}.nb_article ;;
+    sql:  ${somme_article} / ${cmd_count} ;;
   }
 
   measure: moy_article_par_client {
-      type: average_distinct
-      sql_distinct_key: ${customer_id} ;;
-      sql: ${nb_article} ;;
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_article} / ${customer_count} ;;
   }
 
-  measure: moy_reference {
-    type: average
-    drill_fields: [sheet_client*, nb_ref_produit]
-    sql:  ${TABLE}.nb_ref_produit ;;
+  measure: moy_reference_cmd {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_ref} / ${cmd_count} ;;
+  }
+
+  measure: moy_reference_client {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_ref} / ${customer_count} ;;
   }
 
   measure: cat_cmd_client {
