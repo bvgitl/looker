@@ -166,11 +166,11 @@ view: ref_cmd_produit {
   }
 
   measure: moy_article_par_client {
-    type: average
-    drill_fields: [sheet_client*, nb_article]
-    sql:  select distinct ${customer_id} ;;
-
+      type: average_distinct
+      sql_distinct_key: ${customer_id} ;;
+      sql: ${nb_article} ;;
   }
+
   measure: moy_reference {
     type: average
     drill_fields: [sheet_client*, nb_ref_produit]
