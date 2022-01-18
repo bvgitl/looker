@@ -49,6 +49,7 @@ view: stock_utd {
 
   measure: SumStock {
     type: sum
+    value_format_name: decimal_0
     sql: ${Stock} ;;
     view_label: "Stock (courant)"
     label: "Sum Stock"
