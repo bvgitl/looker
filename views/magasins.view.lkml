@@ -393,6 +393,12 @@ view: magasins {
         ;;
   }
 
+  dimension: emplacement {
+    type: location
+    sql_latitude:${latitude} ;;
+    sql_longitude:${longitude} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
