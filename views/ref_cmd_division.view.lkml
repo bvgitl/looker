@@ -120,9 +120,22 @@ view: ref_cmd_division {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_commande {
+    type: count_distinct
+    sql: ${TABLE}.cd_commande;;
+    drill_fields: [sheet_client*]
+  }
+
+
   measure: ca_client {
     type: number
     sql: ${somme_ca} / ${count_custom} ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: pm_client_division {
+    type: number
+    sql: ${somme_ca} / ${count_commande} ;;
     drill_fields: [sheet_client*]
   }
 
