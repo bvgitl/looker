@@ -4,31 +4,36 @@ view: stock_utd {
 
   dimension: CodeActeur {
     type: string
-    view_label: "Code Acteur"
+    view_label: "Stock"
+    label: "Code Acteur"
     sql: ${TABLE}.cd_acteur ;;
   }
 
   dimension: CodeArticle {
     type: string
-    view_label: "Code Article"
-    sql: ${TABLE}.cd_article ;;
+    view_label: "Stock"
+    label: "Code Article"
+    sql: CAST(${TABLE}.cd_article AS STRING) ;;
   }
 
   dimension: CodeStatut {
     type: string
-    view_label: "Code Statut"
+    view_label: "Stock"
+    label: "Code Statut"
     sql: ${TABLE}.cd_statut ;;
   }
 
   dimension: Stock {
     type: number
     view_label: "Stock"
+    label: "Stock"
     sql: ${TABLE}.n_stock ;;
   }
 
   dimension_group: DateModification {
     type: time
-    view_label: "Date Modification"
+    view_label: "Stock"
+    label: "Date Modification"
     timeframes: [
       raw,
       date,
@@ -45,7 +50,8 @@ view: stock_utd {
   measure: SumStock {
     type: sum
     sql: ${Stock} ;;
-    view_label: "Sum Stock"
+    view_label: "Stock"
+    label: "Sum Stock"
   }
 
 
