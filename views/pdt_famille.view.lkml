@@ -97,7 +97,7 @@ AND v.Dte_vte = w.dte_cde
 AND m.CD_Magasin = w.cd_magasin
  ;;
 
-    persist_for: "24 hours"
+    persist_for: "11 hours"
   }
 
 
