@@ -159,6 +159,13 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
   }
 
+  dimension: type_camp {
+    type: string
+    sql: CASE
+         WHEN ${camp_name} LIKE 'Trigger%'
+         THEN 'Trigger'
+         END ;;
+  }
 
 
   measure: count {

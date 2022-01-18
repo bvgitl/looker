@@ -13,6 +13,7 @@ view: ref_cmd_produit {
   dimension: cd_commande {
     type: string
     sql: ${TABLE}.cd_commande ;;
+    primary_key: yes
     drill_fields: [sheet_client*]
   }
 
@@ -38,6 +39,7 @@ view: ref_cmd_produit {
     type: string
     sql: ${TABLE}.statut ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
 
@@ -88,6 +90,7 @@ view: ref_cmd_produit {
     type: string
     sql: ${TABLE}.methode_livraison ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: nb_article {
@@ -118,6 +121,7 @@ view: ref_cmd_produit {
     type: string
     sql: ${TABLE}.type_client ;;
     drill_fields: [sheet_client*]
+    suggest_persist_for: "2 seconds"
   }
 
   measure: customer_count {
@@ -146,7 +150,7 @@ view: ref_cmd_produit {
 
   measure: pm_client {
     type: number
-    drill_fields: [sheet_client*,ref_cmd_division.division]
+    drill_fields: [sheet_client*]
     sql:  ${somme_ca} / ${cmd_count} ;;
   }
 
@@ -156,16 +160,40 @@ view: ref_cmd_produit {
     sql:  ${cmd_count} / ${customer_count} ;;
   }
 
-  measure: moy_article {
-    type: average
-    drill_fields: [sheet_client*]
-    sql:  ${TABLE}.nb_article ;;
+  measure: somme_article {
+   type: sum
+   drill_fields: [sheet_client*]
+   sql: ${nb_article} ;;
   }
 
-  measure: moy_reference {
-    type: average
+  measure: somme_ref {
+    type: sum
     drill_fields: [sheet_client*]
-    sql:  ${TABLE}.nb_ref_produit ;;
+    sql: ${nb_ref_produit} ;;
+  }
+
+  measure: moy_article_cmd {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_article} / ${cmd_count} ;;
+  }
+
+  measure: moy_article_par_client {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_article} / ${customer_count} ;;
+  }
+
+  measure: moy_reference_cmd {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_ref} / ${cmd_count} ;;
+  }
+
+  measure: moy_reference_client {
+    type: number
+    drill_fields: [sheet_client*, nb_article]
+    sql:  ${somme_ref} / ${customer_count} ;;
   }
 
   measure: cat_cmd_client {
