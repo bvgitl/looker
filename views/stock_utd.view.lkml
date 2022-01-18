@@ -2,6 +2,13 @@ view: stock_utd {
   sql_table_name: `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD`
     ;;
 
+  dimension: CodeActeurCodeArticle {
+    type: string
+    primary_key: yes
+    hidden: yes
+    sql: ${TABLE}.cd_acteur || '#' || CAST(${TABLE}.cd_article AS STRING) ;;
+  }
+
   dimension: CodeActeur {
     type: string
     view_label: "Stock (courant)"
@@ -23,10 +30,9 @@ view: stock_utd {
     sql: ${TABLE}.cd_statut ;;
   }
 
-  dimension: Stock {
+  dimension: n_stock {
     type: number
-    view_label: "Stock (courant)"
-    label: "Stock"
+    hidden:  yes
     sql: ${TABLE}.n_stock ;;
   }
 
@@ -47,12 +53,12 @@ view: stock_utd {
     sql: ${TABLE}.Dte_creat ;;
   }
 
-  measure: SumStock {
+  measure: Stock {
     type: sum
     value_format_name: decimal_0
-    sql: ${Stock} ;;
+    sql: ${n_stock} ;;
     view_label: "Stock (courant)"
-    label: "Sum Stock"
+    label: "Stock"
   }
 
 
