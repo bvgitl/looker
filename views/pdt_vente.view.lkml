@@ -13,6 +13,8 @@ view: pdt_vente {
   m.TYP_MAG AS TYP_MAG,
   m.Tranche_age AS Anciennete,
   m.CD_Magasin AS CD_Magasin,
+  m.Latitude,
+  m.Longitude,
   day AS Dte_Vte,
   v.Typ_Vente AS Typ_Vente,
   v.Val_Achat_Gbl AS Val_Achat_Gbl,
@@ -322,6 +324,22 @@ ON
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
     view_label: "Magasins"
+  }
+
+  dimension: Latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+  }
+
+  dimension: Longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+  }
+
+  dimension: Emplacement {
+    type: location
+    sql_latitude:${Latitude} ;;
+    sql_longitude:${Longitude} ;;
   }
 
 

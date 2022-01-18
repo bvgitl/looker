@@ -21,6 +21,8 @@ view: pdt_famille {
        m.TYP_MAG as TYP_MAG,
        m.Tranche_age as Anciennete,
        m.CD_Magasin as CD_Magasin,
+       m.Latitude,
+       m.Longitude,
        v.CD_Article as Article,
        v.CD_Article_Original  AS ArticleOriginal,
        v.Val_Achat_Gbl as Val_Achat_Gbl,
@@ -459,6 +461,22 @@ AND m.CD_Magasin = w.cd_magasin
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR COMPATIBLE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "Compatible"
           END ;;
     view_label: "N2"
+  }
+
+  dimension: Latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+  }
+
+  dimension: Longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+  }
+
+  dimension: Emplacement {
+    type: location
+    sql_latitude:${Latitude} ;;
+    sql_longitude:${Longitude} ;;
   }
 
 
