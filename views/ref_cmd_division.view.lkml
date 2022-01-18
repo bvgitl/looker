@@ -114,6 +114,18 @@ view: ref_cmd_division {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_custom {
+    type: count_distinct
+    sql: ${TABLE}.customer_id ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: ca_client {
+    type: number
+    sql: ${somme_ca} / ${count_custom} ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
