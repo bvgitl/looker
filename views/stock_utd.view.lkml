@@ -50,7 +50,7 @@ view: stock_utd {
     ]
     convert_tz: no
     datatype: date
-    sql: ${TABLE}.Dte_creat ;;
+    sql: ${TABLE}.date_modification ;;
   }
 
   measure: Stock {
