@@ -466,17 +466,20 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: Latitude {
     type: string
     sql: ${TABLE}.Latitude ;;
+    view_label: "Magasins"
   }
 
   dimension: Longitude {
     type: string
     sql: ${TABLE}.Longitude ;;
+    view_label: "Magasins"
   }
 
   dimension: Emplacement {
     type: location
     sql_latitude:${Latitude} ;;
     sql_longitude:${Longitude} ;;
+    view_label: "Magasins"
   }
 
 
