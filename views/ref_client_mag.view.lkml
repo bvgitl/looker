@@ -133,6 +133,21 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
+  dimension_group: date_dernier_achat {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: cast(${TABLE}.date_dernier_achat as TIMESTAMP) ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
@@ -146,6 +161,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,ref_cmd_produit.dte_commande, anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,date_dernier_achat_date, anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
   }
 }
