@@ -146,6 +146,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,ref_cmd_produit.dte_commande, anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
   }
 }
