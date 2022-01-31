@@ -18,7 +18,13 @@ datagroup: bv_vente_digitale_datagroup {
 persist_with: bv_vente_datagroup
 
 explore: Factu_campagne {}
-explore: ref_client_mag {}
+explore: ref_client_mag {
+  join: ref_cmd_produit {
+    relationship: one_to_many
+    sql_on: ${ref_client_mag.customer_id} = ${ref_cmd_produit.customer_id} ;;
+  }
+}
+
 explore: ref_cmd_produit {
   join: ref_cmd_division {
     relationship: one_to_many
@@ -26,7 +32,9 @@ explore: ref_cmd_produit {
   }
 }
 explore: ref_campagne {}
+
 explore: ref_client_cmd {}
+
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
