@@ -24,7 +24,7 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_creation_retail as TIMESTAMP )  ;;
+    sql: cast(${TABLE}.dt_creation_retail as DATE )  ;;
   }
 
   dimension_group: dt_creation_web {
@@ -39,7 +39,7 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_creation_web as TIMESTAMP )  ;;
+    sql: cast(${TABLE}.dt_creation_web as DATE )  ;;
   }
 
   dimension_group: dt_last_purchase {
@@ -54,7 +54,7 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_last_purchase as TIMESTAMP )  ;;
+    sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
   }
 
   dimension: email_rcu {
@@ -89,7 +89,7 @@ view: suivi_rcu {
 
   dimension: store_code {
     type: string
-    sql: case when ${TABLE}.store_code is not null ;;
+    sql: case when ${TABLE}.store_code is not null then ${TABLE}.store_code end   ;;
   }
 
   dimension: type_client {
