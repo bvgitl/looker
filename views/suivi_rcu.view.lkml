@@ -67,6 +67,12 @@ view: suivi_rcu {
     sql: ${TABLE}.type_client ;;
   }
 
+  measure: anciennete_mois {
+    type: number
+    sql:  date_diff( current_date(), date(${dt_creation_retail})  , month )  ;;
+  }
+
+
   measure: count {
     type: count
     drill_fields: [firstname, lastname]
