@@ -12,19 +12,49 @@ view: suivi_rcu {
     sql: ${TABLE}.customer_id ;;
   }
 
-  dimension: dt_creation_retail {
-    type: string
-    sql: ${TABLE}.dt_creation_retail ;;
+  dimension_group: dt_creation_retail {
+   type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.dt_creation_retail as TIMESTAMP )  ;;
   }
 
-  dimension: dt_creation_web {
-    type: string
-    sql: ${TABLE}.dt_creation_web ;;
+  dimension_group: dt_creation_web {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.dt_creation_web as TIMESTAMP )  ;;
   }
 
-  dimension: dt_last_purchase {
-    type: string
-    sql: ${TABLE}.dt_last_purchase ;;
+  dimension_group: dt_last_purchase {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.dt_last_purchase as TIMESTAMP )  ;;
   }
 
   dimension: email_rcu {
@@ -59,7 +89,7 @@ view: suivi_rcu {
 
   dimension: store_code {
     type: string
-    sql: ${TABLE}.store_code ;;
+    sql: case when ${TABLE}.store_code is not null ;;
   }
 
   dimension: type_client {
@@ -69,7 +99,7 @@ view: suivi_rcu {
 
   dimension: anciennete_mois {
     type: number
-    sql:  date_diff( current_date(), date(${dt_creation_retail})  , month )  ;;
+    sql:  date_diff( current_date(), ${dt_creation_retail_date} , month )  ;;
   }
 
 
