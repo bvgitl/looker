@@ -67,7 +67,7 @@ view: suivi_rcu {
     sql: ${TABLE}.type_client ;;
   }
 
-  measure: anciennete_mois {
+  dimension: anciennete_mois {
     type: number
     sql:  date_diff( current_date(), date(${dt_creation_retail})  , month )  ;;
   }
