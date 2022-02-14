@@ -29,7 +29,7 @@ explore: ref_cmd_produit {
 explore: ref_campagne {}
 
 explore: ref_client_cmd {}
-
+explore: suivi_rcu {}
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
