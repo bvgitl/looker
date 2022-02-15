@@ -90,6 +90,7 @@ view: suivi_rcu {
   dimension: store_code {
     type: string
     sql: case when ${TABLE}.store_code is not null then ${TABLE}.store_code end   ;;
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: type_client {
