@@ -94,7 +94,7 @@ view: suivi_ga_2 {
 
   measure: engaged_session {
     type: count_distinct
-    sql: case when ${session_engaged} = 1 then ${session_id} end  ;;
+    sql: case when ${session_engaged} = '1' then ${session_id} end  ;;
   }
 
   measure: conversion {
