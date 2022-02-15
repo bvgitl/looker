@@ -4,7 +4,7 @@ view: ref_campagne_triggers {
   derived_table: {
      sql: SELECT
          *
-       FROM ref_campagne
+       FROM `bv-prod.looker_pg.ref_campagne`
        where camp_name like 'Triggers%'
        ;;
       }
