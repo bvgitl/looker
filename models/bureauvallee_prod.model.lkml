@@ -19,7 +19,7 @@ persist_with: bv_vente_datagroup
 
 explore: Factu_campagne {}
 explore: ref_client_mag {}
-
+explore : ref_campagne_triggers {}
 explore: ref_cmd_produit {
   join: ref_cmd_division {
     relationship: one_to_many
