@@ -2,19 +2,24 @@ view: suivi_ga_2 {
   sql_table_name: `bv-prod.looker_pg.suivi_ga_2`
     ;;
 
-  dimension: ca {
+  dimension: achat {
     type: number
-    sql: ${TABLE}.CA ;;
+    sql: ${TABLE}.achat ;;
   }
 
-  dimension: conversion {
+  dimension: click {
     type: number
-    sql: ${TABLE}.conversion ;;
+    sql: ${TABLE}.click ;;
   }
 
-  dimension: engaged_sessions {
+  dimension: engagement_time_msec {
     type: number
-    sql: ${TABLE}.engaged_sessions ;;
+    sql: ${TABLE}.engagement_time_msec ;;
+  }
+
+  dimension: file_download {
+    type: number
+    sql: ${TABLE}.file_download ;;
   }
 
   dimension: name {
@@ -22,60 +27,95 @@ view: suivi_ga_2 {
     sql: ${TABLE}.name ;;
   }
 
-  dimension: nb_acheteur {
-    type: number
-    sql: ${TABLE}.nb_acheteur ;;
-  }
-
-  dimension: nb_click {
-    type: number
-    sql: ${TABLE}.nb_click ;;
-  }
-
-  dimension: nb_fichier_telecharger {
-    type: number
-    sql: ${TABLE}.nb_fichier_telecharger ;;
-  }
-
-  dimension: nb_lecture_video {
-    type: number
-    sql: ${TABLE}.nb_lecture_video ;;
-  }
-
-  dimension: nb_recherche {
-    type: number
-    sql: ${TABLE}.nb_recherche ;;
-  }
-
-  dimension: nb_scoll {
-    type: number
-    sql: ${TABLE}.nb_scoll ;;
-  }
-
   dimension: nouvelle_session {
     type: number
     sql: ${TABLE}.nouvelle_session ;;
   }
 
-  dimension: session {
+  dimension: purchase_revenue {
     type: number
-    sql: ${TABLE}.session ;;
+    sql: ${TABLE}.purchase_revenue ;;
   }
 
-  dimension: users {
+  dimension: scroll {
     type: number
-    sql: ${TABLE}.users ;;
+    sql: ${TABLE}.scroll ;;
   }
 
-measure: taux_conversion{
-  type: number
-  sql: sum(${conversion}/ sum(${session} ;;
-}
+  dimension: session_engaged {
+    type: string
+    sql: ${TABLE}.session_engaged ;;
+  }
 
-measure: taux_engagement {
-  type: number
-  sql: sum(${engaged_sessions} / sum(${session} ;;
-}
+  dimension: session_id {
+    type: number
+    sql: ${TABLE}.session_id ;;
+  }
+
+  dimension: transaction_id {
+    type: string
+    sql: ${TABLE}.transaction_id ;;
+  }
+
+  dimension: user_pseudo_id {
+    type: string
+    sql: ${TABLE}.user_pseudo_id ;;
+  }
+
+  dimension: video_progress {
+    type: number
+    sql: ${TABLE}.video_progress ;;
+  }
+
+  dimension: view_search_results {
+    type: number
+    sql: ${TABLE}.view_search_results ;;
+  }
+
+  measure:  users {
+    type: count_distinct
+    sql: ${user_pseudo_id} ;;
+  }
+
+  measure:  session {
+    type: count_distinct
+    sql: ${session_id} ;;
+    }
+
+  measure: nb_acheteur {
+    type: sum
+    sql:  ${achat} ;;
+  }
+
+  measure:  nb_nouvelle_session {
+    type: sum
+    sql: ${nouvelle_session} ;;
+  }
+
+  measure: engaged_session {
+    type: count_distinct
+    sql: case when ${session_engaged} = 1 then ${session_id} ;;
+  }
+
+  measure: conversion {
+    type: count_distinct
+    sql: ${transaction_id} ;;
+  }
+
+  measure:  CA {
+    type:  sum
+    sql: ${purchase_revenue} ;;
+  }
+
+  measure:  taux_conversion {
+    type: number
+    sql: ${conversion} / ${session} ;;
+  }
+
+  measure:  taux_engement {
+    type: number
+    sql: ${engaged_session} /${session} ;;
+  }
 
 
   measure: count {
