@@ -5,7 +5,7 @@ view: ref_campagne_triggers {
      sql: SELECT
          *
        FROM `bv-prod.looker_pg.ref_campagne`
-       where camp_name like 'Triggers%'
+       where camp_name like 'Trigger%'
        ;;
       }
 
