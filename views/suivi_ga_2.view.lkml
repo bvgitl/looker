@@ -109,12 +109,12 @@ view: suivi_ga_2 {
 
   measure:  taux_conversion {
     type: number
-    sql: ${conversion} / ${session} ;;
+    sql: (${conversion} / ${session})*100 ;;
   }
 
   measure:  taux_engement {
     type: number
-    sql: ${engaged_session} /${session} ;;
+    sql: (${engaged_session} /${session})*100 ;;
   }
 
 
