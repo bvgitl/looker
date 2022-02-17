@@ -5,11 +5,13 @@ view: suivi_rcu {
   dimension: civilite {
     type: string
     sql: ${TABLE}.civilite ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: customer_id {
     type: string
     sql: ${TABLE}.customer_id ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension_group: dt_creation_retail {
@@ -25,6 +27,7 @@ view: suivi_rcu {
     convert_tz: no
     datatype: date
     sql: cast(${TABLE}.dt_creation_retail as DATE )  ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension_group: dt_creation_web {
@@ -40,6 +43,7 @@ view: suivi_rcu {
     convert_tz: no
     datatype: date
     sql: cast(${TABLE}.dt_creation_web as DATE )  ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension_group: dt_last_purchase {
@@ -55,11 +59,13 @@ view: suivi_rcu {
     convert_tz: no
     datatype: date
     sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: email_rcu {
     type: string
     sql: ${TABLE}.email_rcu ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: firstname {
@@ -80,32 +86,42 @@ view: suivi_rcu {
   dimension: optin_email {
     type: string
     sql: ${TABLE}.optin_email ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: optin_sms {
     type: number
     sql: ${TABLE}.optin_sms ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: store_code {
     type: string
     sql: case when ${TABLE}.store_code is not null then ${TABLE}.store_code end   ;;
     suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
   }
 
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
+    drill_fields: [sheet_client*]
   }
 
   dimension: anciennete_mois {
     type: number
     sql:  date_diff( current_date(), ${dt_creation_retail_date} , month )  ;;
+    drill_fields: [sheet_client*]
   }
 
 
   measure: count {
     type: count
-    drill_fields: [firstname, lastname]
+    drill_fields: [firstname, lastname,type_client, civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code]
   }
+
+  set: sheet_client {
+    fields: [firstname, lastname,type_client, civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code]
+  }
+
 }
