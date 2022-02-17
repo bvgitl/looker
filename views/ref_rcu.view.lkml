@@ -1,5 +1,5 @@
 view: suivi_rcu {
-  sql_table_name: `bv-prod.looker_pg.suivi_rcu`
+  sql_table_name: `bv-prod.looker_pg.ref_rcu`
     ;;
 
   dimension: civilite {
@@ -15,7 +15,7 @@ view: suivi_rcu {
   }
 
   dimension_group: dt_creation_retail {
-   type: time
+    type: time
     timeframes: [
       raw,
       date,
