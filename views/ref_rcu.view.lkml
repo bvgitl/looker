@@ -91,6 +91,7 @@ view: suivi_rcu {
 
   dimension: id_master {
     type: string
+    primary_key: yes
     sql: ${TABLE}.id_master ;;
   }
 
