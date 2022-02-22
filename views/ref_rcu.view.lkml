@@ -116,7 +116,7 @@ view: suivi_rcu {
 
   dimension: anciennete_mois {
     type: number
-    sql:  case when ${dt_creation_retail_date} is null then max(${dt_creation_web_date},${dt_last_purchase_date})
+    sql:  case when ${dt_creation_retail_date} is null then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
               else date_diff( current_date(), ${dt_creation_retail_date} , month ) end ;;
     drill_fields: [sheet_client*]
   }
