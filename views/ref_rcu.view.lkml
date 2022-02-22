@@ -32,9 +32,11 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: case when ${TABLE}.dt_creation_retail is null
-        then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
-        else cast(${TABLE}.dt_creation_retail as DATE) end ;;
+    sql: cast(${TABLE}.dt_creation_retail as DATE) ;;
+
+    #case when ${TABLE}.dt_creation_retail is null
+     #then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
+      #else cast(${TABLE}.dt_creation_retail as DATE) end ;;
     drill_fields: [sheet_client*]
   }
 
