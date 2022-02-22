@@ -153,6 +153,7 @@ view: suivi_rcu {
     type: count_distinct
     sql: case when (is_null(${suivi_rcu.dt_creation_web_date}) AND NOT is_null(${suivi_rcu.dt_creation_retail_date}) )
                   OR (is_null(${suivi_rcu.dt_creation_web_date}) AND  is_null(${suivi_rcu.dt_creation_retail_date}))
+              then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
   }
