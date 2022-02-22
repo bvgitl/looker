@@ -32,7 +32,8 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_creation_retail as DATE )  ;;
+    sql: case when ${TABLE}.dt_creation_retail is null
+        then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) )) end ;;
     drill_fields: [sheet_client*]
   }
 
@@ -116,8 +117,7 @@ view: suivi_rcu {
 
   dimension: anciennete_mois {
     type: number
-    sql:  case when ${dt_creation_retail_date} is null then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
-              else date_diff( current_date(), ${dt_creation_retail_date} , month ) end ;;
+    sql: date_diff( current_date(), ${dt_creation_retail_date} , month ) ;;
     drill_fields: [sheet_client*]
   }
 
