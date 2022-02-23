@@ -61,6 +61,7 @@ view: ref_client_mag {
   }
 
 
+
   dimension: coord {
     type: location
     map_layer_name: my_map
@@ -133,6 +134,27 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
+  dimension_group: date_dernier_achat {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: cast(${TABLE}.date_dernier_achat as TIMESTAMP) ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: adresse {
+    type: string
+    sql: ${TABLE}.adresse ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
@@ -146,6 +168,6 @@ view: ref_client_mag {
 
 
   set: sheet_client {
-    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,anciennete_mois,civilite,cd_magasin,format, animateur,tranche_age,region]
+    fields: [customer_id,email,optin_email,portable_ok, optin_sms,type_client,date_creation_date,date_dernier_achat_date, anciennete_mois,civilite,adresse,cd_magasin,format, animateur,tranche_age,region]
   }
 }

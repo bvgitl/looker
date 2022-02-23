@@ -139,6 +139,12 @@ view: ref_cmd_division {
     drill_fields: [sheet_client*]
   }
 
+  measure: freq_achat {
+    type: number
+    drill_fields: [sheet_client*]
+    sql:  ${count_commande} / ${count_custom} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [sheet_client*]
