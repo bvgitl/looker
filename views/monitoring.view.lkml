@@ -2,6 +2,7 @@ view: monitoring {
   sql_table_name: Matillion_Monitoring.MonitoringFichier ;;
 
   dimension_group: DateFichier {
+    label: "Date Fichier"
     type: time
     timeframes: [
       raw,
@@ -16,6 +17,7 @@ view: monitoring {
   }
 
   dimension_group: DateMonitoring {
+    label: "Date Monitoring"
     type: time
     timeframes: [
       raw,
@@ -30,46 +32,55 @@ view: monitoring {
   }
 
   dimension: Flux {
+    label: "Flux"
     type: string
     sql: ${TABLE}.Flux ;;
   }
 
   dimension: GroupeFlux {
+    label: "Groupe Flux"
     type: string
     sql: ${TABLE}.GroupeFlux ;;
   }
 
   dimension: CodeMagasinExterne   {
+    label: "Code Magasin (externe)"
     type: string
     sql: ${TABLE}.CodeMagasinExterne  ;;
   }
 
   dimension: CodeMagasinActeur   {
+    label: "Code Magasin (acteur)"
     type: string
     sql: ${TABLE}.CodeMagasinActeur  ;;
   }
 
   dimension: CodeTerritoire   {
+    label: "Code Territoire"
     type: string
     sql: ${TABLE}.CodeTerritoire  ;;
   }
 
   dimension: EstOK {
+    label: "Est OK ?"
     type: yesno
     sql: ${TABLE}.EstOK ;;
   }
 
   dimension: EstObligatoire {
+    label: "Est Obligatoire ?"
     type: yesno
     sql: ${TABLE}.Obligatoire ;;
   }
 
   dimension: Erreur {
+    label: "Erreur"
     type: string
     sql: ${TABLE}.Erreur ;;
   }
 
   dimension: TypeErreur {
+    label: "Type Erreur"
     type:  string
     sql:  CASE
       WHEN ${TABLE}.EstOK = true THEN "OK"
@@ -80,11 +91,13 @@ view: monitoring {
   }
 
   dimension: NomFichier {
+    label: "Nom Fichier (brut)"
     type: string
     sql: ${TABLE}.NomFichier ;;
   }
 
   dimension: NomFichierPretty {
+    label: "Nom Fichier"
     type: string
     sql: REPLACE(REPLACE(REPLACE(
         REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(
@@ -95,18 +108,27 @@ view: monitoring {
   }
 
   dimension: Flux_Global {
+    label: "Flux Global ?"
     type: yesno
-    sql: ${TABLE}.Flux NOT IN ('BCP10_BCP13', 'Clients Retail', 'Web Inter') ;;
+    sql: ${TABLE}.GroupeFlux IN ('COR', 'Web') ;;
+  }
+
+  dimension: Flux_WebInter {
+    label: "Flux Web Inter ?"
+    type: yesno
+    sql: ${TABLE}.GroupeFlux = 'Web Inter' ;;
   }
 
   dimension: Flux_ClientRetail {
+    label: "Flux Client Reatil ?"
     type: yesno
-    sql: ${TABLE}.Flux = 'Clients Retail' ;;
+    sql: ${TABLE}.GroupeFlux = 'Retail' ;;
   }
 
   dimension: Flux_BCP10_BCP13 {
+    label: "Flux Vente ?"
     type: yesno
-    sql: ${TABLE}.Flux = 'BCP10_BCP13' ;;
+    sql: ${TABLE}.GroupeFlux = 'Vente' ;;
   }
 
   measure: count {
