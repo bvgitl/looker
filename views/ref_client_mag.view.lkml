@@ -74,6 +74,53 @@ view: ref_client_mag {
 
  }
 
+  dimension: period_comparison {
+
+    case: {
+
+      when: {
+
+        sql: ${date_creation_date} >= DATE_TRUNC('month', GETDATE())
+
+                    AND ${date_creation_date} < DATE_TRUNC('day', GETDATE());;
+
+          label: "current_month"
+
+        }
+
+
+
+        when: {
+
+          sql: ${date_creation_date} >= DATE_TRUNC('month', GETDATE() - interval '1 year')
+
+                      AND ${date_creation_date} < DATE_TRUNC('day', GETDATE() - interval '1 year');;
+
+            label: "last_year_same_month_same_point"
+
+          }
+
+
+
+          when: {
+
+            sql: ${date_creation_date} >= DATE_TRUNC('month',GETDATE()) - interval '1 month'
+
+                        AND ${date_creation_date} < DATE_TRUNC('day', GETDATE() - interval '1 month');;
+
+              label: "last_month_same_point"
+
+            }
+
+
+
+            else: "unknown"
+
+          }
+
+        }
+
+
   dimension: coord {
     type: location
     map_layer_name: my_map
