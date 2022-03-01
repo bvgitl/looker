@@ -75,25 +75,15 @@ view: ref_client_mag {
  }
 
   dimension: period_comparison {
-
     case: {
-
       when: {
-
         sql: date_diff (current_date(), ${date_creation_date}, month ) = 2;;
-
           label: "2 denier mois"
-
-        }
-
-
-
-
-        else: "unknown"
-
+            }
+      else: "unknown"
           }
-
-        }
+    suggest_persist_for: "2 seconds"
+}
 
 
   dimension: coord {
