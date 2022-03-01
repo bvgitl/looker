@@ -80,41 +80,16 @@ view: ref_client_mag {
 
       when: {
 
-        sql: ${date_creation_date} >= DATE_TRUNC('month', GETDATE())
+        sql: date_diff (current_date(), ${date_creation_date}, month ) = 2;;
 
-                    AND ${date_creation_date} < DATE_TRUNC('day', GETDATE());;
-
-          label: "current_month"
+          label: "2 denier mois"
 
         }
 
 
 
-        when: {
 
-          sql: ${date_creation_date} >= DATE_TRUNC('month', GETDATE() - interval '1 year')
-
-                      AND ${date_creation_date} < DATE_TRUNC('day', GETDATE() - interval '1 year');;
-
-            label: "last_year_same_month_same_point"
-
-          }
-
-
-
-          when: {
-
-            sql: ${date_creation_date} >= DATE_TRUNC('month',GETDATE()) - interval '1 month'
-
-                        AND ${date_creation_date} < DATE_TRUNC('day', GETDATE() - interval '1 month');;
-
-              label: "last_month_same_point"
-
-            }
-
-
-
-            else: "unknown"
+        else: "unknown"
 
           }
 
