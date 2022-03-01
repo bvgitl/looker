@@ -67,6 +67,7 @@ view: ref_client_mag {
   suggestions: ["30 jours avant","2 jours avant"]
   suggest_dimension: date_creation_date
   sql: ${TABLE}.date_creation ;;
+  suggest_persist_for: "1 second"
 
 
 
