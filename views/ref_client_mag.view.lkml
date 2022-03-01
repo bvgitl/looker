@@ -61,6 +61,11 @@ view: ref_client_mag {
   }
 
 
+ filter: date_test {
+  type: date
+  suggestions: ["30 jours avant","2 jours avant"]
+
+ }
 
   dimension: coord {
     type: location
