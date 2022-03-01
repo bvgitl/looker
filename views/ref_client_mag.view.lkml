@@ -61,7 +61,7 @@ view: ref_client_mag {
   }
 
 
- filter: date_test {
+ filter: date_test2 {
   type: string
   default_value: "default value !! "
   suggestions: ["30 jours avant","2 jours avant"]
