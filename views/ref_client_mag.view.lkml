@@ -61,24 +61,11 @@ view: ref_client_mag {
   }
 
 
- filter: date_test2 {
-  type: string
-  default_value: "default value !! "
-  suggestions: ["30 jours avant","2 jours avant"]
-  suggest_dimension: date_creation_date
-  sql: ${TABLE}.date_creation ;;
-  suggest_persist_for: "1 second"
-
-
-
-
- }
-
-  dimension: period_comparison {
+  dimension: date_creation_periode{
     case: {
       when: {
         sql: date_diff (current_date(), ${date_creation_date}, month ) = 2;;
-          label: "2 denier mois"
+          label: "2 derniers mois"
             }
       else: "unknown"
           }
