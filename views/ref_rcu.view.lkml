@@ -139,7 +139,7 @@ view: suivi_rcu {
 
   dimension: flag_36_mois {
     type: number
-    sql: case when date_diff(current_date(), ${dt_creation_retail_date}) >= 36 then 1else 0 end   ;;
+    sql: case when date_diff(current_date(), ${dt_creation_retail_date}) >= 36 then 1 else 0 end   ;;
     drill_fields: [sheet_client*]
   }
 
