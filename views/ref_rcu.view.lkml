@@ -161,6 +161,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_master {
+    type: count_distinct
+    sql: ${id_master} ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count_retail_seul{
     type: count_distinct
     sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
@@ -170,6 +176,21 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_web_seul{
+    type: count_distinct
+    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: count_mixt{
+    type: count_distinct
+    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
 
 
   measure: count {
