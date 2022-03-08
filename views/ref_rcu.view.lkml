@@ -143,6 +143,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: ca {
+    type: number
+    sql: ${TABLE}.ca_ttc ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count_email {
     type: count_distinct
     sql: ${email_rcu} ;;
