@@ -164,7 +164,7 @@ view: suivi_rcu {
 
   measure: count_telephone {
     type: count_distinct
-    sql: case when ${cell_phone} is not null or ${phone} is not null end  ;;
+    sql: case when ${cell_phone} is not null or ${phone} is not null then ${id_master} end  ;;
     drill_fields: [sheet_client*]
   }
 
