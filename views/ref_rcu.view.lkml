@@ -164,19 +164,14 @@ view: suivi_rcu {
 
   measure: count_telephone {
     type: count_distinct
-    sql: ${cell_phone} ;;
+    sql: case when ${cell_phone} is not null or ${phone} is not null end  ;;
     drill_fields: [sheet_client*]
   }
 
-  measure: count_phone {
-    type: count_distinct
-    sql: ${phone} ;;
-    drill_fields: [sheet_client*]
-  }
 
   measure: count_contactable {
     type: number
-    sql: case when (${count_email} is not null or ${count_phone} is not null or ${count_telephone} is not null) then (${count_email}+ ${count_phone} + ${count_telephone}) end  ;;
+    sql: case when (${count_email} is not null or ${count_telephone} is not null) then (${count_email} + ${count_telephone}) end  ;;
     drill_fields: [sheet_client*]
   }
 
