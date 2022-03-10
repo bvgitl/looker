@@ -113,7 +113,7 @@ view: suivi_rcu {
   }
 
   dimension: optin_sms {
-    type: number
+    type: string
     sql: ${TABLE}.optin_sms ;;
     drill_fields: [sheet_client*]
   }
