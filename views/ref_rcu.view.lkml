@@ -137,11 +137,18 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: flag_36_mois {
+  dimension: flag_36_mois_retail {
     type: number
     sql: case when date_diff(current_date(), ${dt_creation_retail_date}, month) <= 36 then 1 else 0 end   ;;
     drill_fields: [sheet_client*]
   }
+
+  dimension: flag_36_mois_achat {
+    type: number
+    sql: case when date_diff(current_date(), ${dt_last_purchase_date}, month) <= 36 then 1 else 0 end   ;;
+    drill_fields: [sheet_client*]
+  }
+
 
   dimension: ca {
     type: number
