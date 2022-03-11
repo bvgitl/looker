@@ -79,10 +79,12 @@ view: ref_client_mag {
         sql:  ${date_creation_year} = 2022;;
         label: "2022"
       }
-      when: {
-        sql: ${date_creation_month} -1 ;;
-        label: "Mois précédent"
-      }
+
+
+    #  when: {
+     #   sql: ${date_creation_month} -1 ;;
+      #  label: "Mois précédent"
+      #}
           }
     suggest_persist_for: "2 seconds"
 }
