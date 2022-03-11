@@ -79,8 +79,6 @@ view: ref_client_mag {
         sql:  ${date_creation_year} = 2022;;
         label: "2022"
       }
-
-
       when: {
         sql: extract(month from ${date_creation_date}) = extract(month from ${date_creation_date}) -1 ;;
         label: "Mois précédent"
