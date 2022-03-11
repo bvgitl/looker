@@ -64,8 +64,8 @@ view: ref_client_mag {
   dimension: date_creation_periode{
     case: {
       when: {
-        sql: date_diff (current_date(), ${date_creation_date}, month ) = 2;;
-          label: "2 derniers mois"
+        sql:  ${date_creation_year} = 2019;;
+          label: "2019"
             }
       else: "unknown"
           }
