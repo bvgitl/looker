@@ -1,4 +1,4 @@
-view: suivi_rcu {
+view: ref_rcu {
   sql_table_name: `bv-prod.looker_pg.ref_rcu`
     ;;
 
@@ -47,8 +47,8 @@ view: suivi_rcu {
     sql: cast(${TABLE}.dt_creation_retail as DATE) ;;
 
     #case when ${TABLE}.dt_creation_retail is null
-     #then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
-      #else cast(${TABLE}.dt_creation_retail as DATE) end ;;
+    #then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
+    #else cast(${TABLE}.dt_creation_retail as DATE) end ;;
     drill_fields: [sheet_client*]
   }
 
@@ -183,8 +183,8 @@ view: suivi_rcu {
 
   measure: count_retail_seul{
     type: count_distinct
-    sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
-                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
+    sql: case when (${ref_rcu.dt_creation_web_date} is null AND ${ref_rcu.dt_creation_retail_date} is not null )
+                  OR (${ref_rcu.dt_creation_web_date} is null AND  ${ref_rcu.dt_creation_retail_date} is null)
               then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
@@ -192,7 +192,7 @@ view: suivi_rcu {
 
   measure: count_web_seul{
     type: count_distinct
-    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+    sql: case when (${ref_rcu.dt_creation_web_date} is not null AND ${ref_rcu.dt_creation_retail_date} is null )
               then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
@@ -200,7 +200,7 @@ view: suivi_rcu {
 
   measure: count_mixt{
     type: count_distinct
-    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+    sql: case when (${ref_rcu.dt_creation_web_date} is not null AND ${ref_rcu.dt_creation_retail_date} is not null )
               then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
