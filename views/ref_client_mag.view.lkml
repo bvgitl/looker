@@ -80,7 +80,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: ${date_creation_month} = ${date_creation_month} -1 ;;
+        sql: ${date_creation_month} -1 ;;
         label: "Mois précédent"
       }
           }
