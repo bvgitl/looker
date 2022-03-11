@@ -82,7 +82,7 @@ view: ref_client_mag {
 
 
       when: {
-        sql: extract(month from ${date_creation_date}) -1 ;;
+        sql: extract(month from ${date_creation_date}) = extract(month from ${date_creation_date}) -1 ;;
         label: "Mois précédent"
       }
           }
