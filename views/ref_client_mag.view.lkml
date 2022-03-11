@@ -81,10 +81,10 @@ view: ref_client_mag {
       }
 
 
-    #  when: {
-     #   sql: ${date_creation_month} -1 ;;
-      #  label: "Mois précédent"
-      #}
+      when: {
+        sql: extract(month from ${date_creation_date}) -1 ;;
+        label: "Mois précédent"
+      }
           }
     suggest_persist_for: "2 seconds"
 }
