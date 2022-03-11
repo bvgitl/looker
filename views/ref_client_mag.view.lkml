@@ -67,7 +67,22 @@ view: ref_client_mag {
         sql:  ${date_creation_year} = 2019;;
           label: "2019"
             }
-      else: "unknown"
+      when: {
+        sql:  ${date_creation_year} = 2020;;
+        label: "2020"
+      }
+      when: {
+        sql:  ${date_creation_year} = 2021;;
+        label: "2021"
+      }
+      when: {
+        sql:  ${date_creation_year} = 2022;;
+        label: "2022"
+      }
+      when: {
+        sql: ${date_creation_month} = ${date_creation_month} -1 ;;
+        label: "Mois précédent"
+      }
           }
     suggest_persist_for: "2 seconds"
 }
