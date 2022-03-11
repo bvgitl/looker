@@ -11,6 +11,7 @@ view: suivi_rcu {
   dimension: Animateur {
     type: string
     sql: ${TABLE}.Animateur ;;
+    suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
 
