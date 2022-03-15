@@ -60,6 +60,10 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
+  dimension: last_month {
+    type: number
+    sql: Extract(MONTH from date_sub(DATE(cast(${date_creation_date} as TIMESTAMP) ) , interval 1 month)) ;;
+  }
 
   dimension: date_creation_periode{
     case: {
@@ -80,9 +84,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: case
-                when extract(month from DATE(cast(${date_creation_date} as TIMESTAMP) )) = extract(month from DATE(cast(${date_creation_date} as TIMESTAMP) )) -1
-                then date_sub(DATE(cast(${date_creation_date} as TIMESTAMP) ) , interval 1 month) end ;;
+        sql: export( month from ${date_creation_date}) = ${last_month};;
         label: "Mois précédent"
       }
           }
