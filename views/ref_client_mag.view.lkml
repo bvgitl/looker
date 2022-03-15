@@ -80,7 +80,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: extract(month from ${date_creation_date}) -1 ;;
+        sql: date_sub(DATE(cast(ref_client_mag.date_creation as TIMESTAMP) ) , interval 1 month) ;;
         label: "Mois précédent"
       }
           }
