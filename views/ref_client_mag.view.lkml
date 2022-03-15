@@ -62,7 +62,7 @@ view: ref_client_mag {
 
   dimension: last_month {
     type: number
-    sql: Extract(MONTH from date_sub(DATE(${date_creation_date}  ) , interval 1 month)) ;;
+    sql: date_sub(DATE(${date_creation_date}  ) , interval 1 month) ;;
   }
 
   dimension: date_creation_periode{
