@@ -127,6 +127,13 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: code_mag_2 {
+    type: string
+    sql: ${TABLE}.code_mag_2  ;;
+    suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
+  }
+
   dimension: type_client {
     type: string
     sql: ${TABLE}.type_client ;;
