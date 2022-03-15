@@ -167,7 +167,7 @@ view: suivi_rcu {
 
   measure: count_email {
     type: count_distinct
-    sql: ${email_rcu} ;;
+    sql: case when ${email_rcu} is not null  then ${id_master} end ;;
     drill_fields: [sheet_client*]
   }
 
@@ -194,6 +194,15 @@ view: suivi_rcu {
     type: count_distinct
     sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
                   OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
+  measure: count_multi_retail{
+    type: count_distinct
+    sql: case when  ((${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null) )
+                  and ${code_mag_2} is not null
               then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
