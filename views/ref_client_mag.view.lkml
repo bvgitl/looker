@@ -60,11 +60,6 @@ view: ref_client_mag {
     drill_fields: [sheet_client*]
   }
 
-  dimension: last_month {
-    type: number
-    sql: date_sub(DATE(${date_creation_date}  ) , interval 1 month) ;;
-  }
-
   dimension: date_creation_periode{
     case: {
       when: {

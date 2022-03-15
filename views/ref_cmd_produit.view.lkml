@@ -58,6 +58,35 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
+  dimension: date_cmd_periode{
+    case: {
+      when: {
+        sql:  ${dte_commande_year} = 2019;;
+        label: "2019"
+      }
+      when: {
+        sql:   ${dte_commande_year} = 2020;;
+        label: "2020"
+      }
+      when: {
+        sql:   ${dte_commande_year} = 2021;;
+        label: "2021"
+      }
+      # when: {
+      #   sql:  ${date_creation_year} = 2022;;
+      #   label: "2022"
+      # }
+      when: {
+        sql: (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
+          and (   ${dte_commande_year} = extract(year from current_date() ) );;
+        label: "Mois précédent"
+      }
+    }
+    suggest_persist_for: "2 seconds"
+  }
+
+
+
   dimension: format {
     type: string
     sql: ${TABLE}.Format;;
