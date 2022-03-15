@@ -79,10 +79,10 @@ view: ref_client_mag {
         sql:  ${date_creation_year} = 2021;;
         label: "2021"
       }
-      when: {
-        sql:  ${date_creation_year} = 2022;;
-        label: "2022"
-      }
+      # when: {
+      #   sql:  ${date_creation_year} = 2022;;
+      #   label: "2022"
+      # }
       when: {
         sql: (extract(month from ${date_creation_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
               and (  ${date_creation_year} = extract(year from current_date() ) );;
