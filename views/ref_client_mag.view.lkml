@@ -62,7 +62,7 @@ view: ref_client_mag {
 
   dimension: last_month {
     type: number
-    sql: Extract(MONTH from date_sub(DATE(cast(${date_creation_date} as TIMESTAMP) ) , interval 1 month)) ;;
+    sql: Extract(MONTH from date_sub(DATE(${date_creation_date}  ) , interval 1 month)) ;;
   }
 
   dimension: date_creation_periode{
@@ -84,7 +84,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: export( month from ${date_creation_date}) = ${last_month};;
+        sql: extract( month from ${date_creation_date}) = ${last_month};;
         label: "Mois précédent"
       }
           }
