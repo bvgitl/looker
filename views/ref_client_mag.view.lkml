@@ -84,7 +84,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: date_sub(current_date( ) , interval 1 month) is not null;;
+        sql: extract(month from ${date_creation_date}) =  date_sub(current_date( ) , interval 1 month) ;;
         label: "Mois précédent"
       }
           }
