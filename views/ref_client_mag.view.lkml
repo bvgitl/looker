@@ -84,7 +84,7 @@ view: ref_client_mag {
         label: "2022"
       }
       when: {
-        sql: extract( month from ${date_creation_date}) = extract(month from date_sub(DATE(${date_creation_date}  ) , interval 1 month) });;
+        sql: extract( month from ${date_creation_date}) = extract(month from date_sub(DATE(${date_creation_date}  ) , interval 1 month) ));;
         label: "Mois précédent"
       }
           }
