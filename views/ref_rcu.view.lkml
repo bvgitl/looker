@@ -33,6 +33,7 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+
   dimension_group: dt_creation_retail {
     type: time
     timeframes: [
