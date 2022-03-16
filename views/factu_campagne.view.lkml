@@ -39,14 +39,6 @@ view: Factu_campagne {
   dimension: date_camp_periode{
     case: {
       when: {
-        sql:  ${dte_camp_year} = 2019;;
-        label: "2019"
-      }
-      when: {
-        sql:  ${dte_camp_year}  = 2020;;
-        label: "2020"
-      }
-      when: {
         sql:  ${dte_camp_year}  = 2021;;
         label: "2021"
       }
