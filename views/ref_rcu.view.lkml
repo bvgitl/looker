@@ -82,10 +82,37 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
+    sql: cast(${TABLE}.dt_optin_email as DATE )  ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension_group: dt_optin_email {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
     drill_fields: [sheet_client*]
   }
 
+  dimension: vue_rgpd {
+    type: yesno
+    sql: case when greatest(
+                        coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_creation_retail as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_optin_email as date), cast('1970-01-01' as date))
+                          )
+          >= DATE_SUB(current_date(), INTERVAL 36 month) ;;
+
+  }
   dimension: email_rcu {
     type: string
     sql: ${TABLE}.email_rcu ;;
