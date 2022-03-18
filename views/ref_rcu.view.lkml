@@ -104,13 +104,12 @@ view: suivi_rcu {
 
   dimension: vue_rgpd {
     type: yesno
-    sql: case when greatest(
-                        coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
+    sql:  greatest(     coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_creation_retail as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_optin_email as date), cast('1970-01-01' as date))
                           )
-          >= DATE_SUB(current_date(), INTERVAL 36 month) ;;
+          >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
 
   }
   dimension: email_rcu {
