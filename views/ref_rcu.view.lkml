@@ -11,6 +11,7 @@ view: suivi_rcu {
   dimension: Animateur {
     type: string
     sql: ${TABLE}.Animateur ;;
+    suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
 
@@ -32,6 +33,7 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+
   dimension_group: dt_creation_retail {
     type: time
     timeframes: [
@@ -47,8 +49,8 @@ view: suivi_rcu {
     sql: cast(${TABLE}.dt_creation_retail as DATE) ;;
 
     #case when ${TABLE}.dt_creation_retail is null
-     #then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
-      #else cast(${TABLE}.dt_creation_retail as DATE) end ;;
+    #then  (if (${dt_creation_web_date}> ${dt_last_purchase_date}, ${dt_creation_web_date}, COALESCE (${dt_last_purchase_date}, ${dt_creation_web_date}) ))
+    #else cast(${TABLE}.dt_creation_retail as DATE) end ;;
     drill_fields: [sheet_client*]
   }
 
@@ -80,10 +82,36 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
+    sql: cast(${TABLE}.dt_optin_email as DATE )  ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension_group: dt_optin_email {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
     sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
     drill_fields: [sheet_client*]
   }
 
+  dimension: vue_rgpd {
+    type: yesno
+    sql:  greatest(     coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_creation_retail as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
+                        coalesce( cast(dt_optin_email as date), cast('1970-01-01' as date))
+                          )
+          >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
+
+  }
   dimension: email_rcu {
     type: string
     sql: ${TABLE}.email_rcu ;;
@@ -113,7 +141,7 @@ view: suivi_rcu {
   }
 
   dimension: optin_sms {
-    type: number
+    type: string
     sql: ${TABLE}.optin_sms ;;
     drill_fields: [sheet_client*]
   }
@@ -121,6 +149,13 @@ view: suivi_rcu {
   dimension: code_mag {
     type: string
     sql: ${TABLE}.code_mag  ;;
+    suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: code_mag_2 {
+    type: string
+    sql: ${TABLE}.code_mag_2  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
@@ -137,22 +172,47 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: flag_36_mois_retail {
+    type: number
+    sql: case when date_diff(current_date(), ${dt_creation_retail_date}, month) <= 36 then 1 else 0 end   ;;
+    drill_fields: [sheet_client*]
+  }
+
+  dimension: flag_36_mois_achat {
+    type: number
+    sql: case when date_diff(current_date(), ${dt_last_purchase_date}, month) <= 36 then 1 else 0 end   ;;
+    drill_fields: [sheet_client*]
+  }
+
+
+  dimension: ca {
+    type: number
+    sql: ${TABLE}.ca_ttc ;;
+    drill_fields: [sheet_client*]
+  }
 
   measure: count_email {
     type: count_distinct
-    sql: ${email_rcu} ;;
+    sql: case when ${email_rcu} is not null  then ${id_master} end ;;
     drill_fields: [sheet_client*]
   }
 
   measure: count_telephone {
     type: count_distinct
-    sql: ${cell_phone} ;;
+    sql: case when ${cell_phone} is not null or ${phone} is not null then ${id_master} end  ;;
     drill_fields: [sheet_client*]
   }
 
-  measure: count_phone {
+
+  measure: count_contactable {
     type: count_distinct
-    sql: ${phone} ;;
+    sql: case when ${email_rcu} is not null or ${cell_phone} is not null or ${phone} is not null then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: count_master {
+    type: count_distinct
+    sql: ${id_master} ;;
     drill_fields: [sheet_client*]
   }
 
@@ -164,7 +224,31 @@ view: suivi_rcu {
               end ;;
     drill_fields: [sheet_client*]
   }
+  measure: count_multi_retail{
+    type: count_distinct
+    sql: case when  ((${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null) )
+                  and ${code_mag_2} is not null
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
 
+  measure: count_web_seul{
+    type: count_distinct
+    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
+
+  measure: count_mixt{
+    type: count_distinct
+    sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+              then ${id_master}
+              end ;;
+    drill_fields: [sheet_client*]
+  }
 
 
   measure: count {

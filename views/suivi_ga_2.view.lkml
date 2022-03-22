@@ -7,6 +7,22 @@ view: suivi_ga_2 {
     sql: ${TABLE}.achat ;;
   }
 
+  dimension_group: event_date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.event_date ;;
+    #drill_fields: [sheet_client*]
+    }
+
   dimension: click {
     type: number
     sql: ${TABLE}.click ;;

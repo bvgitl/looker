@@ -105,6 +105,35 @@ view: ref_campagne {
     drill_fields: [sheet_client*]
   }
 
+  dimension: date_envoi_periode{
+    case: {
+      when: {
+        sql:  ${dt_send_year} = 2019;;
+        label: "2019"
+      }
+      when: {
+        sql:   ${dt_send_year} = 2020;;
+        label: "2020"
+      }
+      when: {
+        sql:   ${dt_send_year} = 2021;;
+        label: "2021"
+      }
+      # when: {
+      #   sql:  ${date_creation_year} = 2022;;
+      #   label: "2022"
+      # }
+      when: {
+        sql: (extract(month from  ${dt_send_date} =  extract(month from date_sub(current_date( ) , interval 1 month) ))
+          and (   ${dt_send_year} = extract(year from current_date() ) );;
+        label: "Mois précédent"
+      }
+    }
+    suggest_persist_for: "2 seconds"
+  }
+
+
+
   dimension_group: dt_unsub {
     type: time
     timeframes: [
