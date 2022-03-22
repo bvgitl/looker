@@ -61,5 +61,13 @@ view: stock_utd {
     label: "Stock"
   }
 
+  measure: StockValeur {
+    type: sum
+    value_format_name: decimal_0
+    sql: ${n_stock} * ${article_dwh.n_prix_achat_net} ;;
+    view_label: "Stock (courant)"
+    label: "Stock Valeur"
+  }
+
 
 }
