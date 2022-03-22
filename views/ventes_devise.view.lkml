@@ -7,9 +7,9 @@ view: ventes_devise {
     sql: ${TABLE}.cd_devise ;;
   }
 
-  dimension: cd_magasin {
+  dimension: cd_acteur {
     type: string
-    sql: ${TABLE}.cd_magasin ;;
+    sql: ${TABLE}.cd_acteur ;;
   }
 
   dimension_group: dte_vente {
