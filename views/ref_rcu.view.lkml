@@ -146,19 +146,19 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: store_code{
+  dimension: code_mag{
     type: string
-    sql: ${TABLE}.store_code  ;;
+    sql: ${TABLE}.code_mag  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
 
-  dimension: CD_Magasin {
-    type: string
-    sql: ${TABLE}.CD_Magasin ;;
-    suggest_persist_for: "2 seconds"
-    drill_fields: [sheet_client*]
-  }
+  # dimension: CD_Magasin {
+  #   type: string
+  #   sql: ${TABLE}.CD_Magasin ;;
+  #   suggest_persist_for: "2 seconds"
+  #   drill_fields: [sheet_client*]
+  # }
 
   dimension: type_client {
     type: string
@@ -246,11 +246,11 @@ view: suivi_rcu {
 
   measure: count {
     type: count
-    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,CD_Magasin, Animateur]
+    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
   }
 
   set: sheet_client {
-    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,CD_Magasin, Animateur]
+    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
   }
 
 }
