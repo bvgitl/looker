@@ -23,6 +23,17 @@ view: pdt_famille {
        m.CD_Magasin as CD_Magasin,
        m.Latitude,
        m.Longitude,
+       m2.Nom_TBE as NOM_histo,
+       m2.Type_TBE as Typ_histo,
+       m2.DATE_OUV as Dte_Ouverture_histo,
+       m2.Pays_TBE as Pays_histo ,
+       m2.Animateur as Animateur_histo,
+       m2.Region as Region_histo ,
+       m2.SURF_VTE as Surface_histo ,
+       m2.TYP_MAG as TYP_MAG_histo,
+       m2.Tranche_age as Anciennete_histo,
+       m2.Latitude_histo,
+       m2.Longitude_histo,
        v.CD_Article as Article,
        v.CD_Article_Original  AS ArticleOriginal,
        v.Val_Achat_Gbl as Val_Achat_Gbl,
@@ -70,6 +81,7 @@ group by 1,2,3,4,5) v
 
 
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON   v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON  v.CD_Article = a.c_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
@@ -148,55 +160,153 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: nom {
     type: string
     sql: ${TABLE}.NOM ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: typ {
     type: string
     sql: ${TABLE}.Typ ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: pays {
     type: string
     sql: ${TABLE}.Pays ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: animateur {
     type: string
     sql: ${TABLE}.Animateur ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: region {
     type: string
     sql: ${TABLE}.Region ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: surface {
     type: number
     sql: ${TABLE}.Surface ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: typ_mag {
     type: string
     sql: ${TABLE}.TYP_MAG ;;
-    view_label: "Magasins"
+    view_label: "Magasin (actuel)s"
   }
 
   dimension: anciennete {
     type: string
     sql: ${TABLE}.Anciennete ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
+  }
+
+  dimension: Latitude {
+    type: string
+    sql: ${TABLE}.Latitude ;;
+    view_label: "Magasins (actuel)"
+  }
+
+  dimension: Longitude {
+    type: string
+    sql: ${TABLE}.Longitude ;;
+    view_label: "Magasins (actuel)"
+  }
+
+  dimension: Emplacement {
+    type: location
+    sql_latitude:${Latitude} ;;
+    sql_longitude:${Longitude} ;;
+    view_label: "Magasins (actuel)"
+  }
+
+
+  dimension: nom_histo {
+    type: string
+    sql: ${TABLE}.NOM_histo ;;
+    label: "nom"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: typ_histo {
+    type: string
+    sql: ${TABLE}.Typ_histo ;;
+    label: "typ"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: pays_histo {
+    type: string
+    sql: ${TABLE}.Pays_histo ;;
+    label: "pays"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: animateur_histo {
+    type: string
+    sql: ${TABLE}.Animateur_histo ;;
+    label: "animateur"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: region_histo {
+    type: string
+    sql: ${TABLE}.Region_histo ;;
+    label: "region"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: surface_histo {
+    type: number
+    sql: ${TABLE}.Surface_histo ;;
+    label: "surface"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: typ_mag_histo {
+    type: string
+    sql: ${TABLE}.TYP_MAG_histo ;;
+    label: "typ_mag"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: anciennete_histo {
+    type: string
+    sql: ${TABLE}.Anciennete_histo ;;
+    label: "anciennete"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Latitude_histo {
+    type: string
+    sql: ${TABLE}.Latitude_histo ;;
+    label: "Latitude"
+    view_label: "Magasinss (à date de vente)"
+  }
+
+  dimension: Longitude_histo {
+    type: string
+    sql: ${TABLE}.Longitude_histo ;;
+    label: " Longitude"
+    view_label: "Magasinss (à date de vente)"
+  }
+
+  dimension: Emplacement_histo {
+    type: location
+    sql_latitude:${Latitude_histo} ;;
+    sql_longitude:${Longitude_histo} ;;
+    label: "Emplacement"
+    view_label: "Magasinss (à date de vente)"
   }
 
   dimension: cd_magasin {
     type: string
     sql: ${TABLE}.CD_Magasin ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: article {
@@ -363,7 +473,21 @@ AND m.CD_Magasin = w.cd_magasin
     convert_tz: no
     datatype: date
     sql: ${TABLE}.Dte_Ouverture ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
+  }
+
+  dimension_group: dte_ouverture_histo {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Ouverture_histo ;;
+    label: "dte_ouverture"
+    view_label: "Magasins (à date de vente)"
   }
 
   dimension_group: dte_vte {
@@ -447,6 +571,32 @@ AND m.CD_Magasin = w.cd_magasin
   }
 
 
+  dimension: Groupe_Region_histo {
+    sql: CASE
+            WHEN ${region_histo} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
+            WHEN ${region_histo} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
+          END ;;
+    label: "Groupe_Region"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Type_MEP_histo {
+    sql: CASE
+            WHEN ${typ_histo} IN ("I","Cyi") THEN "MEP"
+          END ;;
+    label: "Type_MEP"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Type_City_histo {
+    sql: CASE
+            WHEN ${typ_histo} IN ("Cyi", "Cyf") THEN "City"
+          END ;;
+    label: "Type_City"
+    view_label: "Magasins (à date de vente)"
+  }
+
+
   dimension: Groupe_Laser {
     sql: CASE
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR", "CARTOUCHE LASER ET COPIEUR COMPATIBLE") THEN "Laser"
@@ -461,25 +611,6 @@ AND m.CD_Magasin = w.cd_magasin
             WHEN ${n2_famille} IN ("CARTOUCHE LASER ET COPIEUR COMPATIBLE", "CARTOUCHE JET D’ENCRE COMPATIBLE") THEN "Compatible"
           END ;;
     view_label: "N2"
-  }
-
-  dimension: Latitude {
-    type: string
-    sql: ${TABLE}.Latitude ;;
-    view_label: "Magasins"
-  }
-
-  dimension: Longitude {
-    type: string
-    sql: ${TABLE}.Longitude ;;
-    view_label: "Magasins"
-  }
-
-  dimension: Emplacement {
-    type: location
-    sql_latitude:${Latitude} ;;
-    sql_longitude:${Longitude} ;;
-    view_label: "Magasins"
   }
 
 
