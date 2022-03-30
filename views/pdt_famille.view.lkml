@@ -248,77 +248,77 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: nom_histo {
     type: string
     sql: ${TABLE}.NOM_histo ;;
-    label : "Nom"
+    label : "Nom (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: typ_histo {
     type: string
     sql: ${TABLE}.Typ_histo ;;
-    label: "Type"
+    label: "Type (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: pays_histo {
     type: string
     sql: ${TABLE}.Pays_histo ;;
-    label: "Pays"
+    label: "Pays (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: animateur_histo {
     type: string
     sql: ${TABLE}.Animateur_histo ;;
-    label: "Animateur"
+    label: "Animateur (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: directeur_histo {
     type: string
     sql: ${TABLE}.Directeur_histo ;;
-    label : "Directeur"
+    label : "Directeur (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: region_histo {
     type: string
     sql: ${TABLE}.Region_histo ;;
-    label: "Région"
+    label: "Région (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: surface_histo {
     type: number
     sql: ${TABLE}.Surface_histo ;;
-    label: "Surface"
+    label: "Surface (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: typ_mag_histo {
     type: string
     sql: ${TABLE}.TYP_MAG_histo ;;
-    label: "Type Magasin"
+    label: "Type Magasin (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: anciennete_histo {
     type: string
     sql: ${TABLE}.Anciennete_histo ;;
-    label: "Ancienneté"
+    label: "Ancienneté (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: Latitude_histo {
     type: string
     sql: ${TABLE}.Latitude_histo ;;
-    label: "Latitude"
+    label: "Latitude (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
   dimension: Longitude_histo {
     type: string
     sql: ${TABLE}.Longitude_histo ;;
-    label: " Longitude"
+    label: " Longitude (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
@@ -326,7 +326,7 @@ AND m.CD_Magasin = w.cd_magasin
     type: location
     sql_latitude:${Latitude_histo} ;;
     sql_longitude:${Longitude_histo} ;;
-    label: "Emplacement"
+    label: "Emplacement (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
@@ -514,7 +514,7 @@ AND m.CD_Magasin = w.cd_magasin
     convert_tz: no
     datatype: date
     sql: ${TABLE}.Dte_Ouverture_histo ;;
-    label: "Date Ouverture"
+    label: "Date Ouverture (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
@@ -607,7 +607,7 @@ AND m.CD_Magasin = w.cd_magasin
             WHEN ${region_histo} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
             WHEN ${region_histo} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
-    label: "Groupe Région"
+    label: "Groupe Région (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
@@ -615,7 +615,7 @@ AND m.CD_Magasin = w.cd_magasin
     sql: CASE
             WHEN ${typ_histo} IN ("I","Cyi") THEN "MEP"
           END ;;
-    label: "Type MEP"
+    label: "Type MEP (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
@@ -623,7 +623,7 @@ AND m.CD_Magasin = w.cd_magasin
     sql: CASE
             WHEN ${typ_histo} IN ("Cyi", "Cyf") THEN "City"
           END ;;
-    label: "Type City"
+    label: "Type City (histo)"
     view_label: "Magasins (à date de vente)"
   }
 
