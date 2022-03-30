@@ -15,6 +15,19 @@ view: pdt_vente {
   m.CD_Magasin AS CD_Magasin,
   m.Latitude,
   m.Longitude,
+  m2.Animateur AS Animateur_histo,
+  m2.DATE_OUV AS Dte_Ouverture_histo,
+  m2.Directeur AS Directeur_histo,
+  m2.Franchise AS Franchise_histo,
+  m2.Nom_TBE as NOM_histo,
+  m2.Type_TBE as Typ_histo,
+  m2.Pays_TBE as Pays_histo ,
+  m2.Region as Region_histo ,
+  m2.SURF_VTE as Surface_histo ,
+  m2.TYP_MAG as TYP_MAG_histo,
+  m2.Tranche_age as Anciennete_histo,
+  m2.Latitude as Latitude_histo,
+  m2.Longitude as Longitude_histo,
   day AS Dte_Vte,
   v.Typ_Vente AS Typ_Vente,
   v.Val_Achat_Gbl AS Val_Achat_Gbl,
@@ -61,8 +74,8 @@ LEFT JOIN ( (
     AND mag.Dte_Vte = v.Dte_Vte
     AND v.Typ_vente = mag.Typ_vente )
 ON  day = v.Dte_Vte
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
-    ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
 LEFT JOIN (
   SELECT
     cd_magasin,
@@ -99,68 +112,67 @@ ON
     dimension: cd_magasin {
       type: string
       sql: ${TABLE}.CD_Magasin ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: animateur {
       type: string
       sql: ${TABLE}.Animateur ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
-
 
     dimension: directeur {
       type: string
       sql: ${TABLE}.Directeur ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: franchise {
       type: string
       sql: ${TABLE}.Franchise ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: nom {
       type: string
       sql: ${TABLE}.NOM ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: typ {
       type: string
       sql: ${TABLE}.Typ ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: pays {
       type: string
       sql: ${TABLE}.Pays ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: region {
       type: string
       sql: ${TABLE}.Region ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: surface {
       type: number
       sql: ${TABLE}.Surface ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: typ_mag {
       type: string
       sql: ${TABLE}.TYP_MAG ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension: anciennete {
       type: string
       sql: ${TABLE}.Anciennete ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
 
     dimension_group: dte_ouverture {
@@ -173,8 +185,95 @@ ON
       convert_tz: no
       datatype: date
       sql: ${TABLE}.Dte_Ouverture ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
+
+
+  dimension: animateur_histo {
+    type: string
+    sql: ${TABLE}.Animateur_histo ;;
+    label: "animateur"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: directeur_histo {
+    type: string
+    sql: ${TABLE}.Directeur_histo ;;
+    label: "directeur"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: franchise_histo {
+    type: string
+    sql: ${TABLE}.Franchise_histo ;;
+    label: "franchise"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: nom_histo {
+    type: string
+    sql: ${TABLE}.NOM_histo ;;
+    label: "nom"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: typ_histo {
+    type: string
+    sql: ${TABLE}.Typ_histo ;;
+    label: "typ"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: pays_histo {
+    type: string
+    sql: ${TABLE}.Pays_histo ;;
+    label: "pays"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: region_histo {
+    type: string
+    sql: ${TABLE}.Region_histo ;;
+    label: "region"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: surface_histo {
+    type: number
+    sql: ${TABLE}.Surface_histo ;;
+    label: "surface"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: typ_mag_histo {
+    type: string
+    sql: ${TABLE}.TYP_MAG_histo ;;
+    label: "typ_mag"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: anciennete_histo {
+    type: string
+    sql: ${TABLE}.Anciennete_histo ;;
+    label: "anciennete"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension_group: dte_ouverture_histo {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.Dte_Ouverture_histo ;;
+    label: "dte_ouverture"
+    view_label: "Magasins (à date de vente)"
+  }
+
+
 
     dimension_group: dte_vte {
       type: time
@@ -305,8 +404,21 @@ ON
           WHEN ${dte_ouverture_date} <= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
         END
     ;;
-      view_label: "Magasins"
+      view_label: "Magasins (actuel)"
     }
+
+  dimension: categorie_histo {
+    hidden: no
+    label: "Catégorie"
+    sql:
+        CASE
+          WHEN ${typ} = "S"  OR
+          ${dte_ouverture_histo_date} > CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P. non Comparable"
+          WHEN ${dte_ouverture_histo_date} <= CAST ({% date_start date_filter_3 %} AS DATETIME) THEN "P.Comparable"
+        END
+    ;;
+    view_label: "Magasins (à date de vente)"
+  }
 
 
     dimension: Type_retrocession {
@@ -323,26 +435,58 @@ ON
             WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: Latitude {
     type: string
     sql: ${TABLE}.Latitude ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: Longitude {
     type: string
     sql: ${TABLE}.Longitude ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: Emplacement {
     type: location
     sql_latitude:${Latitude} ;;
     sql_longitude:${Longitude} ;;
-    view_label: "Magasins"
+    view_label: "Magasins (actuel)"
+  }
+
+
+  dimension: Groupe_Region_histo {
+    sql: CASE
+            WHEN ${region_histo} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW") THEN "France Metro"
+            WHEN ${region_histo} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
+          END ;;
+    label : "Groupe_Region"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Latitude_histo {
+    type: string
+    sql: ${TABLE}.Latitude_histo ;;
+    label : "Latitude"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Longitude_histo {
+    type: string
+    sql: ${TABLE}.Longitude_histo ;;
+    label : "Longitude"
+    view_label: "Magasins (à date de vente)"
+  }
+
+  dimension: Emplacement_histo {
+    type: location
+    sql_latitude:${Latitude_histo} ;;
+    sql_longitude:${Longitude_histo} ;;
+    label : "Emplacement"
+    view_label: "Magasins (à date de vente)"
   }
 
 
