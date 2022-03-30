@@ -146,19 +146,19 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: code_mag {
+  dimension: code_mag{
     type: string
     sql: ${TABLE}.code_mag  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
 
-  dimension: code_mag_2 {
-    type: string
-    sql: ${TABLE}.code_mag_2  ;;
-    suggest_persist_for: "2 seconds"
-    drill_fields: [sheet_client*]
-  }
+  # dimension: CD_Magasin {
+  #   type: string
+  #   sql: ${TABLE}.CD_Magasin ;;
+  #   suggest_persist_for: "2 seconds"
+  #   drill_fields: [sheet_client*]
+  # }
 
   dimension: type_client {
     type: string
@@ -184,13 +184,6 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-
-  dimension: ca {
-    type: number
-    sql: ${TABLE}.ca_ttc ;;
-    drill_fields: [sheet_client*]
-  }
-
   measure: count_email {
     type: count_distinct
     sql: case when ${email_rcu} is not null  then ${id_master} end ;;
@@ -199,14 +192,14 @@ view: suivi_rcu {
 
   measure: count_telephone {
     type: count_distinct
-    sql: case when ${cell_phone} is not null or ${phone} is not null then ${id_master} end  ;;
+    sql: case when( ${cell_phone} is not null or ${phone} is not null ) then ${id_master} end  ;;
     drill_fields: [sheet_client*]
   }
 
 
   measure: count_contactable {
     type: count_distinct
-    sql: case when ${email_rcu} is not null or ${cell_phone} is not null or ${phone} is not null then ${id_master} end  ;;
+    sql: case when (${email_rcu} is not null or ${cell_phone} is not null or ${phone} is not null ) then ${id_master} end  ;;
     drill_fields: [sheet_client*]
   }
 
@@ -224,15 +217,15 @@ view: suivi_rcu {
               end ;;
     drill_fields: [sheet_client*]
   }
-  measure: count_multi_retail{
-    type: count_distinct
-    sql: case when  ((${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
-                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null) )
-                  and ${code_mag_2} is not null
-              then ${id_master}
-              end ;;
-    drill_fields: [sheet_client*]
-  }
+  # measure: count_multi_retail{
+  #   type: count_distinct
+  #   sql: case when  ((${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+  #                 OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null) )
+  #                 and ${code_mag_2} is not null
+  #             then ${id_master}
+  #             end ;;
+  #   drill_fields: [sheet_client*]
+  # }
 
   measure: count_web_seul{
     type: count_distinct
