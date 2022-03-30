@@ -196,7 +196,7 @@ AND m.CD_Magasin = w.cd_magasin
   dimension: typ_mag {
     type: string
     sql: ${TABLE}.TYP_MAG ;;
-    view_label: "Magasin (actuel)s"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: anciennete {
@@ -285,14 +285,14 @@ AND m.CD_Magasin = w.cd_magasin
     type: string
     sql: ${TABLE}.Latitude_histo ;;
     label: "Latitude"
-    view_label: "Magasinss (à date de vente)"
+    view_label: "Magasins (à date de vente)"
   }
 
   dimension: Longitude_histo {
     type: string
     sql: ${TABLE}.Longitude_histo ;;
     label: " Longitude"
-    view_label: "Magasinss (à date de vente)"
+    view_label: "Magasins (à date de vente)"
   }
 
   dimension: Emplacement_histo {
@@ -300,7 +300,7 @@ AND m.CD_Magasin = w.cd_magasin
     sql_latitude:${Latitude_histo} ;;
     sql_longitude:${Longitude_histo} ;;
     label: "Emplacement"
-    view_label: "Magasinss (à date de vente)"
+    view_label: "Magasins (à date de vente)"
   }
 
   dimension: cd_magasin {
