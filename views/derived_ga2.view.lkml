@@ -52,6 +52,7 @@ view: derived_ga2 {
   }
 
   dimension: name {
+    primary_key: yes
     type: string
     sql: ${TABLE}.name ;;
   }
