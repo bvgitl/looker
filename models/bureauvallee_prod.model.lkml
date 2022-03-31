@@ -27,7 +27,12 @@ explore: ref_cmd_produit {
     sql_on: ${ref_cmd_division.cd_commande} = ${ref_cmd_produit.cd_commande} ;;
   }
 }
-explore: ref_campagne {}
+explore: ref_campagne {
+  join: suivi_ga_2 {
+    relationship: many_to_one
+    sql_on: ${suivi_ga_2.name}  =  ${ref_campagne.camp_name};;
+  }
+}
 
 explore: ref_client_cmd {}
 explore: suivi_rcu {}
