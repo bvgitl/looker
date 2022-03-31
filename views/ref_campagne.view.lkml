@@ -125,7 +125,7 @@ view: ref_campagne {
       # }
       when: {
         sql: (extract(month from  ${dt_send_date} =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-          and (   ${dt_send_year} = extract(year from current_date() ) );;
+          and (   ${dt_send_year} = extract(year from current_date() ) ) );;
         label: "Mois précédent"
       }
     }
