@@ -28,6 +28,7 @@ explore: ref_cmd_produit {
   }
 }
 explore: ref_campagne {
+  sql_always_where: ${camp_name} not like '%Trigger%' ;;
   join: derived_ga2 {
     relationship: many_to_one
     sql_on: TRIM(RTRIM(split(${ref_campagne.camp_name}, 'CELL')[offset(0)], '_')) = ${derived_ga2.name} ;;
