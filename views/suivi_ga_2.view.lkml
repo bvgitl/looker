@@ -39,6 +39,7 @@ view: suivi_ga_2 {
   }
 
   dimension: name {
+    primary_key: yes
     type: string
     sql: ${TABLE}.name ;;
   }
