@@ -29,7 +29,7 @@ explore: ref_cmd_produit {
 }
 explore: ref_campagne {
   join: suivi_ga_2 {
-    relationship: many_to_one
+    relationship: many_to_many
     sql_on: TRIM(RTRIM(split(${ref_campagne.camp_name}, 'CELL')[offset(0)], '_')) = ${suivi_ga_2.name} ;;
   }
 }
