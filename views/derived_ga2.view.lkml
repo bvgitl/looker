@@ -15,13 +15,23 @@ view: derived_ga2 {
       )
 
       select
-      name,
-      count(distinct session_id) as session,
-      sum(nouvelle_session) as nouvelle_session,
-      count(distinct case when session_engaged = '1' then session_id end) as engaged_sessions,
-      round(sum(purchase_revenue), 2)  as CA,
-      concat( round( count(distinct transaction_id) / count(distinct session_id)*100, 2) , ' %') as taux_conversion,
-      concat( round(  count(distinct case when session_engaged = '1' then session_id end) / count(distinct session_id)*100, 2) , ' %') as taux_engagement
+            case when name = 'Pro2'
+                  then 'Email_Pro_2_190122'
+                  when name = 'fevrier1-part'
+                  then 'Email_Cartouches_PART_020222'
+                  when name = 'fevrier1-pro'
+                  then 'Email_Cartouches_PRO_020222'
+                  when name = 'demenagement-Andrezieux'
+                  then 'Email_Local_Andrezieux_déménagement_271021'
+                  else name end as name,
+
+
+            count(distinct session_id) as session,
+            sum(nouvelle_session) as nouvelle_session,
+            count(distinct case when session_engaged = '1' then session_id end) as engaged_sessions,
+            round(sum(purchase_revenue), 2)  as CA,
+            concat( round( count(distinct transaction_id) / count(distinct session_id)*100, 2) , ' %') as taux_conversion,
+            concat( round(  count(distinct case when session_engaged = '1' then session_id end) / count(distinct session_id)*100, 2) , ' %') as taux_engagement
 
       from (
       select
@@ -42,7 +52,7 @@ view: derived_ga2 {
 
       group by  name -- event_date--,name --, medium, source_
 
-      order by name --, name
+      order by name  --, name
       ;;
   }
 
