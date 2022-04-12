@@ -20,14 +20,27 @@ persist_with: bv_vente_datagroup
 explore: suivi_ga_2 {}
 explore: Factu_campagne {}
 explore: ref_client_mag {}
-explore : ref_campagne_triggers {}
+explore : ref_campagne_triggers {
+  sql_always_where: ${camp_name}  like '%Trigger%';;
+  join: derived_ga2 {
+    relationship: many_to_one
+    sql_on: lower(TRIM(RTRIM(split(${ref_campagne_triggers.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga2.name}) ;;
+  }
+}
+
 explore: ref_cmd_produit {
   join: ref_cmd_division {
     relationship: one_to_many
     sql_on: ${ref_cmd_division.cd_commande} = ${ref_cmd_produit.cd_commande} ;;
   }
 }
-explore: ref_campagne {}
+explore: ref_campagne {
+  sql_always_where: ${camp_name} not like '%Trigger%' ;;
+  join: derived_ga2 {
+    relationship: many_to_one
+    sql_on: lower(TRIM(RTRIM(split(${ref_campagne.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga2.name}) ;;
+  }
+}
 
 explore: ref_client_cmd {}
 explore: suivi_rcu {}
