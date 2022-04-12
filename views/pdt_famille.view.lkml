@@ -93,6 +93,7 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
 ON  v.CD_Magasin = s.cd_acteur
 AND  v.CD_Article  = CAST(s.cd_article AS STRING)
 AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
+AND v.Typ_Vente = 0
 
 FULL JOIN
 (
