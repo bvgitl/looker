@@ -34,7 +34,7 @@ view: derived_ga2 {
                   when name = 'trigger_1_decouvre_univers_PRO'
                   then  'trigger_je_découvre_univers_bv_pros_tc'
                   when name ='trigger_1_decouvre_univers_PART'
-                  then 'trigger_je_découvre_univers_bv_pros_tc'
+                  then 'trigger_je_découvre_univers_bv_part_tc'
                   else name end as name,
 
 
