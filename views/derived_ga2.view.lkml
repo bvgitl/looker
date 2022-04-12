@@ -23,6 +23,22 @@ view: derived_ga2 {
                   then 'Email_Cartouches_PRO_020222'
                   when name = 'demenagement-Andrezieux'
                   then 'Email_Local_Andrezieux_déménagement_271021'
+                  when name = 'trigger_reste_engage_PART'
+                  then 'trigger_je-reste_engage_PART_120122'
+                  when name = 'trigger_reste_engage_PRO'
+                  then 'trigger_je-reste_engage_PART'
+                  when name = 'trigger_mag_informe'
+                  then 'trigger_mon_magasin_m_informe_connecte'
+                  when name = 'trigger_mag_minforme'
+                  then 'trigger_mon_magasin_m_informe_connecte'
+                  when name = 'trigger_1_decouvre_univers_PRO'
+                  then  'trigger_je_découvre_univers_bv_pros_tc'
+                  when name ='trigger_1_decouvre_univers_PRO'
+                  then 'trigger_je_découvre_univers_bv_pros_oneshot'
+                  when name = 'trigger_1_decouvre_univers_PART'
+                  then  'trigger_je_découvre_univers_bv_part_tc'
+                  when name ='trigger_1_decouvre_univers_PART'
+                  then 'trigger_je_découvre_univers_bv_part_oneshot'
                   else name end as name,
 
 
