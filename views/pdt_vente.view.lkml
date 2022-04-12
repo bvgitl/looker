@@ -95,6 +95,7 @@ LEFT JOIN (
 ON
   c.cd_magasin = m.CD_Magasin
   AND day = c.dte_cde
+  AND v.Typ_Vente = 0
 
 
 
