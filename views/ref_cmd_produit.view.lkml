@@ -60,6 +60,11 @@ view: ref_cmd_produit {
 
   dimension: date_cmd_periode{
     case: {
+
+      when: {
+        sql: date_diff(current_date(),${dte_commande_date}, month) <= 12 ;;
+        label: "12 deniers mois"
+      }
       when: {
         sql:  ${dte_commande_year} = 2019;;
         label: "2019"
@@ -77,10 +82,7 @@ view: ref_cmd_produit {
       #   label: "2022"
       # }
 
-      when: {
-        sql: date_diff(current_date(),${dte_commande_date}, month) <= 12 ;;
-        label: "12 deniers mois"
-      }
+
 
       when: {
         sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
