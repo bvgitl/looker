@@ -76,6 +76,16 @@ view: ref_cmd_produit {
       #   sql:  ${date_creation_year} = 2022;;
       #   label: "2022"
       # }
+
+      when: {
+        sql: date_diff(current_date(),${dte_commande_month}, month) <= 12 ;;
+        label: "12 deniers mois"
+      }
+
+      when: {
+        sql: date_diff(current_date(),${dte_commande_month}, month) <= 36 ;;
+        label: "36 deniers mois"
+      }
       when: {
         sql: (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
           and (   ${dte_commande_year} = extract(year from current_date() ) );;
