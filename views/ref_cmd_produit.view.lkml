@@ -91,7 +91,7 @@ view: ref_cmd_produit {
       #   label: "2022"
       # }
 
-
+      else: "Sans filtre "
 
 
 
