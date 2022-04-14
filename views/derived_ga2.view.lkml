@@ -42,6 +42,7 @@ view: derived_ga2 {
             sum(nouvelle_session) as nouvelle_session,
             count(distinct case when session_engaged = '1' then session_id end) as engaged_sessions,
             round(sum(purchase_revenue), 2)  as CA,
+            count(distinct transaction_id) as nb_conversion,
             concat( round( count(distinct transaction_id) / count(distinct session_id)*100, 2) , ' %') as taux_conversion,
             concat( round(  count(distinct case when session_engaged = '1' then session_id end) / count(distinct session_id)*100, 2) , ' %') as taux_engagement
 
