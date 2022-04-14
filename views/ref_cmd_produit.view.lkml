@@ -78,12 +78,12 @@ view: ref_cmd_produit {
       # }
 
       when: {
-        sql: date_diff(current_date(),${dte_commande_month}, month) <= 12 ;;
+        sql: date_diff(current_date(),${dte_commande_date}, month) <= 12 ;;
         label: "12 deniers mois"
       }
 
       when: {
-        sql: date_diff(current_date(),${dte_commande_month}, month) <= 36 ;;
+        sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
         label: "36 deniers mois"
       }
       when: {
