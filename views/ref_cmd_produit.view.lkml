@@ -60,15 +60,15 @@ view: ref_cmd_produit {
 
   dimension: date_cmd_periode{
     case: {
-
-      when: {
-        sql: date_diff(current_date(),${dte_commande_date}, month) <= 12 ;;
-        label: "12 deniers mois"
-      }
       when: {
         sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
         label: "36 deniers mois"
       }
+      when: {
+        sql: date_diff(current_date(),${dte_commande_date}, month) <= 12 ;;
+        label: "12 deniers mois"
+      }
+
       when: {
         sql: (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
           and (   ${dte_commande_year} = extract(year from current_date() ) );;
