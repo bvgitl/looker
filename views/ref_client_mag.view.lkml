@@ -61,32 +61,29 @@ view: ref_client_mag {
   }
 
   dimension: date_creation_periode{
-    case: {
-      when: {
-        sql:  ${date_creation_year} = 2019;;
-          label: "2019"
-            }
-      when: {
-        sql:  ${date_creation_year} = 2020;;
-        label: "2020"
-      }
-      when: {
-        sql:  ${date_creation_year} = 2021;;
-        label: "2021"
-      }
-      # when: {
-      #   sql:  ${date_creation_year} = 2022;;
-      #   label: "2022"
-      # }
-      when: {
-        sql: (extract(month from ${date_creation_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-              and (  ${date_creation_year} = extract(year from current_date() ) );;
-        label: "Mois précédent"
-      }
-          }
+    type: string
+    sql: case when ${date_creation_year} = 2019
+              then "2019"
+              when ${date_creation_year} = 2020
+              then "2020"
+              when ${date_creation_year} = 2021
+              then "2021"
+              end
+
+              ;;
+
     suggest_persist_for: "2 seconds"
 }
-
+  # }
+                 # when: {
+                 #   sql:  ${date_creation_year} = 2022
+                #   label: "2022"
+                # }
+                # when: {
+                #   sql: (extract(month from ${date_creation_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
+                #     and (  ${date_creation_year} = extract(year from current_date() ) )
+                #   label: "Mois précédent"
+                # }
 
   dimension: coord {
     type: location
