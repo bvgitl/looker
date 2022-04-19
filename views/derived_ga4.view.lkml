@@ -66,7 +66,7 @@ view: derived_ga4 {
         group by  name -- event_date--,name --, medium, source_
 
         order by name  --, name
-        ;
+
         ;;
     }
 
