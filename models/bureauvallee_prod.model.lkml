@@ -22,9 +22,9 @@ explore: Factu_campagne {}
 explore: ref_client_mag {}
 explore : ref_campagne_triggers {
   sql_always_where: ${camp_name}  like '%Trigger%';;
-  join: derived_ga2 {
+  join: derived_ga4 {
     relationship: many_to_one
-    sql_on: lower(TRIM(RTRIM(split(${ref_campagne_triggers.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga2.name}) ;;
+    sql_on: lower(TRIM(RTRIM(split(${ref_campagne_triggers.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga4.name}) ;;
   }
 }
 
@@ -36,9 +36,9 @@ explore: ref_cmd_produit {
 }
 explore: ref_campagne {
   sql_always_where: ${camp_name} not like '%Trigger%' ;;
-  join: derived_ga2 {
+  join: derived_ga4 {
     relationship: many_to_one
-    sql_on: lower(TRIM(RTRIM(split(${ref_campagne.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga2.name}) ;;
+    sql_on: lower(TRIM(RTRIM(split(${ref_campagne.camp_name}, 'CELL')[offset(0)], '_'))) = lower(${derived_ga4.name}) ;;
   }
 }
 
