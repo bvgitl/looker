@@ -76,6 +76,7 @@ view: derived_ga4 {
     }
 
     dimension: name {
+      primary_key: yes
       type: string
       sql: ${TABLE}.name ;;
     }
