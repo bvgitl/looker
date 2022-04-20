@@ -50,7 +50,8 @@ view: ref_cmd_produit {
   }
 
   dimension: date_cmd_periode{
-    type: string
+    type: bin
+    bins: [1 , 5 , 8]
     sql: case when ${code_date} = '1' or ${code_date} ='5'
               then '2019'
               when ${code_date} = '2' or ${code_date} ='6'
