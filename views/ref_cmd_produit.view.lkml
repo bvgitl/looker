@@ -70,23 +70,45 @@ view: ref_cmd_produit {
   parameter: date_granularity {
     type: unquoted
     allowed_value: {
-      label: "Break down by Day"
-      value: "day"
+      label: "2019"
+      value: "2019"
     }
     allowed_value: {
-      label: "Break down by Month"
-      value: "month"
+      label: "2020"
+      value: "2020"
+    }
+    allowed_value: {
+      label: "2021"
+      value: "2021"
+    }
+    allowed_value: {
+      label: "36 derniers mois"
+      value: "36 derniers mois"
+    }
+    allowed_value: {
+      label: "12 derniers mois"
+      value: "12 derniers mois"
+    }
+    allowed_value: {
+      label: "Mois précédent"
+      value: "Mois précédent"
     }
   }
 
   dimension: date {
     sql:
-    {% if date_granularity._parameter_value == 'day' %}
-      ${dte_commande_date}
-    {% elsif date_granularity._parameter_value == 'month' %}
-      ${dte_commande_month}
-    {% else %}
-      ${dte_commande_date}
+    {% if date_granularity._parameter_value == '2019' %}
+      ${code_date} = '1' or ${code_date} ='5'
+    {% elsif date_granularity._parameter_value == '2020' %}
+      ${code_date} = '2' or ${code_date} ='6'
+      {% elsif date_granularity._parameter_value == '2021' %}
+      ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
+      {% elsif date_granularity._parameter_value == '36 derniers mois' %}
+      ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
+      {% elsif date_granularity._parameter_value == '12 derniers mois' %}
+      ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
+      {% elsif date_granularity._parameter_value == 'Mois précédent' %}
+      ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
     {% endif %};;
   }
 
