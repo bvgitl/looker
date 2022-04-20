@@ -68,24 +68,27 @@ view: ref_cmd_produit {
   }
 
   parameter: date_granularity {
-    type: string
-    allowed_value: { value: "Day" }
-    allowed_value: { value: "Month" }
+    type: unquoted
+    allowed_value: {
+      label: "Break down by Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "Break down by Month"
+      value: "month"
+    }
   }
 
   dimension: date {
-    label_from_parameter: date_granularity
     sql:
-    {% if date_granularity._parameter_value == "'Day'" %}
-       ${code_date} = '1' or ${code_date} ='5'::VARCHAR
-    {% elsif date_granularity._parameter_value == "'Month'" %}
-      ${code_date} = '2' or ${code_date} ='6'::VARCHAR
+    {% if date_granularity._parameter_value == 'day' %}
+      ${dte_commande_date}
+    {% elsif date_granularity._parameter_value == 'month' %}
+      ${dte_commande_month}
     {% else %}
-      NULL
-    {% endif %} ;;
-    suggest_persist_for: "2 seconds"
+      ${dte_commande_date}
+    {% endif %};;
   }
-
 
   dimension_group: dte_commande {
     type: time
