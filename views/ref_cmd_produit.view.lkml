@@ -50,8 +50,7 @@ view: ref_cmd_produit {
   }
 
   dimension: date_cmd_periode{
-    type: bin
-    bins: [1 , 5 , 8]
+    type: string
     sql: case when ${code_date} = '1' or ${code_date} ='5'
               then '2019'
               when ${code_date} = '2' or ${code_date} ='6'
@@ -67,6 +66,17 @@ view: ref_cmd_produit {
               end       ;;
     suggest_persist_for: "2 seconds"
   }
+
+filter: test_filter {
+  type: string
+  suggestions: ["2019","2020"]
+  sql:  case when "2019"
+              then  ${code_date} = '1' or ${code_date} ='5'
+              when "2020"
+              then ${code_date} = '2' or ${code_date} ='6'
+              end  ;;
+  suggest_persist_for: "2 seconds"
+}
 
 
   dimension_group: dte_commande {
