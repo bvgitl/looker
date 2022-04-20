@@ -100,7 +100,7 @@ dimension: date_filtre {
   sql:
   {% if date_granularity._parameter_value == '2019' %}
   --(${dte_commande_year} = 2019 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
-   ${dte_commande_year}
+   ${dte_commande_date} where ${dte_commande_year} = 2019
   --{% elsif date_granularity._parameter_value == '2020' %}
   --(${dte_commande_year} = 2020 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
   -- ${dte_commande_year} = 2020
