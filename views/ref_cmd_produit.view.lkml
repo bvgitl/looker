@@ -35,6 +35,13 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
+  dimension: code_date{
+    type: string
+    sql: ${TABLE}.code_date ;;
+    drill_fields: [sheet_client*]
+  }
+
+
   dimension: statut {
     type: string
     sql: ${TABLE}.statut ;;
