@@ -93,6 +93,7 @@ view: ref_cmd_produit {
       label: "Mois précédent"
       value: "Mois précédent"
     }
+    suggest_persist_for: "2 seconds"
   }
 
   dimension: date {
@@ -110,6 +111,7 @@ view: ref_cmd_produit {
       {% elsif date_granularity._parameter_value == 'Mois précédent' %}
       ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
     {% endif %};;
+    suggest_persist_for: "2 seconds"
   }
 
   dimension_group: dte_commande {
