@@ -49,6 +49,24 @@ view: ref_cmd_produit {
     suggest_persist_for: "2 seconds"
   }
 
+  dimension: date_cmd_periode{
+    type: string
+    sql: case when ${code_date} = '1' or ${code_date} ='5'
+              then '2019'
+              when ${code_date} = '2' or ${code_date} ='6'
+              then '2020'
+              when ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
+              then '2021'
+              when ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
+              then '12 derniers mois'
+              when ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
+              then '36 derniers mois'
+              when ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
+              then 'Mois précédent'
+              end       ;;
+    suggest_persist_for: "2 seconds"
+  }
+
 
   dimension_group: dte_commande {
     type: time
@@ -65,24 +83,6 @@ view: ref_cmd_produit {
     drill_fields: [sheet_client*]
   }
 
-  dimension: date_cmd_periode{
-    type: string
-    sql: case when (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-                and (   ${dte_commande_year} = extract(year from current_date() ) )
-              then  "Mois précédent"
-              when date_diff(current_date(),${dte_commande_date}, month) <= 12
-              then "12 derniers mois"
-              when date_diff(current_date(),${dte_commande_date}, month) <= 36
-              then "36 derniers mois"
-              when ${dte_commande_year} = 2019
-              then "2019"
-              when ${dte_commande_year} = 2020
-              then "2020"
-              when ${dte_commande_year} = 2021
-              then "2021"
-              end       ;;
-    suggest_persist_for: "2 seconds"
-  }
 
 
 
