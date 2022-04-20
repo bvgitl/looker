@@ -67,16 +67,23 @@ view: ref_cmd_produit {
     suggest_persist_for: "2 seconds"
   }
 
-filter: test_filter {
-  type: string
-  suggestions: ["2019","2020"]
-  sql:  case when "2019"
-              then  ${code_date} = '1' or ${code_date} ='5'
-              when "2020"
-              then ${code_date} = '2' or ${code_date} ='6'
-              end  ;;
-  suggest_persist_for: "2 seconds"
-}
+  parameter: date_granularity {
+    type: string
+    allowed_value: { value: "Day" }
+    allowed_value: { value: "Month" }
+  }
+
+  dimension: date {
+    label_from_parameter: date_granularity
+    sql:
+    {% if date_granularity._parameter_value == "'Day'" %}
+       ${code_date} = '1' or ${code_date} ='5'::VARCHAR
+    {% elsif date_granularity._parameter_value == "'Month'" %}
+      ${code_date} = '2' or ${code_date} ='6'::VARCHAR
+    {% else %}
+      NULL
+    {% endif %} ;;
+  }
 
 
   dimension_group: dte_commande {
