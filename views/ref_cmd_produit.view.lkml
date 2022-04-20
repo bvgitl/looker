@@ -99,11 +99,11 @@ view: ref_cmd_produit {
   dimension: date {
     sql:
     {% if date_granularity._parameter_value == '2019' %}
-      (extract (year from dte_commande) = 2019 and date_diff(current_date(),dte_commande, month) <= 36 )
-      or extract (year from dte_commande) = 2019
+      (${dte_commande_year} = 2019 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
+      or ${dte_commande_year} = 2019
     {% elsif date_granularity._parameter_value == '2020' %}
-      (extract (year from dte_commande) = 2020 and date_diff(current_date(),dte_commande, month) <= 36 )
-      or extract (year from dte_commande) = 2020
+      (${dte_commande_year} = 2020 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
+      or ${dte_commande_year} = 2020
       {% elsif date_granularity._parameter_value == '2021' %}
       ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
       {% elsif date_granularity._parameter_value == '36 derniers mois' %}
