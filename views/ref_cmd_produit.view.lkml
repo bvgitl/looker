@@ -83,6 +83,7 @@ view: ref_cmd_produit {
     {% else %}
       NULL
     {% endif %} ;;
+    suggest_persist_for: "2 seconds"
   }
 
 
