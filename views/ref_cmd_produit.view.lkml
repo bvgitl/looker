@@ -96,25 +96,26 @@ view: ref_cmd_produit {
     suggest_persist_for: "2 seconds"
   }
 
-  dimension: date {
-    sql:
-    {% if date_granularity._parameter_value == '2019' %}
-      (${dte_commande_year} = 2019 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
-      or ${dte_commande_year} = 2019
-    {% elsif date_granularity._parameter_value == '2020' %}
-      (${dte_commande_year} = 2020 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
-      or ${dte_commande_year} = 2020
-      {% elsif date_granularity._parameter_value == '2021' %}
-      ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
-      {% elsif date_granularity._parameter_value == '36 derniers mois' %}
-      ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
-      {% elsif date_granularity._parameter_value == '12 derniers mois' %}
-      ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
-      {% elsif date_granularity._parameter_value == 'Mois précédent' %}
-      ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
-    {% endif %};;
-    suggest_persist_for: "2 seconds"
-  }
+dimension: date_filtre {
+  type: date
+  sql:
+  {% if date_granularity._parameter_value == '2019' %}
+  (${dte_commande_year} = 2019 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
+  or ${dte_commande_year} = 2019
+  {% elsif date_granularity._parameter_value == '2020' %}
+  (${dte_commande_year} = 2020 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
+  or ${dte_commande_year} = 2020
+  {% elsif date_granularity._parameter_value == '2021' %}
+  ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
+  {% elsif date_granularity._parameter_value == '36 derniers mois' %}
+  ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
+  {% elsif date_granularity._parameter_value == '12 derniers mois' %}
+  ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
+  {% elsif date_granularity._parameter_value == 'Mois précédent' %}
+  ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
+  {% else %} ${dte_commande_date}
+  {% endif %};;
+}
 
   dimension_group: dte_commande {
     type: time
@@ -127,7 +128,8 @@ view: ref_cmd_produit {
       quarter,
       year
     ]
-    sql: cast (${TABLE}.dte_commande as TIMESTAMP);;
+
+    sql: cast(${TABLE}.dte_commande as timestamp ) ;;
     drill_fields: [sheet_client*]
   }
 
