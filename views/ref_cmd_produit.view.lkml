@@ -67,6 +67,51 @@ view: ref_cmd_produit {
     suggest_persist_for: "2 seconds"
   }
 
+
+  dimension: date_year{
+    case: {
+      when: {
+        sql:  ${dte_commande_year} = 2019;;
+        label: "2019"
+      }
+      when: {
+        sql:   ${dte_commande_year} = 2020;;
+        label: "2020"
+      }
+      when: {
+        sql:   ${dte_commande_year} = 2021;;
+        label: "2021"
+      }
+      # when: {
+      #   sql:  ${date_creation_year} = 2022;;
+      #   label: "2022"
+      # }
+      when: {
+        sql: (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
+          and (   ${dte_commande_year} = extract(year from current_date() ) );;
+        label: "Mois précédent"
+      }
+    }
+    suggest_persist_for: "2 seconds"
+  }
+
+  dimension: date_dureation {
+    case: {
+      when: {
+        sql:  date_diff(current_date(),dte_commande, month) <= 12 and date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
+        label: "36 mois "
+      }
+      when: {
+        sql:   date_diff(current_date(),dte_commande, month) <= 12;;
+        label: "12 mois"
+      }
+
+    }
+    suggest_persist_for: "2 seconds"
+
+
+  }
+
   parameter: date_granularity {
     type: unquoted
     allowed_value: {
