@@ -103,7 +103,7 @@ view: ref_cmd_produit {
         }
 
       when: {
-        sql:  date_diff(current_date(),dte_commande, month) <= 12 and date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
+        sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
         label: "36 mois "
       }
 
