@@ -98,13 +98,13 @@ view: ref_cmd_produit {
   dimension: date_dureation {
     case: {
       when: {
-        sql:   date_diff(current_date(),dte_commande, month) <= 12;;
-        label: "12 mois"
+        sql:   date_diff(current_date(),${dte_commande_date}, month) <= 12;;
+        label: "12 der mois"
         }
 
       when: {
         sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
-        label: "36 mois "
+        label: "36 der mois "
       }
 
 
