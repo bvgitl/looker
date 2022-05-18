@@ -64,69 +64,10 @@ view: ref_optin {
     drill_fields: [sheet_client*]
   }
 
-  dimension: date_creation_periode{
-    case: {
-      when: {
-        sql:  ${date_creation_year} = 2019;;
-        label: "2019"
-      }
-      when: {
-        sql:  ${date_creation_year} = 2020;;
-        label: "2020"
-      }
-      when: {
-        sql:  ${date_creation_year} = 2021;;
-        label: "2021"
-      }
-      # when: {
-      #   sql:  ${date_creation_year} = 2022;;
-      #   label: "2022"
-      # }
-      when: {
-        sql: (extract(month from ${date_creation_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-          and (  ${date_creation_year} = extract(year from current_date() ) );;
-        label: "Mois précédent"
-      }
-    }
-    suggest_persist_for: "2 seconds"
-  }
-
-
-
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
     drill_fields: [sheet_client*]
-  }
-
-  dimension: flag_click_12m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_click_12m_sans_activite ;;
-  }
-
-  dimension: flag_click_24m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_click_24m_sans_activite ;;
-  }
-
-  dimension: flag_click_36m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_click_36m_sans_activite ;;
-  }
-
-  dimension: flag_open_12m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_open_12m_sans_activite ;;
-  }
-
-  dimension: flag_open_24m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_open_24m_sans_activite ;;
-  }
-
-  dimension: flag_open_36m_sans_activite {
-    type: string
-    sql: ${TABLE}.flag_open_36m_sans_activite ;;
   }
 
   dimension: coord {

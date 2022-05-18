@@ -49,111 +49,7 @@ view: ref_cmd_produit {
     suggest_persist_for: "2 seconds"
   }
 
-  dimension: date_cmd_periode{
-    type: string
-    sql: case when ${code_date} = '1' or ${code_date} ='5'
-              then '2019'
-              when ${code_date} = '2' or ${code_date} ='6'
-              then '2020'
-              when ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
-              then '2021'
-              when ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
-              then '12 derniers mois'
-              when ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
-              then '36 derniers mois'
-              when ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
-              then 'Mois précédent'
-              end       ;;
-    suggest_persist_for: "2 seconds"
-  }
 
-
-  dimension: date_year{
-    case: {
-      when: {
-        sql:  ${dte_commande_year} = 2019;;
-        label: "2019"
-      }
-      when: {
-        sql:   ${dte_commande_year} = 2020;;
-        label: "2020"
-      }
-      when: {
-        sql:   ${dte_commande_year} = 2021;;
-        label: "2021"
-      }
-      # when: {
-      #   sql:  ${date_creation_year} = 2022;;
-      #   label: "2022"
-      # }
-      when: {
-        sql: (extract(month from  ${dte_commande_date}) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-          and (   ${dte_commande_year} = extract(year from current_date() ) );;
-        label: "Mois précédent"
-      }
-    }
-    suggest_persist_for: "2 seconds"
-  }
-
-  dimension: date_dureation {
-    case: {
-      when: {
-        sql:   date_diff(current_date(),${dte_commande_date}, month) <= 12;;
-        label: "12 der mois"
-        }
-
-      when: {
-        sql: date_diff(current_date(),${dte_commande_date}, month) <= 36 ;;
-        label: "36 der mois "
-      }
-
-
-    }
-    suggest_persist_for: "2 seconds"
-
-
-  }
-
-  parameter: date_granularity {
-    type: unquoted
-    allowed_value: {
-      label: "2019"
-      value: "2019"
-    }
-    allowed_value: {
-      label: "2020"
-      value: "2020"
-    }
-    allowed_value: {
-      label: "2021"
-      value: "2021"
-    }
-    allowed_value: {
-      label: "36 derniers mois"
-      value: "36 derniers mois"
-    }
-    allowed_value: {
-      label: "12 derniers mois"
-      value: "12 derniers mois"
-    }
-    allowed_value: {
-      label: "Mois précédent"
-      value: "Mois précédent"
-    }
-    suggest_persist_for: "2 seconds"
-  }
-
-dimension: date_filtre {
-  sql:
-  {% if date_granularity._parameter_value == '2019' %}
-  --(${dte_commande_year} = 2019 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
-   ${dte_commande_date} where ${dte_commande_year} = 2019
-  --{% elsif date_granularity._parameter_value == '2020' %}
-  --(${dte_commande_year} = 2020 and date_diff(current_date(),${dte_commande_date}, month) <= 36 )
-  -- ${dte_commande_year} = 2020
-  {% else %} ${dte_commande_date}
-  {% endif %};;
-}
 
   dimension_group: dte_commande {
     type: time
@@ -170,16 +66,6 @@ dimension: date_filtre {
     sql: cast(${TABLE}.dte_commande as timestamp ) ;;
     drill_fields: [sheet_client*]
   }
-
-# {% elsif date_granularity._parameter_value == '2021' %}
-#   ${code_date} = '14' or ${code_date} ='3' or ${code_date} ='4' or ${code_date} = '7'
-#   {% elsif date_granularity._parameter_value == '36 derniers mois' %}
-#   ${code_date} = '14' or ${code_date} ='1' or ${code_date} ='2' or ${code_date} = '3' or ${code_date} ='13' or ${code_date} ='11' or ${code_date} ='8'
-#   {% elsif date_granularity._parameter_value == '12 derniers mois' %}
-#   ${code_date} = '14' or ${code_date} ='4' or ${code_date} ='13' or ${code_date} = '12' or ${code_date} ='9'
-#   {% elsif date_granularity._parameter_value == 'Mois précédent' %}
-#   ${code_date} = '12' or ${code_date} ='11' or ${code_date} ='10'
-
 
   dimension: format {
     type: string
