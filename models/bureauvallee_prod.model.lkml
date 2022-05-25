@@ -134,4 +134,33 @@ explore: article_dwh {
 
 }
 
+explore: web_commandes {
+  label: "Web"
+  join: web_clients {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_commandes.customer_id} = ${web_clients.customer_id} ;;
+  }
+  join: web_commandes_produits {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_commandes.cd_commande} = ${web_commandes_produits.cd_commande} ;;
+  }
+  join: web_articles {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_commandes_produits.cd_produit} = ${web_articles.c_Article} ;;
+  }
+  join: web_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_commandes_produits.cd_produit} = ${web_arbo.CodeArticle} ;;
+  }
+  join: web_magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${web_commandes.cd_magasin} = ${web_magasins.CD_Magasin} ;;
+  }
+}
+
 explore:  monitoring {}
