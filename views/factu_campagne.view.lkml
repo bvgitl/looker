@@ -36,24 +36,6 @@ view: Factu_campagne {
     drill_fields: [sheet_factu*]
   }
 
-  dimension: date_camp_periode{
-    case: {
-      when: {
-        sql:  ${dte_camp_year}  = 2021;;
-        label: "2021"
-      }
-      # when: {
-      #   sql:  ${date_creation_year} = 2022;;
-      #   label: "2022"
-      # }
-      when: {
-        sql: (extract(month from ${dte_camp_date} ) =  extract(month from date_sub(current_date( ) , interval 1 month) ))
-          and (  ${dte_camp_year}  = extract(year from current_date() ) );;
-        label: "Mois précédent"
-      }
-    }
-    suggest_persist_for: "2 seconds"
-  }
 
   dimension: email {
     type: string
