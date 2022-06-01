@@ -50,6 +50,13 @@ view: web_commandes_produits {
     hidden: yes
   }
 
+  dimension: Taux_Marge_Magasin {
+    type: number
+    value_format_name: percent_2
+    sql: ${TABLE}.Taux_Marge_Magasin ;;
+    label: "Taux de Marge (magasin)"
+  }
+
   measure: Quantite {
     type: sum
     sql: ${Quantite_commandee} ;;
@@ -61,6 +68,13 @@ view: web_commandes_produits {
     value_format_name: eur
     sql: ${Total_Produit_HT} ;;
     label: "Prix Total HT"
+  }
+
+  measure: Marge {
+    type: sum
+    value_format_name: eur
+    sql: ${Total_Produit_HT} * ${Taux_Marge_Magasin} ;;
+    label: "Marge"
   }
 
 }

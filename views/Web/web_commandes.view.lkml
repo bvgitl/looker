@@ -72,15 +72,17 @@ view: web_commandes {
 
 
   measure: ca_ht {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
+    sql_distinct_key: ${cd_commande} ;;
     sql: ${Total_HT} ;;
     label: "CA HT"
   }
 
   measure: frais_livraison_ht {
-    type: sum
+    type: sum_distinct
     value_format_name: eur
+    sql_distinct_key: ${cd_commande} ;;
     sql: ${Tarif_HT_livraison} ;;
     label: "Frais Livraison HT"
   }
