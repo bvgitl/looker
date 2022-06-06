@@ -2,7 +2,7 @@ view: web_commandes_produits {
   sql_table_name: `Matillion_Perm_Table.Produit_Commande`
     ;;
   #label: "Commandes Web"
-  view_label: "Commande (article)"
+  view_label: "Commande"
 
   dimension: compound_primary_key {
     primary_key: yes
