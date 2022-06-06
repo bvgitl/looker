@@ -77,4 +77,23 @@ view: web_commandes_produits {
     label: "Marge"
   }
 
+  measure: TauxMargeMoyen {
+    type: number
+    value_format_name: percent_2
+    sql: ${Marge} / ${Prix_Total_HT} ;;
+    label: "Taux Marge Moyen"
+  }
+
+  measure: Prix_Vente_Moyen {
+    type: sum
+    value_format_name: eur
+    sql: ${Total_Produit_HT} / ${Quantite_commandee} ;;
+    label: "Prix de Vente Moyen"
+  }
+
+  measure: Nombre_Article {
+    type: count
+    label: "Nombre Article"
+  }
+
 }

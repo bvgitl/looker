@@ -87,4 +87,16 @@ view: web_commandes {
     label: "Frais Livraison HT"
   }
 
+  measure: nombre_commande {
+    type: count
+    label: "Nombre Commande"
+  }
+
+  measure: panier_moyen {
+    type: number
+    value_format_name: eur
+    sql: ${ca_ht} /  ${nombre_commande} ;;
+    label: "Panier Moyen"
+  }
+
 }
