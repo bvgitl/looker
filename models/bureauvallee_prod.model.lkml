@@ -82,6 +82,7 @@ explore: pdt_commandes_digitales {
 
 
 explore: pdt_data_quality {
+  hidden: yes
   join: magasins {
     type: left_outer
     relationship: many_to_one
