@@ -104,7 +104,7 @@ view: suivi_rcu {
 
   dimension: date_optin_email {
     type: string
-    sql:case  when cast(${dt_optin_email_date} as date) <  cast('2022-06-01' as date) then "Avant 01/06/2022"
+    sql:case  when cast(${dt_optin_email_date} as date) <  cast('2022-06-01' as date) or ${dt_optin_email_date} is null  then "Avant 01/06/2022"
              when cast(${dt_optin_email_date} as date)  >=  cast('2022-06-01' as date) then "Après 01/06/2022" end;;
     drill_fields: [sheet_client*]
     }
