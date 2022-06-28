@@ -211,6 +211,23 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+
+  measure: count_optin_email_avant {
+    type: count_distinct
+    sql: case when (${email_rcu} is not null and ${optin_email} = '1' and ${date_optin_email} = "Avant 01/06/2022" ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+  measure: count_optin_email_apres {
+    type: count_distinct
+    sql: case when (${email_rcu} is not null and ${optin_email} = '1' and ${date_optin_email} = "Après 01/06/2022" ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+
+
   measure: count_master {
     type: count_distinct
     sql: ${id_master} ;;
