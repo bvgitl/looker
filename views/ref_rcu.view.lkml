@@ -102,6 +102,13 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: date_optin_email {
+    type: string
+    sql: when ${dt_optin_email_date}  <  cast('2022-06-01' as date) then "Avant 01/06/2022"
+        when ${dt_optin_email_date}  >=  cast('2022-06-01' as date) then "Après 01/06/2022" end;;
+    drill_fields: [sheet_client*]
+    }
+
   dimension: vue_rgpd {
     type: yesno
     sql:  greatest(     coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
@@ -112,6 +119,7 @@ view: suivi_rcu {
           >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
 
   }
+
   dimension: email_rcu {
     type: string
     sql: ${TABLE}.email_rcu ;;
