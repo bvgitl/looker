@@ -82,7 +82,7 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_optin_email as DATE )  ;;
+    sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
     drill_fields: [sheet_client*]
   }
 
@@ -98,7 +98,7 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
+    sql: cast(${TABLE}.dt_optin_email as DATE )  ;;
     drill_fields: [sheet_client*]
   }
 
