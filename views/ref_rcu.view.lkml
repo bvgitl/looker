@@ -102,10 +102,29 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+
+  dimension_group: dt_update_fusion {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.dt_update_fusion as DATE )  ;;
+    drill_fields: [sheet_client*]
+  }
+
+
+
   dimension: date_optin_email {
     type: string
-    sql:case  when cast(${dt_optin_email_date} as date) <  cast('2022-06-01' as date) or ${dt_optin_email_date} is null  then "Avant 01/06/2022"
-             when cast(${dt_optin_email_date} as date)  >=  cast('2022-06-01' as date) then "Après 01/06/2022" end;;
+    sql:case  when cast(${dt_update_fusion_date} as date) <  cast('2022-06-01' as date) or ${dt_update_fusion_date} is null  then "Avant 01/06/2022"
+             when cast(${dt_update_fusion_date} as date)  >=  cast('2022-06-01' as date) then "Après 01/06/2022" end;;
     drill_fields: [sheet_client*]
     }
 
