@@ -86,7 +86,7 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension_group: dt_optin_email {
+  dimension_group: dt_optin {
     type: time
     timeframes: [
       raw,
