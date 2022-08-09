@@ -173,9 +173,9 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: code_mag{
+  dimension: store_code{
     type: string
-    sql: ${TABLE}.code_mag  ;;
+    sql: ${TABLE}.store_code  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
@@ -290,11 +290,11 @@ view: suivi_rcu {
 
   measure: count {
     type: count
-    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
+    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code, Animateur]
   }
 
   set: sheet_client {
-    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
+    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code, Animateur]
   }
 
 }
