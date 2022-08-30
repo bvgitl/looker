@@ -35,6 +35,10 @@ view: derived_ga4 {
         then  'trigger_je_découvre_univers_bv_pros_tc'
         when name ='trigger_1_decouvre_univers_PART'
         then 'trigger_je_découvre_univers_bv_part_tc'
+        when name ='Triger8Upsell_cartouche'
+        then 'Trigger_Upsell_cartouche'
+        when name ='trigger_upsell_ink'
+        then 'Trigger_Upsell_cartouche'
         else name end as name,
 
 
