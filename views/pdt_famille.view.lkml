@@ -1,59 +1,58 @@
 view: pdt_famille {
   derived_table: {
-    sql: SELECT distinct
-       a.l_Article_long as designation,
-       a.c_Type  as Typ_article,
-       a.c_Note as Note_ecologique,
-       a.c_Gencode as Gencode,
-       a.c_Validite_1 as Statut_article,
-       a.c_Origine as Origine,
-       arb.N4 as Niveau_4,
-       arb.N3_SousFamille as N3_SS_Famille,
-       arb.N2_Famille as N2_Famille,
-       arb.N1_Division as N1_Division,
-       m.Nom_TBE as NOM,
-       m.Type_TBE as Typ ,
-       m.DATE_OUV as Dte_Ouverture,
-       m.Pays_TBE as Pays ,
-       m.Directeur AS Directeur,
-       m.Animateur as Animateur,
-       m.Region as Region ,
-       m.SURF_VTE as Surface ,
-       m.TYP_MAG as TYP_MAG,
-       m.Tranche_age as Anciennete,
-       m.CD_Magasin as CD_Magasin,
-       m.Latitude,
-       m.Longitude,
-       m2.Nom_TBE as NOM_histo,
-       m2.Type_TBE as Typ_histo,
-       m2.DATE_OUV as Dte_Ouverture_histo,
-       m2.Pays_TBE as Pays_histo ,
-       m2.Directeur AS Directeur_histo,
-       m2.Animateur as Animateur_histo,
-       m2.Region as Region_histo ,
-       m2.SURF_VTE as Surface_histo ,
-       m2.TYP_MAG as TYP_MAG_histo,
-       m2.Tranche_age as Anciennete_histo,
-       m2.Latitude as Latitude_histo,
-       m2.Longitude as Longitude_histo,
-       v.CD_Article as Article,
-       v.CD_Article_Original  AS ArticleOriginal,
-       v.Val_Achat_Gbl as Val_Achat_Gbl,
-       v.Dte_Vte as Dte_Vte,
-       v.Typ_Vente as Typ_Vente ,
-       v.Qtite as Qtite,
-       v.ca_ht as ca_ht,
-       v.marge_brute as marge_brute,
-       mq.LB_MARQUE as Marque,
-       f.l_Fournisseur as Fournisseur,
-       s.n_stock as stock,
-       w.Nbre_commande as Nbre_commande,
-       w.Quantite_commandee as Quantite_commandee,
-       w.Tarif_Produit_HT as Tarif_Produit_HT
-
-
+    sql: SELECT DISTINCT
+    a.l_Article_long as designation,
+    a.c_Type  as Typ_article,
+    a.c_Note as Note_ecologique,
+    a.c_Gencode as Gencode,
+    a.c_Validite_1 as Statut_article,
+    a.c_Origine as Origine,
+    arb.N4 as Niveau_4,
+    arb.N3_SousFamille as N3_SS_Famille,
+    arb.N2_Famille as N2_Famille,
+    arb.N1_Division as N1_Division,
+    m.Nom_TBE as NOM,
+    m.Type_TBE as Typ ,
+    m.DATE_OUV as Dte_Ouverture,
+    m.Pays_TBE as Pays ,
+    m.Directeur AS Directeur,
+    m.Animateur as Animateur,
+    m.Region as Region ,
+    m.SURF_VTE as Surface ,
+    m.TYP_MAG as TYP_MAG,
+    m.Tranche_age as Anciennete,
+    m.CD_Magasin as CD_Magasin,
+    m.Latitude,
+    m.Longitude,
+    m2.Nom_TBE as NOM_histo,
+    m2.Type_TBE as Typ_histo,
+    m2.DATE_OUV as Dte_Ouverture_histo,
+    m2.Pays_TBE as Pays_histo ,
+    m2.Directeur AS Directeur_histo,
+    m2.Animateur as Animateur_histo,
+    m2.Region as Region_histo ,
+    m2.SURF_VTE as Surface_histo ,
+    m2.TYP_MAG as TYP_MAG_histo,
+    m2.Tranche_age as Anciennete_histo,
+    m2.Latitude as Latitude_histo,
+    m2.Longitude as Longitude_histo,
+    v.CD_Article as Article,
+    v.CD_Article_Original  AS ArticleOriginal,
+    v.Val_Achat_Gbl as Val_Achat_Gbl,
+    v.Dte_Vte as Dte_Vte,
+    v.Typ_Vente as Typ_Vente ,
+    v.Qtite as Qtite,
+    v.ca_ht as ca_ht,
+    v.marge_brute as marge_brute,
+    mq.LB_MARQUE as Marque,
+    f.l_Fournisseur as Fournisseur,
+    s.n_stock as stock,
+    w.Nbre_commande as Nbre_commande,
+    w.Quantite_commandee as Quantite_commandee,
+    w.Tarif_Produit_HT as Tarif_Produit_HT
 FROM
-(select
+(
+    SELECT
         CD_Magasin,
         Dte_Vte,
         Typ_Vente,
@@ -63,25 +62,34 @@ FROM
         sum(Qtite) as Qtite ,
         sum(ca_ht) as ca_ht ,
         sum(marge_brute) as marge_brute
-from `bv-prod.Matillion_Perm_Table.TF_VENTE`
-group by 1,2,3,4,5
-
-      UNION ALL
-
-select
-        CODE_ACTEUR as CD_Magasin,
-        DTE_VENTE,
-        TYP_VENTE,
-        ID_ARTICLE,
-        ID_ARTICLE AS CD_Article_Original,
-        sum(VAL_ACHAT_GBL) as Val_Achat_Gbl,
-        sum(QTITE) as Qtite ,
-        sum(CA_HT) as ca_ht,
-        sum(MARGE_BRUTE) as marge_brute
-from `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
-group by 1,2,3,4,5) v
-
-
+    FROM
+    (
+        SELECT
+            CD_Magasin,
+            Dte_Vte,
+            Typ_Vente,
+            CD_Article,
+            CD_Article_Original,
+            Val_Achat_Gbl,
+            Qtite,
+            ca_ht,
+            marge_brute
+        FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
+        UNION ALL
+        SELECT
+            CODE_ACTEUR as CD_Magasin,
+            DTE_VENTE,
+            TYP_VENTE,
+            ID_ARTICLE,
+            ID_ARTICLE AS CD_Article_Original,
+            VAL_ACHAT_GBL as Val_Achat_Gbl,
+            QTITE as Qtite ,
+            CA_HT as ca_ht,
+            MARGE_BRUTE as marge_brute
+        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+    )
+    GROUP BY 1,2,3,4,5
+) v
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON   v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON  v.CD_Article = a.c_Article

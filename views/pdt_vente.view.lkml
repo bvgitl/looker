@@ -1,78 +1,107 @@
 view: pdt_vente {
   derived_table: {
-    sql: SELECT
-  DISTINCT m.Animateur AS Animateur,
-  m.DATE_OUV AS Dte_Ouverture,
-  m.Directeur AS Directeur,
-  m.Franchise AS Franchise,
-  m.Nom_TBE AS NOM,
-  m.Type_TBE AS Typ,
-  m.Pays_TBE AS Pays,
-  m.Region AS Region,
-  m.SURF_VTE AS Surface,
-  m.TYP_MAG AS TYP_MAG,
-  m.Tranche_age AS Anciennete,
-  m.CD_Magasin AS CD_Magasin,
-  m.Latitude,
-  m.Longitude,
-  m2.Animateur AS Animateur_histo,
-  m2.DATE_OUV AS Dte_Ouverture_histo,
-  m2.Directeur AS Directeur_histo,
-  m2.Franchise AS Franchise_histo,
-  m2.Nom_TBE as NOM_histo,
-  m2.Type_TBE as Typ_histo,
-  m2.Pays_TBE as Pays_histo ,
-  m2.Region as Region_histo ,
-  m2.SURF_VTE as Surface_histo ,
-  m2.TYP_MAG as TYP_MAG_histo,
-  m2.Tranche_age as Anciennete_histo,
-  m2.Latitude as Latitude_histo,
-  m2.Longitude as Longitude_histo,
-  day AS Dte_Vte,
-  v.Typ_Vente AS Typ_Vente,
-  v.Val_Achat_Gbl AS Val_Achat_Gbl,
-  v.Qtite AS Qtite,
-  v.ca_ht AS ca_ht,
-  v.marge_brute AS marge_brute,
-  mag.nb_ticket AS nb_ticket,
-  c.nbre_commande AS nbre_commande,
-  c.Tarif_HT_livraison AS Tarif_HT_livraison,
-  c.Total_HT AS Total_HT
+    sql: SELECT DISTINCT
+    m.Animateur AS Animateur,
+    m.DATE_OUV AS Dte_Ouverture,
+    m.Directeur AS Directeur,
+    m.Franchise AS Franchise,
+    m.Nom_TBE AS NOM,
+    m.Type_TBE AS Typ,
+    m.Pays_TBE AS Pays,
+    m.Region AS Region,
+    m.SURF_VTE AS Surface,
+    m.TYP_MAG AS TYP_MAG,
+    m.Tranche_age AS Anciennete,
+    m.CD_Magasin AS CD_Magasin,
+    m.Latitude,
+    m.Longitude,
+    m2.Animateur AS Animateur_histo,
+    m2.DATE_OUV AS Dte_Ouverture_histo,
+    m2.Directeur AS Directeur_histo,
+    m2.Franchise AS Franchise_histo,
+    m2.Nom_TBE as NOM_histo,
+    m2.Type_TBE as Typ_histo,
+    m2.Pays_TBE as Pays_histo ,
+    m2.Region as Region_histo ,
+    m2.SURF_VTE as Surface_histo ,
+    m2.TYP_MAG as TYP_MAG_histo,
+    m2.Tranche_age as Anciennete_histo,
+    m2.Latitude as Latitude_histo,
+    m2.Longitude as Longitude_histo,
+    day AS Dte_Vte,
+    v.Typ_Vente AS Typ_Vente,
+    v.Val_Achat_Gbl AS Val_Achat_Gbl,
+    v.Qtite AS Qtite,
+    v.ca_ht AS ca_ht,
+    v.marge_brute AS marge_brute,
+    mag.nb_ticket AS nb_ticket,
+    c.nbre_commande AS nbre_commande,
+    c.Tarif_HT_livraison AS Tarif_HT_livraison,
+    c.Total_HT AS Total_HT
 FROM ( SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day )
-LEFT JOIN ( (
+LEFT JOIN
+(
     SELECT
-      CD_Magasin,
-      Dte_Vte,
-      Typ_Vente,
-      SUM(Val_Achat_Gbl) AS Val_Achat_Gbl,
-      SUM(Qtite) AS Qtite,
-      SUM(ca_ht) AS ca_ht,
-      SUM(marge_brute) AS marge_brute
-    FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
+        CD_Magasin,
+        Dte_Vte,
+        Typ_Vente,
+        SUM(Val_Achat_Gbl) AS Val_Achat_Gbl,
+        SUM(Qtite) AS Qtite,
+        SUM(ca_ht) AS ca_ht,
+        SUM(marge_brute) AS marge_brute
+    FROM
+    (
+        SELECT
+            CD_Magasin,
+            Dte_Vte,
+            Typ_Vente,
+            Val_Achat_Gbl,
+            Qtite,
+            ca_ht,
+            marge_brute
+        FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
+        UNION ALL
+        SELECT
+            CODE_ACTEUR AS CD_Magasin,
+            DTE_VENTE,
+            TYP_VENTE,
+            VAL_ACHAT_GBL AS Val_Achat_Gbl,
+            QTITE AS Qtite,
+            CA_HT AS ca_ht,
+            MARGE_BRUTE AS marge_brute
+        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+    )
     GROUP BY 1, 2, 3
-    UNION ALL
+  ) v
+  INNER JOIN
+  (
     SELECT
-      CODE_ACTEUR AS CD_Magasin,
-      DTE_VENTE,
-      TYP_VENTE,
-      SUM(VAL_ACHAT_GBL) AS Val_Achat_Gbl,
-      SUM(QTITE) AS Qtite,
-      SUM(CA_HT) AS ca_ht,
-      SUM(MARGE_BRUTE) AS marge_brute
-    FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
-    GROUP BY 1, 2, 3 ) v
-  INNER JOIN (
-    SELECT
-      CD_Magasin,
-      Dte_Vte,
-      Typ_vente,
-      SUM(nb_ticket) AS nb_ticket
-    FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-    GROUP BY 1, 2, 3 ) mag
+        CD_Magasin,
+        Dte_Vte,
+        Typ_vente,
+        SUM(nb_ticket) AS nb_ticket
+    FROM
+    (
+        SELECT
+            CD_Magasin,
+            Dte_Vte,
+            Typ_vente,
+            nb_ticket
+        FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+        UNION ALL
+        SELECT
+            CODE_ACTEUR AS CD_Magasin,
+            DTE_VENTE,
+            TYP_VENTE,
+            NB_TICKET AS nb_ticket
+        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+    )
+    GROUP BY 1, 2, 3
+  ) mag
   ON
     mag.CD_Magasin = v.CD_Magasin
     AND mag.Dte_Vte = v.Dte_Vte
-    AND v.Typ_vente = mag.Typ_vente )
+    AND v.Typ_vente = mag.Typ_vente
 ON  day = v.Dte_Vte
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
