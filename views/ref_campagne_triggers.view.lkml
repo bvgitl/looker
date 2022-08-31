@@ -2,10 +2,10 @@ view: ref_campagne_triggers {
 
 
   derived_table: {
-     sql: SELECT
-         *
-       FROM `bv-prod.looker_pg.ref_campagne`
-       where camp_name like 'Trigger%'
+     sql: SELECT * except(camp_name),
+          split(camp_name, '_CELL')[offset(0)] as camp_name
+          FROM `bv-prod.looker_pg.ref_campagne`
+          where camp_name like 'Trigger%'
        ;;
       }
 

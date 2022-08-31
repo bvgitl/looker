@@ -16,7 +16,9 @@ view: ref_campagne {
 
   dimension: camp_name {
     type: string
-    sql: ${TABLE}.camp_name ;;
+    sql: case when ${TABLE}.camp_name not like "%test%"
+          then split(${TABLE}.camp_name , '_CELL')[offset(0)] end ;;
+
     drill_fields: [sheet_client*]
     suggest_persist_for: "2 seconds"
   }

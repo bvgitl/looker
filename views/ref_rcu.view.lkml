@@ -82,11 +82,11 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_optin_email as DATE )  ;;
+    sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
     drill_fields: [sheet_client*]
   }
 
-  dimension_group: dt_optin_email {
+  dimension_group: dt_optin {
     type: time
     timeframes: [
       raw,
@@ -98,20 +98,47 @@ view: suivi_rcu {
     ]
     convert_tz: no
     datatype: date
-    sql: cast(${TABLE}.dt_last_purchase as DATE )  ;;
+    sql: cast(${TABLE}.dt_optin as DATE )  ;;
     drill_fields: [sheet_client*]
   }
+
+
+  dimension_group: dt_update_fusion {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.dt_update_fusion as DATE )  ;;
+    drill_fields: [sheet_client*]
+  }
+
+
+
+  dimension: date_optin_email {
+    type: string
+    sql:case  when cast(${dt_update_fusion_date} as date) <  cast('2022-06-01' as date) or ${dt_update_fusion_date} is null  then "Avant 01/06/2022"
+             when cast(${dt_update_fusion_date} as date)  >=  cast('2022-06-01' as date) then "Après 01/06/2022" end;;
+    drill_fields: [sheet_client*]
+    }
 
   dimension: vue_rgpd {
     type: yesno
     sql:  greatest(     coalesce( cast(dt_last_purchase as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_creation_retail as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
-                        coalesce( cast(dt_optin_email as date), cast('1970-01-01' as date))
+                        coalesce( cast(dt_optin as date), cast('1970-01-01' as date))
                           )
           >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
 
   }
+
   dimension: email_rcu {
     type: string
     sql: ${TABLE}.email_rcu ;;
@@ -146,9 +173,9 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: code_mag{
+  dimension: store_code{
     type: string
-    sql: ${TABLE}.code_mag  ;;
+    sql: ${TABLE}.store_code  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
@@ -203,6 +230,23 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+
+  measure: count_optin_email_avant {
+    type: count_distinct
+    sql: case when (${email_rcu} is not null and ${optin_email} = '1' and ${date_optin_email} = "Avant 01/06/2022" ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+  measure: count_optin_email_apres {
+    type: count_distinct
+    sql: case when (${email_rcu} is not null and ${optin_email} = '1' and ${date_optin_email} = "Après 01/06/2022" ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
+  }
+
+
+
   measure: count_master {
     type: count_distinct
     sql: ${id_master} ;;
@@ -246,11 +290,11 @@ view: suivi_rcu {
 
   measure: count {
     type: count
-    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
+    drill_fields: [firstname, lastname,type_client,  email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code, Animateur]
   }
 
   set: sheet_client {
-    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,code_mag, Animateur]
+    fields: [firstname, lastname,type_client, email_rcu, cell_phone,civilite,dt_creation_retail_date,dt_creation_web_date,dt_last_purchase_date,optin_email,optin_sms,store_code, Animateur]
   }
 
 }
