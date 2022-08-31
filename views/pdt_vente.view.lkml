@@ -101,7 +101,7 @@ ON
 
  ;;
 
-      persist_for: "11 hours"
+      persist_for: "2 hours"
     }
 
     measure: count {

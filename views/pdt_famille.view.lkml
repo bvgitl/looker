@@ -115,7 +115,7 @@ AND m.CD_Magasin = w.cd_magasin
 AND v.Typ_Vente = 0
  ;;
 
-    persist_for: "11 hours"
+    persist_for: "2 hours"
   }
 
 
