@@ -37,7 +37,9 @@ view: pdt_vente {
     mag.nb_ticket AS nb_ticket,
     c.nbre_commande AS nbre_commande,
     c.Tarif_HT_livraison AS Tarif_HT_livraison,
-    c.Total_HT AS Total_HT
+    c.Total_HT AS Total_HT,
+    v.StatutBcp,
+    v.StatutGoogleSheet
 FROM ( SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day )
 LEFT JOIN
 (
@@ -48,7 +50,9 @@ LEFT JOIN
         SUM(Val_Achat_Gbl) AS Val_Achat_Gbl,
         SUM(Qtite) AS Qtite,
         SUM(ca_ht) AS ca_ht,
-        SUM(marge_brute) AS marge_brute
+        SUM(marge_brute) AS marge_brute,
+        MAX(StatutBcp) AS StatutBcp,
+        MIN(StatutGoogleSheet) AS StatutGoogleSheet
     FROM
     (
         SELECT
@@ -58,7 +62,9 @@ LEFT JOIN
             Val_Achat_Gbl,
             Qtite,
             ca_ht,
-            marge_brute
+            marge_brute,
+            'BCP reçu' AS StatutBcp,
+            'GoogleSheet vierge' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
         UNION ALL
         SELECT
@@ -68,8 +74,37 @@ LEFT JOIN
             VAL_ACHAT_GBL AS Val_Achat_Gbl,
             QTITE AS Qtite,
             CA_HT AS ca_ht,
-            MARGE_BRUTE AS marge_brute
+            MARGE_BRUTE AS marge_brute,
+            'BCP non reçu' AS StatutBcp,
+            'GoogleSheet renseignée' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+        UNION ALL
+        SELECT
+            mf.CodeMagasinActeur AS CD_Magasin,
+            mf.DateFichier AS DTE_VENTE,
+            0 AS TYP_VENTE,
+            null AS Val_Achat_Gbl,
+            null AS Qtite,
+            null AS ca_ht,
+            null AS marge_brute,
+            'BCP non reçu' AS StatutBcp,
+            'GoogleSheet vierge' AS StatutGoogleSheet
+        FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
+        WHERE mf.Flux = 'BCP10_BCP13'
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE` tf
+            WHERE tf.CD_Magasin = mf.CodeMagasinActeur
+            AND tf.Dte_Vte = mf.DateFichier
+        )
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
+            WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
+            AND gs.DTE_VENTE = mf.DateFichier
+        )
     )
     GROUP BY 1, 2, 3
   ) v
@@ -95,6 +130,28 @@ LEFT JOIN
             TYP_VENTE,
             NB_TICKET AS nb_ticket
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+        UNION ALL
+        SELECT
+            mf.CodeMagasinActeur AS CD_Magasin,
+            mf.DateFichier AS DTE_VENTE,
+            0 AS TYP_VENTE,
+            null AS nb_ticket
+        FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
+        WHERE mf.Flux = 'BCP10_BCP13'
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` tf
+            WHERE tf.CD_Magasin = mf.CodeMagasinActeur
+            AND tf.Dte_Vte = mf.DateFichier
+        )
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
+            WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
+            AND gs.DTE_VENTE = mf.DateFichier
+        )
     )
     GROUP BY 1, 2, 3
   ) mag
@@ -125,8 +182,6 @@ ON
   c.cd_magasin = m.CD_Magasin
   AND day = c.dte_cde
   AND v.Typ_Vente = 0
-
-
 
  ;;
 
@@ -381,6 +436,20 @@ ON
       type: number
       sql: ${TABLE}.Nbre_commande ;;
       view_label: "Web"
+    }
+
+    dimension: statut_bcp {
+      type: string
+      sql: ${TABLE}.StatutBcp ;;
+      label: "Statut BCP"
+      view_label: "Ventes"
+    }
+
+  dimension: statut_google_sheet {
+      type: string
+      sql: ${TABLE}.StatutGoogleSheet ;;
+      label: "Statut GoogleSheet"
+      view_label: "Ventes"
     }
 
     set: detail {

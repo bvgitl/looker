@@ -49,7 +49,9 @@ view: pdt_famille {
     s.n_stock as stock,
     w.Nbre_commande as Nbre_commande,
     w.Quantite_commandee as Quantite_commandee,
-    w.Tarif_Produit_HT as Tarif_Produit_HT
+    w.Tarif_Produit_HT as Tarif_Produit_HT,
+    v.StatutBcp,
+    v.StatutGoogleSheet
 FROM
 (
     SELECT
@@ -61,7 +63,9 @@ FROM
         sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
         sum(Qtite) as Qtite ,
         sum(ca_ht) as ca_ht ,
-        sum(marge_brute) as marge_brute
+        sum(marge_brute) as marge_brute,
+        MAX(StatutBcp) AS StatutBcp,
+        MIN(StatutGoogleSheet) AS StatutGoogleSheet
     FROM
     (
         SELECT
@@ -73,7 +77,9 @@ FROM
             Val_Achat_Gbl,
             Qtite,
             ca_ht,
-            marge_brute
+            marge_brute,
+            'BCP reçu' AS StatutBcp,
+            'GoogleSheet vierge' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
         UNION ALL
         SELECT
@@ -85,8 +91,39 @@ FROM
             VAL_ACHAT_GBL as Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
-            MARGE_BRUTE as marge_brute
+            MARGE_BRUTE as marge_brute,
+            'BCP non reçu' AS StatutBcp,
+            'GoogleSheet renseignée' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+        UNION ALL
+        SELECT
+            mf.CodeMagasinActeur AS CD_Magasin,
+            mf.DateFichier AS DTE_VENTE,
+            0 AS TYP_VENTE,
+            null AS ID_ARTICLE,
+            null AS CD_Article_Original,
+            null AS Val_Achat_Gbl,
+            null AS Qtite,
+            null AS ca_ht,
+            null AS marge_brute,
+            'BCP non reçu' AS StatutBcp,
+            'GoogleSheet vierge' AS StatutGoogleSheet
+        FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
+        WHERE mf.Flux = 'BCP10_BCP13'
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE` tf
+            WHERE tf.CD_Magasin = mf.CodeMagasinActeur
+            AND tf.Dte_Vte = mf.DateFichier
+        )
+        AND NOT EXISTS
+        (
+            SELECT *
+            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
+            WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
+            AND gs.DTE_VENTE = mf.DateFichier
+        )
     )
     GROUP BY 1,2,3,4,5
 ) v
@@ -582,6 +619,20 @@ AND v.Typ_Vente = 0
             WHEN ${typ_vente} = 0 THEN "Hors rétrocession"
             ELSE "Rétrocession"
           END ;;
+    view_label: "Ventes"
+  }
+
+  dimension: statut_bcp {
+    type: string
+    sql: ${TABLE}.StatutBcp ;;
+    label: "Statut BCP"
+    view_label: "Ventes"
+  }
+
+  dimension: statut_google_sheet {
+    type: string
+    sql: ${TABLE}.StatutGoogleSheet ;;
+    label: "Statut GoogleSheet"
     view_label: "Ventes"
   }
 
