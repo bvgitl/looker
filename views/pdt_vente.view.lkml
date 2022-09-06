@@ -28,7 +28,7 @@ view: pdt_vente {
     m2.Tranche_age as Anciennete_histo,
     m2.Latitude as Latitude_histo,
     m2.Longitude as Longitude_histo,
-    day AS Dte_Vte,
+    d.day AS Dte_Vte,
     v.Typ_Vente AS Typ_Vente,
     v.Val_Achat_Gbl AS Val_Achat_Gbl,
     v.Qtite AS Qtite,
@@ -40,7 +40,10 @@ view: pdt_vente {
     c.Total_HT AS Total_HT,
     v.StatutBcp,
     v.StatutGoogleSheet
-FROM ( SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day )
+FROM
+(
+    SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day
+) d
 LEFT JOIN
 (
     SELECT
@@ -159,7 +162,7 @@ LEFT JOIN
     mag.CD_Magasin = v.CD_Magasin
     AND mag.Dte_Vte = v.Dte_Vte
     AND v.Typ_vente = mag.Typ_vente
-ON  day = v.Dte_Vte
+ON  d.day = v.Dte_Vte
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
 LEFT JOIN (
@@ -180,7 +183,7 @@ LEFT JOIN (
   GROUP BY 1, 2 ) AS c
 ON
   c.cd_magasin = m.CD_Magasin
-  AND day = c.dte_cde
+  AND d.day = c.dte_cde
   AND v.Typ_Vente = 0
 
  ;;
@@ -503,6 +506,43 @@ ON
     view_label: "Période"
     group_label: "Année N-3"
   }
+
+# https://community.looker.com/technical-tips-tricks-1021/methods-for-period-over-period-pop-analysis-in-looker-method-7-arbitrary-period-and-directly-previous-period-30831
+
+  dimension_group: filter_start_date {
+    #hidden: yes
+    type: time
+    timeframes: [raw,date]
+    sql: CASE WHEN {% date_start date_filter %} IS NULL THEN '2013-01-01' ELSE CAST({% date_start date_filter %} AS DATE) END;;
+  }
+
+  dimension_group: filter_end_date {
+    #hidden: yes
+    type: time
+    timeframes: [raw,date]
+    sql: CASE WHEN {% date_end date_filter %} IS NULL THEN CURRENT_DATE ELSE CAST({% date_end date_filter %} AS DATE) END;;
+  }
+
+  #start date of the previous YearWeek period
+  dimension: previous_year_week_start_date {
+    #hidden: yes
+    type: string
+    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_start_date_raw}) - 1) || " " || FORMAT_DATE("%U %w", ${filter_start_date_raw}));;
+  }
+
+  #end date of the previous YearWeek period
+  dimension: previous_year_week_end_date {
+    #hidden: yes
+    type: string
+    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_end_date_raw}) - 1) || " " || FORMAT_DATE("%U %w", ${filter_end_date_raw}));;
+  }
+
+  dimension: is_previous_year_week_period {
+    hidden: yes
+    type: yesno
+    sql: ${dte_vte_date} >= ${previous_year_week_start_date} AND ${dte_vte_date} < ${previous_year_week_end_date} ;;
+  }
+
 
     dimension: categorie {
       hidden: no
@@ -1074,6 +1114,101 @@ ON
       view_label: "Ventes"
       group_label: "Année N-3"
     }
+
+
+  ############## calcul des KPIs à la période sélectionnée au niveau du filtre  ############
+
+  measure: sum_CA_select_semaine_N1 {
+    type: sum
+    value_format_name: eur
+    label: "CA HT Semaine N-1"
+    sql:${ca_ht};;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_marge_select_semaine_N1 {
+    hidden: no
+    label: "Marge Semaine N-1"
+    type: sum
+    value_format_name: eur
+    sql: ${marge_brute};;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_nb_ticket_select_semaine_N1 {
+    hidden: no
+    label: "Nb clts Semaine N-1"
+    type: sum
+    value_format_name: decimal_0
+    sql: ${nb_ticket} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Clients"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_nb_jour_select_semaine_N1 {
+    hidden: no
+    label: "Nb jr Semaine N-1"
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: ${dte_vte_date} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_val_achat_gbl_select_semaine_N1 {
+    hidden: yes
+    type: sum
+    value_format_name: eur
+    sql: ${val_achat_gbl} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+
+  measure: sum_livraison_select_semaine_N1 {
+    type: sum
+    value_format_name: eur
+    sql: ${tarif_ht_livraison} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Web"
+    group_label: "Semaine Année N-1"
+  }
+
+
+  measure: sum_total_ht_select_semaine_N1 {
+    type: sum
+    value_format_name: eur
+    sql: ${total_ht} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Web"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_CA_drive_select_semaine_N1 {
+    type: number
+    value_format_name: eur
+    label: "CA Drive Semaine N-1"
+    sql: ${sum_total_ht_select_semaine_N1} + ${sum_livraison_select_semaine_N1} ;;
+    view_label: "Web"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_Nb_cde_drive_select_semaine_N1 {
+    type: sum
+    value_format_name: decimal_0
+    label: "Commande Drive Semaine N-1"
+    sql: ${nbre_commande} ;;
+    filters: [is_previous_year_week_period: "yes"]
+    view_label: "Web"
+    group_label: "Semaine Année N-1"
+  }
 
 
     ######### calcul des rapports entre les KPIs à la période n sélectionnée au niveau du filtre  ##########
