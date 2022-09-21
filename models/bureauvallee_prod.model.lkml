@@ -111,6 +111,11 @@ explore: article_dwh {
     relationship: many_to_one
     sql_on: ${article_dwh.c_article} = ${tf_vente.cd_article} ;;
   }
+  join: article_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_arbo.cd_article}=${tf_vente.cd_article} ;;
+  }
   join: magasins {
     type: left_outer
     relationship: many_to_one
