@@ -39,7 +39,8 @@ view: pdt_vente {
     c.Tarif_HT_livraison AS Tarif_HT_livraison,
     c.Total_HT AS Total_HT,
     v.StatutBcp,
-    v.StatutGoogleSheet
+    v.StatutGoogleSheet,
+    v.CD_Pays
 FROM
 (
     SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day
@@ -55,7 +56,8 @@ LEFT JOIN
         SUM(ca_ht) AS ca_ht,
         SUM(marge_brute) AS marge_brute,
         MAX(StatutBcp) AS StatutBcp,
-        MIN(StatutGoogleSheet) AS StatutGoogleSheet
+        MIN(StatutGoogleSheet) AS StatutGoogleSheet,
+        MAX(CD_Pays) AS CD_Pays
     FROM
     (
         SELECT
@@ -67,7 +69,8 @@ LEFT JOIN
             ca_ht,
             marge_brute,
             'BCP reçu' AS StatutBcp,
-            'GoogleSheet vierge' AS StatutGoogleSheet
+            'GoogleSheet vierge' AS StatutGoogleSheet,
+            CD_Pays
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
         UNION ALL
         SELECT
@@ -79,7 +82,8 @@ LEFT JOIN
             CA_HT AS ca_ht,
             MARGE_BRUTE AS marge_brute,
             'BCP non reçu' AS StatutBcp,
-            'GoogleSheet renseignée' AS StatutGoogleSheet
+            'GoogleSheet renseignée' AS StatutGoogleSheet,
+            '??' AS CD_Pays
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
         UNION ALL
         SELECT
@@ -91,7 +95,8 @@ LEFT JOIN
             null AS ca_ht,
             null AS marge_brute,
             'BCP non reçu' AS StatutBcp,
-            'GoogleSheet vierge' AS StatutGoogleSheet
+            'GoogleSheet vierge' AS StatutGoogleSheet,
+            '??' AS CD_Pays
         FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
         WHERE mf.Flux = 'BCP10_BCP13'
         AND NOT EXISTS
@@ -391,6 +396,13 @@ ON
       sql: ${TABLE}.Typ_Vente ;;
       view_label: "Ventes"
     }
+
+  dimension: pays_vente {
+    type: string
+    sql: ${TABLE}.CD_Pays ;;
+    label: "Pays"
+    view_label: "Ventes"
+  }
 
     dimension: val_achat_gbl {
       type: number

@@ -51,7 +51,8 @@ view: pdt_famille {
     w.Quantite_commandee as Quantite_commandee,
     w.Tarif_Produit_HT as Tarif_Produit_HT,
     v.StatutBcp,
-    v.StatutGoogleSheet
+    v.StatutGoogleSheet,
+    v.CD_Pays
 FROM
 (
     SELECT
@@ -65,7 +66,8 @@ FROM
         sum(ca_ht) as ca_ht ,
         sum(marge_brute) as marge_brute,
         MAX(StatutBcp) AS StatutBcp,
-        MIN(StatutGoogleSheet) AS StatutGoogleSheet
+        MIN(StatutGoogleSheet) AS StatutGoogleSheet,
+        MAX(CD_Pays) AS CD_Pays
     FROM
     (
         SELECT
@@ -79,7 +81,8 @@ FROM
             ca_ht,
             marge_brute,
             'BCP reçu' AS StatutBcp,
-            'GoogleSheet vierge' AS StatutGoogleSheet
+            'GoogleSheet vierge' AS StatutGoogleSheet,
+            CD_Pays
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
         UNION ALL
         SELECT
@@ -93,7 +96,8 @@ FROM
             CA_HT as ca_ht,
             MARGE_BRUTE as marge_brute,
             'BCP non reçu' AS StatutBcp,
-            'GoogleSheet renseignée' AS StatutGoogleSheet
+            'GoogleSheet renseignée' AS StatutGoogleSheet,
+            '??' AS CD_Pays
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
         UNION ALL
         SELECT
@@ -107,7 +111,8 @@ FROM
             null AS ca_ht,
             null AS marge_brute,
             'BCP non reçu' AS StatutBcp,
-            'GoogleSheet vierge' AS StatutGoogleSheet
+            'GoogleSheet vierge' AS StatutGoogleSheet,
+            '??' AS CD_Pays
         FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
         WHERE mf.Flux = 'BCP10_BCP13'
         AND NOT EXISTS
@@ -400,6 +405,13 @@ AND v.Typ_Vente = 0
   dimension: typ_vente {
     type: number
     sql: ${TABLE}.Typ_Vente ;;
+    view_label: "Ventes"
+  }
+
+  dimension: pays_vente {
+    type: string
+    sql: ${TABLE}.CD_Pays ;;
+    label: "Pays"
     view_label: "Ventes"
   }
 
