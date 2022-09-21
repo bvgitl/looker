@@ -822,6 +822,35 @@ ON
       group_label: "Année N"
     }
 
+  measure: sum_Qtite_select_mois {
+    type: sum
+    label: "Quantité"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${qtite}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
+  measure: prix_vente_moyen_select_mois {
+    label: "Prix de Vente Moyen"
+    type: number
+    value_format_name: eur
+    sql:  ${sum_CA_select_mois} / NULLIF(${sum_Qtite_select_mois}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
+  measure: prix_achat_moyen_select_mois {
+    label: "Prix d'Achat Moyen"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois} - ${sum_marge_select_mois}) / NULLIF(${sum_Qtite_select_mois}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
 
     ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
 
@@ -935,6 +964,36 @@ ON
       group_label: "Année N-1"
     }
 
+  measure: sum_Qtite_select_mois_N1 {
+    type: sum
+    label: "Quantité n-1"
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${qtite}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  measure: prix_vente_moyen_select_mois_N1
+  {
+    label: "Prix de Vente Moyen n-1"
+    type: number
+    value_format_name: eur
+    sql:  ${sum_CA_select_mois_N1} / NULLIF(${sum_Qtite_select_mois_N1}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  measure: prix_achat_moyen_select_mois_N1 {
+    label: "Prix d'Achat Moyen n-1"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois_N1} - ${sum_marge_select_mois_N1}) / NULLIF(${sum_Qtite_select_mois_N1}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
     ############## calcul des KPIs à n-2 de la période sélectionnée au niveau du filtre ##############
 
 
@@ -1046,6 +1105,36 @@ ON
       view_label: "Web"
       group_label: "Année N-2"
     }
+
+  measure: sum_Qtite_select_mois_N2 {
+    type: sum
+    label: "Quantité n-2"
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${qtite}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: prix_vente_moyen_select_mois_N2
+  {
+    label: "Prix de Vente Moyen n-2"
+    type: number
+    value_format_name: eur
+    sql:  ${sum_CA_select_mois_N2} / NULLIF(${sum_Qtite_select_mois_N2}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: prix_achat_moyen_select_mois_N2 {
+    label: "Prix d'Achat Moyen n-2"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois_N2} - ${sum_marge_select_mois_N2}) / NULLIF(${sum_Qtite_select_mois_N2}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
 
 
     ############ calcul des KPIs à n-3 de la période sélectionnée au niveau du filtre ###############

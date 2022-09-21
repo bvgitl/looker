@@ -861,10 +861,19 @@ AND v.Typ_Vente = 0
   }
 
   measure: prix_vente_select_mois {
-    label: "Prix de vente"
+    label: "Prix de Vente Moyen"
     value_format_name: eur
     type: number
     sql: ${sum_CA_select_mois} / NULLIF(${sum_qte_select_mois}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
+  measure: prix_achat_moyen_select_mois {
+    label: "Prix d'Achat Moyen"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois} - ${sum_marge_select_mois}) / NULLIF(${sum_qte_select_mois}, 0) ;;
     view_label: "Ventes"
     group_label: "Année N"
   }
@@ -894,6 +903,15 @@ AND v.Typ_Vente = 0
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  measure: taux_de_marge_select_mois_N1 {
+    label: "% marge n-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois_N1}/NULLIF(${sum_CA_select_mois_N1},0);;
     view_label: "Ventes"
     group_label: "Année N-1"
   }
@@ -987,6 +1005,24 @@ AND v.Typ_Vente = 0
     group_label: "Année N-1"
   }
 
+  measure: prix_vente_select_mois_N1 {
+    label: "Prix de Vente Moyen n-1"
+    value_format_name: eur
+    type: number
+    sql: ${sum_CA_select_mois_N1} / NULLIF(${sum_qte_select_mois_N1}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  measure: prix_achat_moyen_select_mois_N1 {
+    label: "Prix d'Achat Moyen n-1"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois_N1} - ${sum_marge_select_mois_N1}) / NULLIF(${sum_qte_select_mois_N1}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
 
   ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
 
@@ -1012,6 +1048,15 @@ AND v.Typ_Vente = 0
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${marge_brute}
           END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: taux_de_marge_select_mois_N2 {
+    label: "% marge n-2"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_mois_N2}/NULLIF(${sum_CA_select_mois_N2},0);;
     view_label: "Ventes"
     group_label: "Année N-2"
   }
@@ -1051,6 +1096,24 @@ AND v.Typ_Vente = 0
             THEN ${article}
           END ;;
     view_label: "Article"
+    group_label: "Année N-2"
+  }
+
+  measure: prix_vente_select_mois_N2 {
+    label: "Prix de Vente Moyen n-2"
+    value_format_name: eur
+    type: number
+    sql: ${sum_CA_select_mois_N2} / NULLIF(${sum_qte_select_mois_N2}, 0) ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: prix_achat_moyen_select_mois_N2 {
+    label: "Prix d'Achat Moyen n-2"
+    type: number
+    value_format_name: eur
+    sql:  (${sum_CA_select_mois_N2} - ${sum_marge_select_mois_N2}) / NULLIF(${sum_qte_select_mois_N2}, 0) ;;
+    view_label: "Ventes"
     group_label: "Année N-2"
   }
 
