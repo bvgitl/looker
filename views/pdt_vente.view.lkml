@@ -640,6 +640,7 @@ ON
   }
 
   dimension: Latitude {
+    hidden :  yes
     type: string
     sql: ${TABLE}.Latitude ;;
     label : "Latitude"
@@ -647,17 +648,18 @@ ON
   }
 
   dimension: Longitude {
+    hidden: yes
     type: string
     sql: ${TABLE}.Longitude ;;
     label : "Longitude"
     view_label: "Magasins (actuel)"
   }
 
-  dimension: Emplacement {
+ dimension: Emplacement {
     type: location
     sql_latitude:${Latitude} ;;
     sql_longitude:${Longitude} ;;
-    label : "Emplacement"
+    label : "Coordonnées Géographiques"
     view_label: "Magasins (actuel)"
   }
 
