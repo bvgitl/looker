@@ -203,6 +203,7 @@ ON
       type: string
       sql: ${TABLE}.CD_Magasin ;;
       view_label: "Magasins (actuel)"
+      label: "Code Magasin"
     }
 
     dimension: animateur {
@@ -397,8 +398,8 @@ ON
   dimension: pays_vente {
     type: string
     sql: ${TABLE}.Territoire ;;
-    label: "Pays"
-    view_label: "Ventes"
+    label: "Territoire"
+    view_label: "Magasins (actuel)"
   }
 
     dimension: val_achat_gbl {
