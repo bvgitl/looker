@@ -1,60 +1,7 @@
 view: pdt_famille {
   derived_table: {
-    sql: SELECT DISTINCT
-    a.l_Article_long as designation,
-    a.c_Type  as Typ_article,
-    a.c_Note as Note_ecologique,
-    a.c_Gencode as Gencode,
-    a.c_Validite_1 as Statut_article,
-    a.c_Origine as Origine,
-    arb.N4 as Niveau_4,
-    arb.N3_SousFamille as N3_SS_Famille,
-    arb.N2_Famille as N2_Famille,
-    arb.N1_Division as N1_Division,
-    m.Nom_TBE as NOM,
-    m.Type_TBE as Typ ,
-    m.DATE_OUV as Dte_Ouverture,
-    m.Pays_TBE as Pays ,
-    m.PAYS AS Territoire,
-    m.Directeur AS Directeur,
-    m.Animateur as Animateur,
-    m.Region as Region ,
-    m.SURF_VTE as Surface ,
-    m.TYP_MAG as TYP_MAG,
-    m.Tranche_age as Anciennete,
-    m.CD_Magasin as CD_Magasin,
-    m.Latitude,
-    m.Longitude,
-    m2.Nom_TBE as NOM_histo,
-    m2.Type_TBE as Typ_histo,
-    m2.DATE_OUV as Dte_Ouverture_histo,
-    m2.Pays_TBE as Pays_histo ,
-    m2.PAYS AS Territoire_histo,
-    m2.Directeur AS Directeur_histo,
-    m2.Animateur as Animateur_histo,
-    m2.Region as Region_histo ,
-    m2.SURF_VTE as Surface_histo ,
-    m2.TYP_MAG as TYP_MAG_histo,
-    m2.Tranche_age as Anciennete_histo,
-    m2.Latitude as Latitude_histo,
-    m2.Longitude as Longitude_histo,
-    v.CD_Article as Article,
-    v.CD_Article_Original  AS ArticleOriginal,
-    v.Val_Achat_Gbl as Val_Achat_Gbl,
-    v.Dte_Vte as Dte_Vte,
-    v.Typ_Vente as Typ_Vente ,
-    v.Qtite as Qtite,
-    v.ca_ht as ca_ht,
-    v.marge_brute as marge_brute,
-    mq.LB_MARQUE as Marque,
-    f.l_Fournisseur as Fournisseur,
-    s.n_stock as stock,
-    w.Nbre_commande as Nbre_commande,
-    w.Quantite_commandee as Quantite_commandee,
-    w.Tarif_Produit_HT as Tarif_Produit_HT,
-    v.StatutBcp,
-    v.StatutGoogleSheet
-FROM
+    sql:
+WITH Vente AS
 (
     SELECT
         CD_Magasin,
@@ -62,9 +9,12 @@ FROM
         Typ_Vente,
         CD_Article,
         CD_Article_Original,
-        sum(Val_Achat_Gbl) as Val_Achat_Gbl ,
-        sum(Qtite) as Qtite ,
-        sum(ca_ht) as ca_ht ,
+        EXTRACT(YEAR FROM Dte_Vte) AS Year,
+        CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
+        FORMAT_DATE("%w", Dte_Vte) AS WeekDayNumber,
+        sum(Val_Achat_Gbl) as Val_Achat_Gbl,
+        sum(Qtite) as Qtite,
+        sum(ca_ht) as ca_ht,
         sum(marge_brute) as marge_brute,
         MAX(StatutBcp) AS StatutBcp,
         MIN(StatutGoogleSheet) AS StatutGoogleSheet
@@ -128,20 +78,237 @@ FROM
         )
     )
     GROUP BY 1,2,3,4,5
-) v
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON   v.CD_Magasin = m.CD_Magasin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON   v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON  v.CD_Article = a.c_Article
+),
+AllDateVente AS
+(
+    SELECT DISTINCT
+        mf.DateFichier AS Dte_Vte,
+        EXTRACT(YEAR FROM mf.DateFichier) AS Year,
+        CAST(FORMAT_DATE("%V", mf.DateFichier) AS INT) AS WeekNumber,
+        FORMAT_DATE("%w", mf.DateFichier) AS WeekDayNumber
+    FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
+    WHERE mf.Flux = 'BCP10_BCP13'
+),
+AllVenteArticle AS -- Construire la liste des Magasins x Articles pour les 4 ans
+( -- On "projette" les articles vendus pour SN-1/SN-2/SN-3 sur la date courante
+    -- Articles de semaine N
+    SELECT DISTINCT
+        v_sn0.CD_Magasin,
+        v_sn0.Dte_Vte,
+        v_sn0.Typ_Vente,
+        v_sn0.CD_Article,
+        v_sn0.CD_Article_Original,
+        v_sn0.Year,
+        v_sn0.WeekNumber,
+        v_sn0.WeekDayNumber
+    FROM Vente v_sn0
+
+    UNION ALL -- Articles de Semaine N-1
+    SELECT DISTINCT
+        v_sn1.CD_Magasin,
+        a.Dte_Vte,
+        v_sn1.Typ_Vente,
+        v_sn1.CD_Article,
+        v_sn1.CD_Article_Original,
+        a.Year,
+        a.WeekNumber,
+        a.WeekDayNumber
+    FROM AllDateVente a
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = a.Year AND ms1.Semaine_N = a.WeekNumber
+    INNER JOIN Vente v_sn1
+      ON  v_sn1.Year = ms1.Annee_N1
+      AND v_sn1.WeekNumber = ms1.Semaine_N1
+      AND v_sn1.WeekDayNumber = a.WeekDayNumber
+
+    UNION ALL -- Articles de Semaine N-2
+    SELECT DISTINCT
+        v_sn2.CD_Magasin,
+        a.Dte_Vte,
+        v_sn2.Typ_Vente,
+        v_sn2.CD_Article,
+        v_sn2.CD_Article_Original,
+        a.Year,
+        a.WeekNumber,
+        a.WeekDayNumber
+    FROM AllDateVente a
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = a.Year AND ms1.Semaine_N = a.WeekNumber
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms2 ON ms2.Annee_N = ms1.Annee_N1 AND ms2.Semaine_N = ms1.Semaine_N1
+    INNER JOIN Vente v_sn2
+      ON  v_sn2.Year = ms2.Annee_N1
+      AND v_sn2.WeekNumber = ms2.Semaine_N1
+      AND v_sn2.WeekDayNumber = a.WeekDayNumber
+
+    UNION ALL -- Articles de Semaine N-3
+    SELECT DISTINCT
+        v_sn3.CD_Magasin,
+        a.Dte_Vte,
+        v_sn3.Typ_Vente,
+        v_sn3.CD_Article,
+        v_sn3.CD_Article_Original,
+        a.Year,
+        a.WeekNumber,
+        a.WeekDayNumber
+    FROM AllDateVente a
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = a.Year AND ms1.Semaine_N = a.WeekNumber
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms2 ON ms2.Annee_N = ms1.Annee_N1 AND ms2.Semaine_N = ms1.Semaine_N1
+    INNER JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms3 ON ms3.Annee_N = ms2.Annee_N1 AND ms3.Semaine_N = ms2.Semaine_N1
+    INNER JOIN Vente v_sn3
+      ON  v_sn3.Year = ms3.Annee_N1
+      AND v_sn3.WeekNumber = ms3.Semaine_N1
+      AND v_sn3.WeekDayNumber = a.WeekDayNumber
+),
+AllVente AS
+(
+    SELECT
+        a.CD_Magasin,
+        a.Dte_Vte,
+        a.Typ_Vente,
+        a.CD_Article,
+        a.CD_Article_Original,
+        a.Year,
+        a.WeekNumber,
+        a.WeekDayNumber,
+        COALESCE(v_sn0.StatutBcp, 'BCP non reçu') AS StatutBcp,
+        COALESCE(v_sn0.StatutGoogleSheet, 'GoogleSheet vierge') AS StatutGoogleSheet,
+
+        v_sn0.Val_Achat_Gbl as Val_Achat_Gbl,
+        v_sn0.Qtite as Qtite,
+        v_sn0.ca_ht as ca_ht,
+        v_sn0.marge_brute as marge_brute,
+
+        v_sn1.Val_Achat_Gbl as Val_Achat_Gbl_sn1,
+        v_sn1.Qtite as Qtite_sn1,
+        v_sn1.ca_ht as ca_ht_sn1,
+        v_sn1.marge_brute as marge_brute_sn1,
+
+        v_sn2.Val_Achat_Gbl as Val_Achat_Gbl_sn2,
+        v_sn2.Qtite as Qtite_sn2,
+        v_sn2.ca_ht as ca_ht_sn2,
+        v_sn2.marge_brute as marge_brute_sn2,
+
+        v_sn3.Val_Achat_Gbl as Val_Achat_Gbl_sn3,
+        v_sn3.Qtite as Qtite_sn3,
+        v_sn3.ca_ht as ca_ht_sn3,
+        v_sn3.marge_brute as marge_brute_sn3
+
+    FROM AllVenteArticle a
+    LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = a.Year AND ms1.Semaine_N = a.WeekNumber
+    LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms2 ON ms2.Annee_N = ms1.Annee_N1 AND ms2.Semaine_N = ms1.Semaine_N1
+    LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms3 ON ms3.Annee_N = ms2.Annee_N1 AND ms3.Semaine_N = ms2.Semaine_N1
+    LEFT JOIN Vente v_sn0
+      ON  v_sn0.CD_Magasin = a.CD_Magasin
+      AND v_sn0.Typ_Vente = a.Typ_Vente
+      AND v_sn0.CD_Article = a.CD_Article
+      AND v_sn0.CD_Article_Original = a.CD_Article_Original
+      AND v_sn0.Dte_Vte = a.Dte_Vte
+    LEFT JOIN Vente v_sn1
+      ON  v_sn1.CD_Magasin = a.CD_Magasin
+      AND v_sn1.Typ_Vente = a.Typ_Vente
+      AND v_sn1.CD_Article = a.CD_Article
+      AND v_sn1.CD_Article_Original = a.CD_Article_Original
+      AND v_sn1.Year = ms1.Annee_N1
+      AND v_sn1.WeekNumber = ms1.Semaine_N1
+      AND v_sn1.WeekDayNumber = a.WeekDayNumber
+    LEFT JOIN Vente v_sn2
+      ON  v_sn2.CD_Magasin = a.CD_Magasin
+      AND v_sn2.Typ_Vente = a.Typ_Vente
+      AND v_sn2.CD_Article = a.CD_Article
+      AND v_sn2.CD_Article_Original = a.CD_Article_Original
+      AND v_sn2.Year = ms2.Annee_N1
+      AND v_sn2.WeekNumber = ms2.Semaine_N1
+      AND v_sn2.WeekDayNumber = a.WeekDayNumber
+    LEFT JOIN Vente v_sn3
+      ON  v_sn3.CD_Magasin = a.CD_Magasin
+      AND v_sn3.Typ_Vente = a.Typ_Vente
+      AND v_sn3.CD_Article = a.CD_Article
+      AND v_sn3.CD_Article_Original = a.CD_Article_Original
+      AND v_sn3.Year = ms3.Annee_N1
+      AND v_sn3.WeekNumber = ms3.Semaine_N1
+      AND v_sn3.WeekDayNumber = a.WeekDayNumber
+)
+SELECT DISTINCT
+    a.l_Article_long as designation,
+    a.c_Type  as Typ_article,
+    a.c_Note as Note_ecologique,
+    a.c_Gencode as Gencode,
+    a.c_Validite_1 as Statut_article,
+    a.c_Origine as Origine,
+    arb.N4 as Niveau_4,
+    arb.N3_SousFamille as N3_SS_Famille,
+    arb.N2_Famille as N2_Famille,
+    arb.N1_Division as N1_Division,
+    m.Nom_TBE as NOM,
+    m.Type_TBE as Typ ,
+    m.DATE_OUV as Dte_Ouverture,
+    m.Pays_TBE as Pays ,
+    m.PAYS AS Territoire,
+    m.Directeur AS Directeur,
+    m.Animateur as Animateur,
+    m.Region as Region ,
+    m.SURF_VTE as Surface ,
+    m.TYP_MAG as TYP_MAG,
+    m.Tranche_age as Anciennete,
+    m.CD_Magasin as CD_Magasin,
+    m.Latitude,
+    m.Longitude,
+    m2.Nom_TBE as NOM_histo,
+    m2.Type_TBE as Typ_histo,
+    m2.DATE_OUV as Dte_Ouverture_histo,
+    m2.Pays_TBE as Pays_histo ,
+    m2.PAYS AS Territoire_histo,
+    m2.Directeur AS Directeur_histo,
+    m2.Animateur as Animateur_histo,
+    m2.Region as Region_histo ,
+    m2.SURF_VTE as Surface_histo ,
+    m2.TYP_MAG as TYP_MAG_histo,
+    m2.Tranche_age as Anciennete_histo,
+    m2.Latitude as Latitude_histo,
+    m2.Longitude as Longitude_histo,
+    v.CD_Article as Article,
+    v.CD_Article_Original AS ArticleOriginal,
+    v.Typ_Vente as Typ_Vente,
+    v.Dte_Vte as Dte_Vte,
+    v.StatutBcp,
+    v.StatutGoogleSheet,
+    mq.LB_MARQUE as Marque,
+    f.l_Fournisseur as Fournisseur,
+    s.n_stock as stock,
+    w.Nbre_commande as Nbre_commande,
+    w.Quantite_commandee as Quantite_commandee,
+    w.Tarif_Produit_HT as Tarif_Produit_HT,
+
+    v.Val_Achat_Gbl,
+    v.Qtite,
+    v.ca_ht,
+    v.marge_brute,
+
+    v.Val_Achat_Gbl_sn1,
+    v.Qtite_sn1,
+    v.ca_ht_sn1,
+    v.marge_brute_sn1,
+
+    v.Val_Achat_Gbl_sn2,
+    v.Qtite_sn2,
+    v.ca_ht_sn2,
+    v.marge_brute_sn2,
+
+    v.Val_Achat_Gbl_sn3,
+    v.Qtite_sn3,
+    v.ca_ht_sn3,
+    v.marge_brute_sn3
+
+FROM AllVente v
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON a.c_Article = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
-
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
-ON  v.CD_Magasin = s.cd_acteur
-AND  v.CD_Article  = CAST(s.cd_article AS STRING)
-AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
-AND v.Typ_Vente = 0
-
+    ON  s.cd_acteur = v.CD_Magasin
+    AND CAST(s.cd_article AS STRING) = v.CD_Article
+    AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
+    AND v.Typ_Vente = 0
 FULL JOIN
 (
     SELECT
@@ -156,10 +323,11 @@ FULL JOIN
       ON CAST(p.cd_commande AS STRING) = c.cd_commande
       group by 1,2,3
 ) w
-ON v.CD_Article = w.cd_produit
-AND v.Dte_vte = w.dte_cde
-AND m.CD_Magasin = w.cd_magasin
-AND v.Typ_Vente = 0
+    ON  w.cd_produit = v.CD_Article
+    AND w.dte_cde = v.Dte_vte
+    AND w.cd_magasin = v.CD_Magasin
+    AND v.Typ_Vente = 0
+
  ;;
 
     persist_for: "2 hours"
@@ -1186,6 +1354,56 @@ AND v.Typ_Vente = 0
     sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
     view_label: "Ventes"
     group_label: "Année N-1"
+  }
+
+
+
+
+############## calcul des KPIs Semaine N-1  ############
+
+  measure: sum_CA_select_semaine_N1 {
+    type: sum
+    value_format_name: eur
+    label: "CA HT Semaine N-1"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.ca_ht_sn1
+          END ;;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_marge_select_semaine_N1 {
+    label: "Marge Semaine N-1"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.marge_brute_sn1
+          END ;;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: taux_de_marge_select_semaine_N1 {
+    label: "% marge Semaine N-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * ${sum_marge_select_semaine_N1}/NULLIF(${sum_CA_select_semaine_N1},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: sum_qte_select_semaine_N1 {
+    label: "Qte Semaine N-1"
+    type: sum
+    value_format_name: decimal_0
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.qtite_sn1
+          END ;;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
   }
 
 }
