@@ -103,7 +103,7 @@ AllVenteArticle AS -- Construire la liste des Magasins x Articles pour les 4 ans
         v_sn0.WeekDayNumber
     FROM Vente v_sn0
 
-    UNION ALL -- Articles de Semaine N-1
+    UNION DISTINCT-- Articles de Semaine N-1
     SELECT DISTINCT
         v_sn1.CD_Magasin,
         a.Dte_Vte,
@@ -120,7 +120,7 @@ AllVenteArticle AS -- Construire la liste des Magasins x Articles pour les 4 ans
       AND v_sn1.WeekNumber = ms1.Semaine_N1
       AND v_sn1.WeekDayNumber = a.WeekDayNumber
 
-    UNION ALL -- Articles de Semaine N-2
+    UNION DISTINCT -- Articles de Semaine N-2
     SELECT DISTINCT
         v_sn2.CD_Magasin,
         a.Dte_Vte,
@@ -138,7 +138,7 @@ AllVenteArticle AS -- Construire la liste des Magasins x Articles pour les 4 ans
       AND v_sn2.WeekNumber = ms2.Semaine_N1
       AND v_sn2.WeekDayNumber = a.WeekDayNumber
 
-    UNION ALL -- Articles de Semaine N-3
+    UNION DISTINCT -- Articles de Semaine N-3
     SELECT DISTINCT
         v_sn3.CD_Magasin,
         a.Dte_Vte,
