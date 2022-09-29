@@ -289,6 +289,7 @@ LEFT JOIN Commande AS c_sn3
       type: string
       sql: ${TABLE}.CD_Magasin ;;
       view_label: "Magasins (actuel)"
+      label: "Code Magasin"
     }
 
     dimension: animateur {
@@ -483,8 +484,8 @@ LEFT JOIN Commande AS c_sn3
   dimension: pays_vente {
     type: string
     sql: ${TABLE}.Territoire ;;
-    label: "Pays"
-    view_label: "Ventes"
+    label: "Territoire"
+    view_label: "Magasins (actuel)"
   }
 
   # Dimensions for measures in N
@@ -687,6 +688,7 @@ LEFT JOIN Commande AS c_sn3
   }
 
   dimension: Latitude {
+    hidden :  yes
     type: string
     sql: ${TABLE}.Latitude ;;
     label : "Latitude"
@@ -694,17 +696,18 @@ LEFT JOIN Commande AS c_sn3
   }
 
   dimension: Longitude {
+    hidden: yes
     type: string
     sql: ${TABLE}.Longitude ;;
     label : "Longitude"
     view_label: "Magasins (actuel)"
   }
 
-  dimension: Emplacement {
+ dimension: Emplacement {
     type: location
     sql_latitude:${Latitude} ;;
     sql_longitude:${Longitude} ;;
-    label : "Emplacement"
+    label : "Coordonnées Géographiques"
     view_label: "Magasins (actuel)"
   }
 
