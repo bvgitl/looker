@@ -135,7 +135,7 @@ view: suivi_rcu {
                         coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_optin as date), cast('1970-01-01' as date))
                           )
-          >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
+          >= DATE_SUB(date_trunc(current_date(),month), INTERVAL 36 month)  ;;
 
   }
 
