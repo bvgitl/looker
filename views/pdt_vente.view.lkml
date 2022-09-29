@@ -1,57 +1,15 @@
 view: pdt_vente {
   derived_table: {
-    sql: SELECT DISTINCT
-    m.Animateur AS Animateur,
-    m.DATE_OUV AS Dte_Ouverture,
-    m.Directeur AS Directeur,
-    m.Franchise AS Franchise,
-    m.Nom_TBE AS NOM,
-    m.Type_TBE AS Typ,
-    m.Pays_TBE AS Pays,
-    m.PAYS AS Territoire,
-    m.Region AS Region,
-    m.SURF_VTE AS Surface,
-    m.TYP_MAG AS TYP_MAG,
-    m.Tranche_age AS Anciennete,
-    m.CD_Magasin AS CD_Magasin,
-    m.Latitude,
-    m.Longitude,
-    m2.Animateur AS Animateur_histo,
-    m2.DATE_OUV AS Dte_Ouverture_histo,
-    m2.Directeur AS Directeur_histo,
-    m2.Franchise AS Franchise_histo,
-    m2.Nom_TBE as NOM_histo,
-    m2.Type_TBE as Typ_histo,
-    m2.PAYS AS Territoire_histo,
-    m2.Pays_TBE as Pays_histo ,
-    m2.Region as Region_histo ,
-    m2.SURF_VTE as Surface_histo ,
-    m2.TYP_MAG as TYP_MAG_histo,
-    m2.Tranche_age as Anciennete_histo,
-    m2.Latitude as Latitude_histo,
-    m2.Longitude as Longitude_histo,
-    d.day AS Dte_Vte,
-    v.Typ_Vente AS Typ_Vente,
-    v.Val_Achat_Gbl AS Val_Achat_Gbl,
-    v.Qtite AS Qtite,
-    v.ca_ht AS ca_ht,
-    v.marge_brute AS marge_brute,
-    mag.nb_ticket AS nb_ticket,
-    c.nbre_commande AS nbre_commande,
-    c.Tarif_HT_livraison AS Tarif_HT_livraison,
-    c.Total_HT AS Total_HT,
-    v.StatutBcp,
-    v.StatutGoogleSheet
-FROM
-(
-    SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day
-) d
-LEFT JOIN
+    sql:
+WITH Vente AS
 (
     SELECT
         CD_Magasin,
         Dte_Vte,
         Typ_Vente,
+        EXTRACT(YEAR FROM Dte_Vte) AS Year,
+        CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
+        FORMAT_DATE("%w", Dte_Vte) AS WeekDayNumber,
         SUM(Val_Achat_Gbl) AS Val_Achat_Gbl,
         SUM(Qtite) AS Qtite,
         SUM(ca_ht) AS ca_ht,
@@ -112,62 +70,56 @@ LEFT JOIN
         )
     )
     GROUP BY 1, 2, 3
-  ) v
-  INNER JOIN
+),
+VenteMag AS
+(
+  SELECT
+      CD_Magasin,
+      Dte_Vte,
+      Typ_vente,
+      SUM(nb_ticket) AS nb_ticket
+  FROM
   (
-    SELECT
-        CD_Magasin,
-        Dte_Vte,
-        Typ_vente,
-        SUM(nb_ticket) AS nb_ticket
-    FROM
-    (
-        SELECT
-            CD_Magasin,
-            Dte_Vte,
-            Typ_vente,
-            nb_ticket
-        FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
-        UNION ALL
-        SELECT
-            CODE_ACTEUR AS CD_Magasin,
-            DTE_VENTE,
-            TYP_VENTE,
-            NB_TICKET AS nb_ticket
-        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
-        UNION ALL
-        SELECT
-            mf.CodeMagasinActeur AS CD_Magasin,
-            mf.DateFichier AS DTE_VENTE,
-            0 AS TYP_VENTE,
-            null AS nb_ticket
-        FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
-        WHERE mf.Flux = 'BCP10_BCP13'
-        AND NOT EXISTS
-        (
-            SELECT *
-            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` tf
-            WHERE tf.CD_Magasin = mf.CodeMagasinActeur
-            AND tf.Dte_Vte = mf.DateFichier
-        )
-        AND NOT EXISTS
-        (
-            SELECT *
-            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
-            WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
-            AND gs.DTE_VENTE = mf.DateFichier
-        )
-    )
-    GROUP BY 1, 2, 3
-  ) mag
-  ON
-    mag.CD_Magasin = v.CD_Magasin
-    AND mag.Dte_Vte = v.Dte_Vte
-    AND v.Typ_vente = mag.Typ_vente
-ON  d.day = v.Dte_Vte
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
-LEFT JOIN (
+      SELECT
+          CD_Magasin,
+          Dte_Vte,
+          Typ_vente,
+          nb_ticket
+      FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG`
+      UNION ALL
+      SELECT
+          CODE_ACTEUR AS CD_Magasin,
+          DTE_VENTE,
+          TYP_VENTE,
+          NB_TICKET AS nb_ticket
+      FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+      UNION ALL
+      SELECT
+          mf.CodeMagasinActeur AS CD_Magasin,
+          mf.DateFichier AS DTE_VENTE,
+          0 AS TYP_VENTE,
+          null AS nb_ticket
+      FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
+      WHERE mf.Flux = 'BCP10_BCP13'
+      AND NOT EXISTS
+      (
+          SELECT *
+          FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_MAG` tf
+          WHERE tf.CD_Magasin = mf.CodeMagasinActeur
+          AND tf.Dte_Vte = mf.DateFichier
+      )
+      AND NOT EXISTS
+      (
+          SELECT *
+          FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
+          WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
+          AND gs.DTE_VENTE = mf.DateFichier
+      )
+  )
+  GROUP BY 1, 2, 3
+),
+Commande AS
+(
   SELECT
     cd_magasin,
     CAST(DATETIME_TRUNC(DATETIME(dte_commande),
@@ -182,10 +134,144 @@ LEFT JOIN (
       "processing",
       "fraud",
       "complete")
-  GROUP BY 1, 2 ) AS c
-ON
-  c.cd_magasin = m.CD_Magasin
-  AND d.day = c.dte_cde
+  GROUP BY 1, 2
+)
+SELECT DISTINCT
+    m.Animateur AS Animateur,
+    m.DATE_OUV AS Dte_Ouverture,
+    m.Directeur AS Directeur,
+    m.Franchise AS Franchise,
+    m.Nom_TBE AS NOM,
+    m.Type_TBE AS Typ,
+    m.Pays_TBE AS Pays,
+    m.PAYS AS Territoire,
+    m.Region AS Region,
+    m.SURF_VTE AS Surface,
+    m.TYP_MAG AS TYP_MAG,
+    m.Tranche_age AS Anciennete,
+    m.CD_Magasin AS CD_Magasin,
+    m.Latitude,
+    m.Longitude,
+    m2.Animateur AS Animateur_histo,
+    m2.DATE_OUV AS Dte_Ouverture_histo,
+    m2.Directeur AS Directeur_histo,
+    m2.Franchise AS Franchise_histo,
+    m2.Nom_TBE as NOM_histo,
+    m2.Type_TBE as Typ_histo,
+    m2.PAYS AS Territoire_histo,
+    m2.Pays_TBE as Pays_histo ,
+    m2.Region as Region_histo ,
+    m2.SURF_VTE as Surface_histo ,
+    m2.TYP_MAG as TYP_MAG_histo,
+    m2.Tranche_age as Anciennete_histo,
+    m2.Latitude as Latitude_histo,
+    m2.Longitude as Longitude_histo,
+    d.day AS Dte_Vte,
+    v.StatutBcp,
+    COALESCE(v_sn1.StatutBcp, 'BCP non reçu') AS StatutBcp_sn1,
+    COALESCE(v_sn2.StatutBcp, 'BCP non reçu') AS StatutBcp_sn2,
+    COALESCE(v_sn3.StatutBcp, 'BCP non reçu') AS StatutBcp_sn3,
+    v.StatutGoogleSheet,
+
+    v.Typ_Vente AS Typ_Vente,
+    v.Val_Achat_Gbl AS Val_Achat_Gbl,
+    v.Qtite AS Qtite,
+    v.ca_ht AS ca_ht,
+    v.marge_brute AS marge_brute,
+    mag.nb_ticket AS nb_ticket,
+    c.nbre_commande AS nbre_commande,
+    c.Tarif_HT_livraison AS Tarif_HT_livraison,
+    c.Total_HT AS Total_HT,
+
+    v_sn1.Typ_Vente AS Typ_Vente_sn1,
+    v_sn1.Val_Achat_Gbl AS Val_Achat_Gbl_sn1,
+    v_sn1.Qtite AS Qtite_sn1,
+    v_sn1.ca_ht AS ca_ht_sn1,
+    v_sn1.marge_brute AS marge_brute_sn1,
+    mag_sn1.nb_ticket AS nb_ticket_sn1,
+    c_sn1.nbre_commande AS nbre_commande_sn1,
+    c_sn1.Tarif_HT_livraison AS Tarif_HT_livraison_sn1,
+    c_sn1.Total_HT AS Total_HT_sn1,
+
+    v_sn2.Typ_Vente AS Typ_Vente_sn2,
+    v_sn2.Val_Achat_Gbl AS Val_Achat_Gbl_sn2,
+    v_sn2.Qtite AS Qtite_sn2,
+    v_sn2.ca_ht AS ca_ht_sn2,
+    v_sn2.marge_brute AS marge_brute_sn2,
+    mag_sn2.nb_ticket AS nb_ticket_sn2,
+    c_sn2.nbre_commande AS nbre_commande_sn2,
+    c_sn2.Tarif_HT_livraison AS Tarif_HT_livraison_sn2,
+    c_sn2.Total_HT AS Total_HT_sn2,
+
+    v_sn3.Typ_Vente AS Typ_Vente_sn3,
+    v_sn3.Val_Achat_Gbl AS Val_Achat_Gbl_sn3,
+    v_sn3.Qtite AS Qtite_sn3,
+    v_sn3.ca_ht AS ca_ht_sn3,
+    v_sn3.marge_brute AS marge_brute_sn3,
+    mag_sn3.nb_ticket AS nb_ticket_sn3,
+    c_sn3.nbre_commande AS nbre_commande_sn3,
+    c_sn3.Tarif_HT_livraison AS Tarif_HT_livraison_sn3,
+    c_sn3.Total_HT AS Total_HT_sn3
+FROM
+(
+    SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day
+) d
+LEFT JOIN Vente v
+INNER JOIN VenteMag mag
+  ON  mag.CD_Magasin = v.CD_Magasin
+  AND mag.Dte_Vte = v.Dte_Vte
+  AND v.Typ_Vente = mag.Typ_vente
+ON  d.day = v.Dte_Vte
+LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = v.Year AND ms1.Semaine_N = v.WeekNumber
+LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms2 ON ms2.Annee_N = ms1.Annee_N1 AND ms2.Semaine_N = ms1.Semaine_N1
+LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms3 ON ms3.Annee_N = ms2.Annee_N1 AND ms3.Semaine_N = ms2.Semaine_N1
+LEFT JOIN Vente v_sn1
+  ON  v_sn1.CD_Magasin = v.CD_Magasin
+  AND v_sn1.Typ_Vente = v.Typ_Vente
+  AND v_sn1.Year = ms1.Annee_N1
+  AND v_sn1.WeekNumber = ms1.Semaine_N1
+  AND v_sn1.WeekDayNumber = v.WeekDayNumber
+LEFT JOIN VenteMag mag_sn1
+  ON  mag_sn1.CD_Magasin = v_sn1.CD_Magasin
+  AND mag_sn1.Typ_Vente = v_sn1.Typ_Vente
+  AND mag_sn1.Dte_Vte = v_sn1.Dte_Vte
+LEFT JOIN Vente v_sn2
+  ON  v_sn2.CD_Magasin = v.CD_Magasin
+  AND v_sn2.Typ_Vente = v.Typ_Vente
+  AND v_sn2.Year = ms2.Annee_N1
+  AND v_sn2.WeekNumber = ms2.Semaine_N1
+  AND v_sn2.WeekDayNumber = v.WeekDayNumber
+LEFT JOIN VenteMag mag_sn2
+  ON  mag_sn2.CD_Magasin = v_sn2.CD_Magasin
+  AND mag_sn2.Typ_Vente = v_sn2.Typ_Vente
+  AND mag_sn2.Dte_Vte = v_sn2.Dte_Vte
+LEFT JOIN Vente v_sn3
+  ON  v_sn3.CD_Magasin = v.CD_Magasin
+  AND v_sn3.Typ_Vente = v.Typ_Vente
+  AND v_sn3.Year = ms3.Annee_N1
+  AND v_sn3.WeekNumber = ms3.Semaine_N1
+  AND v_sn3.WeekDayNumber = v.WeekDayNumber
+LEFT JOIN VenteMag mag_sn3
+  ON  mag_sn3.CD_Magasin = v_sn3.CD_Magasin
+  AND mag_sn3.Typ_Vente = v_sn3.Typ_Vente
+  AND mag_sn3.Dte_Vte = v_sn3.Dte_Vte
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
+LEFT JOIN Commande AS c
+  ON  c.cd_magasin = m.CD_Magasin
+  AND c.dte_cde = d.day
+  AND v.Typ_Vente = 0
+LEFT JOIN Commande AS c_sn1
+  ON  c_sn1.cd_magasin = m.CD_Magasin
+  AND c_sn1.dte_cde = v_sn1.Dte_Vte
+  AND v.Typ_Vente = 0
+LEFT JOIN Commande AS c_sn2
+  ON  c_sn2.cd_magasin = m.CD_Magasin
+  AND c_sn2.dte_cde = v_sn2.Dte_Vte
+  AND v.Typ_Vente = 0
+LEFT JOIN Commande AS c_sn3
+  ON  c_sn3.cd_magasin = m.CD_Magasin
+  AND c_sn3.dte_cde = v_sn3.Dte_Vte
   AND v.Typ_Vente = 0
 
  ;;
@@ -401,6 +487,8 @@ ON
     view_label: "Ventes"
   }
 
+  # Dimensions for measures in N
+
     dimension: val_achat_gbl {
       type: number
       sql: ${TABLE}.Val_Achat_Gbl ;;
@@ -456,6 +544,27 @@ ON
       label: "Statut BCP"
       view_label: "Ventes"
     }
+
+  dimension: statut_bcp_sn1 {
+    type: string
+    sql: ${TABLE}.StatutBcp_sn1 ;;
+    label: "Statut BCP (Semaine N-1)"
+    view_label: "Ventes"
+  }
+
+  dimension: statut_bcp_sn2 {
+    type: string
+    sql: ${TABLE}.StatutBcp_sn2 ;;
+    label: "Statut BCP (Semaine N-2)"
+    view_label: "Ventes"
+  }
+
+  dimension: statut_bcp_sn3 {
+    type: string
+    sql: ${TABLE}.StatutBcp_sn3 ;;
+    label: "Statut BCP (Semaine N-3)"
+    view_label: "Ventes"
+  }
 
   dimension: statut_google_sheet {
       type: string
@@ -531,67 +640,6 @@ ON
     timeframes: [raw,date]
     sql: CASE WHEN {% date_end date_filter %} IS NULL THEN CURRENT_DATE ELSE CAST({% date_end date_filter %} AS DATE) END;;
   }
-
-  #start date of the previous YearWeek period
-  dimension: n1_year_week_start_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_start_date_raw}) - 1) || " " || FORMAT_DATE("%U %w", ${filter_start_date_raw}));;
-  }
-
-  #end date of the previous YearWeek period
-  dimension: n1_year_week_end_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_end_date_raw}) - 1) || " " || FORMAT_DATE("%U %w", ${filter_end_date_raw}));;
-  }
-
-  dimension: is_n1_year_week_period {
-    hidden: yes
-    type: yesno
-    sql: ${dte_vte_date} >= ${n1_year_week_start_date} AND ${dte_vte_date} < ${n1_year_week_end_date} ;;
-  }
-
-  #start date of the previous-previous YearWeek period
-  dimension: n2_year_week_start_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_start_date_raw}) - 2) || " " || FORMAT_DATE("%U %w", ${filter_start_date_raw}));;
-  }
-
-  #end date of the previous-previous YearWeek period
-  dimension: n2_year_week_end_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_end_date_raw}) - 2) || " " || FORMAT_DATE("%U %w", ${filter_end_date_raw}));;
-  }
-
-  dimension: is_n2_year_week_period {
-    hidden: yes
-    type: yesno
-    sql: ${dte_vte_date} >= ${n2_year_week_start_date} AND ${dte_vte_date} < ${n2_year_week_end_date} ;;
-  }
-
-  #start date of the previous-previous-previous YearWeek period
-  dimension: n3_year_week_start_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_start_date_raw}) - 3) || " " || FORMAT_DATE("%U %w", ${filter_start_date_raw}));;
-  }
-
-  #end date of the previous-previous-previous YearWeek period
-  dimension: n3_year_week_end_date {
-    hidden: yes
-    type: string
-    sql: PARSE_DATE("%Y %U %w", (EXTRACT(YEAR FROM ${filter_end_date_raw}) - 3) || " " || FORMAT_DATE("%U %w", ${filter_end_date_raw}));;
-  }
-
-  dimension: is_n3_year_week_period {
-    hidden: yes
-    type: yesno
-    sql: ${dte_vte_date} >= ${n3_year_week_start_date} AND ${dte_vte_date} < ${n3_year_week_end_date} ;;
-  }
-
 
     dimension: categorie {
       hidden: no
@@ -1255,14 +1303,16 @@ ON
 
 
 
-  ############## calcul des KPIs Sameine N-1  ############
+  ############## calcul des KPIs Semaine N-1  ############
 
   measure: sum_CA_select_semaine_N1 {
     type: sum
     value_format_name: eur
     label: "CA HT Semaine N-1"
-    sql:${ca_ht};;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.ca_ht_sn1
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-1"
   }
@@ -1272,8 +1322,10 @@ ON
     label: "Marge Semaine N-1"
     type: sum
     value_format_name: eur
-    sql: ${marge_brute};;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.marge_brute_sn1
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-1"
   }
@@ -1283,8 +1335,10 @@ ON
     label: "Nb clts Semaine N-1"
     type: sum
     value_format_name: decimal_0
-    sql: ${nb_ticket} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.nb_ticket_sn1
+          END;;
     view_label: "Clients"
     group_label: "Semaine Année N-1"
   }
@@ -1294,8 +1348,10 @@ ON
     label: "Nb jr Semaine N-1"
     type: count_distinct
     value_format_name: decimal_0
-    sql: ${dte_vte_date} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.dte_vte_date
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-1"
   }
@@ -1304,8 +1360,10 @@ ON
     hidden: yes
     type: sum
     value_format_name: eur
-    sql: ${val_achat_gbl} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+    WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+    THEN ${TABLE}.val_achat_glb_sn1
+    END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-1"
   }
@@ -1314,8 +1372,10 @@ ON
   measure: sum_livraison_select_semaine_N1 {
     type: sum
     value_format_name: eur
-    sql: ${tarif_ht_livraison} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+    WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+    THEN ${TABLE}.tarif_ht_livraison_sn1
+    END;;
     view_label: "Web"
     group_label: "Semaine Année N-1"
   }
@@ -1324,8 +1384,10 @@ ON
   measure: sum_total_ht_select_semaine_N1 {
     type: sum
     value_format_name: eur
-    sql: ${total_ht} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+    WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+    THEN ${TABLE}.total_ht_sn1
+    END;;
     view_label: "Web"
     group_label: "Semaine Année N-1"
   }
@@ -1343,21 +1405,27 @@ ON
     type: sum
     value_format_name: decimal_0
     label: "Commande Drive Semaine N-1"
-    sql: ${nbre_commande} ;;
-    filters: [is_n1_year_week_period: "yes"]
+    sql: CASE
+    WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+    THEN ${TABLE}.nbre_commande_sn1
+    END;;
     view_label: "Web"
     group_label: "Semaine Année N-1"
   }
 
 
-  ############## calcul des KPIs Sameine N-2  ############
+
+
+  ############## calcul des KPIs Semaine N-2  ############
 
   measure: sum_CA_select_semaine_N2 {
     type: sum
     value_format_name: eur
     label: "CA HT Semaine N-2"
-    sql:${ca_ht};;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.ca_ht_sn2
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-2"
   }
@@ -1367,8 +1435,10 @@ ON
     label: "Marge Semaine N-2"
     type: sum
     value_format_name: eur
-    sql: ${marge_brute};;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.marge_brute_sn2
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-2"
   }
@@ -1378,8 +1448,10 @@ ON
     label: "Nb clts Semaine N-2"
     type: sum
     value_format_name: decimal_0
-    sql: ${nb_ticket} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.nb_ticket_sn2
+          END;;
     view_label: "Clients"
     group_label: "Semaine Année N-2"
   }
@@ -1389,8 +1461,10 @@ ON
     label: "Nb jr Semaine N-2"
     type: count_distinct
     value_format_name: decimal_0
-    sql: ${dte_vte_date} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.dte_vte_date
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-2"
   }
@@ -1399,8 +1473,10 @@ ON
     hidden: yes
     type: sum
     value_format_name: eur
-    sql: ${val_achat_gbl} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.val_achat_glb_sn2
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-2"
   }
@@ -1409,8 +1485,10 @@ ON
   measure: sum_livraison_select_semaine_N2 {
     type: sum
     value_format_name: eur
-    sql: ${tarif_ht_livraison} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.tarif_ht_livraison_sn2
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-2"
   }
@@ -1419,8 +1497,10 @@ ON
   measure: sum_total_ht_select_semaine_N2 {
     type: sum
     value_format_name: eur
-    sql: ${total_ht} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.total_ht_sn2
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-2"
   }
@@ -1438,21 +1518,27 @@ ON
     type: sum
     value_format_name: decimal_0
     label: "Commande Drive Semaine N-2"
-    sql: ${nbre_commande} ;;
-    filters: [is_n2_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.nbre_commande_sn2
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-2"
   }
 
 
-  ############## calcul des KPIs Sameine N-3  ############
+
+
+  ############## calcul des KPIs Semaine N-3  ############
 
   measure: sum_CA_select_semaine_N3 {
     type: sum
     value_format_name: eur
     label: "CA HT Semaine N-3"
-    sql:${ca_ht};;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${TABLE}.ca_ht_sn3
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-3"
   }
@@ -1462,8 +1548,10 @@ ON
     label: "Marge Semaine N-3"
     type: sum
     value_format_name: eur
-    sql: ${marge_brute};;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.marge_brute_sn3
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-3"
   }
@@ -1473,8 +1561,10 @@ ON
     label: "Nb clts Semaine N-3"
     type: sum
     value_format_name: decimal_0
-    sql: ${nb_ticket} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.nb_ticket_sn3
+          END;;
     view_label: "Clients"
     group_label: "Semaine Année N-3"
   }
@@ -1484,8 +1574,10 @@ ON
     label: "Nb jr Semaine N-3"
     type: count_distinct
     value_format_name: decimal_0
-    sql: ${dte_vte_date} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.dte_vte_date
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-3"
   }
@@ -1494,8 +1586,10 @@ ON
     hidden: yes
     type: sum
     value_format_name: eur
-    sql: ${val_achat_gbl} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.val_achat_glb_sn3
+          END;;
     view_label: "Ventes"
     group_label: "Semaine Année N-3"
   }
@@ -1504,8 +1598,10 @@ ON
   measure: sum_livraison_select_semaine_N3 {
     type: sum
     value_format_name: eur
-    sql: ${tarif_ht_livraison} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.tarif_ht_livraison_sn3
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-3"
   }
@@ -1514,8 +1610,10 @@ ON
   measure: sum_total_ht_select_semaine_N3 {
     type: sum
     value_format_name: eur
-    sql: ${total_ht} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.total_ht_sn3
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-3"
   }
@@ -1533,8 +1631,10 @@ ON
     type: sum
     value_format_name: decimal_0
     label: "Commande Drive Semaine N-3"
-    sql: ${nbre_commande} ;;
-    filters: [is_n3_year_week_period: "yes"]
+    sql: CASE
+          WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+          THEN ${TABLE}.nbre_commande_sn3
+          END;;
     view_label: "Web"
     group_label: "Semaine Année N-3"
   }
