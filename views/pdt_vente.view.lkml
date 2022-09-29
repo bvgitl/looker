@@ -1680,12 +1680,12 @@ LEFT JOIN Commande AS c_sn3
     label: "prog Marge Semaine N-1 VS N-2"
     value_format_name: percent_2
     type: number
-    sql: 1.0 * (${sum_marge_select_mois_N1}-${sum_marge_select_semaine_N2})/NULLIF(${sum_marge_select_semaine_N2},0);;
+    sql: 1.0 * (${sum_marge_select_semaine_N1}-${sum_marge_select_semaine_N2})/NULLIF(${sum_marge_select_semaine_N2},0);;
     view_label: "Ventes"
     group_label: "Semaine Année N-1"
   }
 
-  measure: prog_large_select_semaine_N2 {
+  measure: prog_marge_select_semaine_N2 {
     label: "prog Marge Semaine N-2 VS N-3"
     value_format_name: percent_2
     type: number
