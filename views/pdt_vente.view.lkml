@@ -168,9 +168,6 @@ SELECT DISTINCT
     m2.Longitude as Longitude_histo,
     d.day AS Dte_Vte,
     v.StatutBcp,
-    COALESCE(v_sn1.StatutBcp, 'BCP non reçu') AS StatutBcp_sn1,
-    COALESCE(v_sn2.StatutBcp, 'BCP non reçu') AS StatutBcp_sn2,
-    COALESCE(v_sn3.StatutBcp, 'BCP non reçu') AS StatutBcp_sn3,
     v.StatutGoogleSheet,
 
     v.Typ_Vente AS Typ_Vente,
@@ -545,27 +542,6 @@ LEFT JOIN Commande AS c_sn3
       label: "Statut BCP"
       view_label: "Ventes"
     }
-
-  dimension: statut_bcp_sn1 {
-    type: string
-    sql: ${TABLE}.StatutBcp_sn1 ;;
-    label: "Statut BCP (Semaine N-1)"
-    view_label: "Ventes"
-  }
-
-  dimension: statut_bcp_sn2 {
-    type: string
-    sql: ${TABLE}.StatutBcp_sn2 ;;
-    label: "Statut BCP (Semaine N-2)"
-    view_label: "Ventes"
-  }
-
-  dimension: statut_bcp_sn3 {
-    type: string
-    sql: ${TABLE}.StatutBcp_sn3 ;;
-    label: "Statut BCP (Semaine N-3)"
-    view_label: "Ventes"
-  }
 
   dimension: statut_google_sheet {
       type: string
