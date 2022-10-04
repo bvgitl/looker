@@ -216,9 +216,9 @@ view: suivi_rcu {
     sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
                   OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
               then "Retail seul"
-        case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+         when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
               then "Web seul"
-        case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+         when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
               then "Mixte"
               end;;
   }
