@@ -480,7 +480,27 @@ LEFT JOIN Commande AS c_sn3
 
   dimension: pays_vente {
     type: string
-    sql: ${TABLE}.Territoire ;;
+    sql:
+    CASE ${TABLE}.Territoire
+  WHEN 'FR-GUF' THEN 'Guyane'
+  WHEN 'BE' THEN 'Belgique'
+  WHEN 'CM' THEN 'Cameroun'
+  WHEN 'ES' THEN 'Espagne'
+  WHEN 'FR' THEN 'France métropole'
+  WHEN 'FR-LRE' THEN 'La Réunion'
+  WHEN 'FR-MAY' THEN 'Mayotte'
+  WHEN 'FR-MF' THEN 'St Martin'
+  WHEN 'FR-NC' THEN 'Nouvelle Calédonie'
+  WHEN 'FR-GUF' THEN 'Guyane'
+  WHEN 'MQ' THEN 'Martinique'
+  WHEN 'MU' THEN 'Maurice'
+  WHEN 'TN' THEN 'Tunisie'
+  WHEN 'IT' THEN 'Italie'
+  WHEN 'GP' THEN 'Guadeloupe'
+  WHEN 'MT' THEN 'Malte'
+    ELSE ${TABLE}.Territoire
+  END
+;;
     label: "Territoire"
     view_label: "Magasins (actuel)"
   }
@@ -1618,6 +1638,61 @@ LEFT JOIN Commande AS c_sn3
     group_label: "Semaine Année N-3"
   }
 
+   ########### Calcul des progressions n vs n-1 à la semaine sélectionée au niveau du filtre ###########
+
+  measure: prog_CA_select_semaine_N {
+    label: "prog CA Semaine N Vs N-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_semaine_N1})/NULLIF(${sum_CA_select_semaine_N1},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: prog_CA_select_semaine_N1 {
+    label: "prog CA Semaine N-1 Vs N-2"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_semaine_N1}-${sum_CA_select_semaine_N2})/NULLIF(${sum_CA_select_semaine_N2},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+    measure: prog_CA_select_semaine_N2 {
+    label: "prog CA Semaine N-2 Vs N-3"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_CA_select_semaine_N2}-${sum_CA_select_semaine_N3})/NULLIF(${sum_CA_select_semaine_N3},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-2"
+  }
+
+  measure: prog_marge_select_semaine_N {
+    label: "prog Marge Semaine N VS N-1"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_marge_select_mois}-${sum_marge_select_semaine_N1})/NULLIF(${sum_marge_select_semaine_N1},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: prog_marge_select_semaine_N1 {
+    label: "prog Marge Semaine N-1 VS N-2"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_marge_select_semaine_N1}-${sum_marge_select_semaine_N2})/NULLIF(${sum_marge_select_semaine_N2},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-1"
+  }
+
+  measure: prog_marge_select_semaine_N2 {
+    label: "prog Marge Semaine N-2 VS N-3"
+    value_format_name: percent_2
+    type: number
+    sql: 1.0 * (${sum_marge_select_semaine_N2}-${sum_marge_select_semaine_N3})/NULLIF(${sum_marge_select_semaine_N3},0);;
+    view_label: "Ventes"
+    group_label: "Semaine Année N-2"
+  }
 
     ######### calcul des rapports entre les KPIs à la période n sélectionnée au niveau du filtre  ##########
 
@@ -1684,7 +1759,6 @@ LEFT JOIN Commande AS c_sn3
       view_label: "Ventes"
       group_label: "Année N"
     }
-
 
     ######### calcul des rapports entre les KPIs à la période n-1 sélectionnée au niveau du filtre  ##########
 
