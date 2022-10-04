@@ -193,6 +193,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: anciennete_mois_web {
+    type: number
+    sql: date_diff( current_date(), ${dt_creation_web_date} , month ) ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: anciennete_mois {
     type: number
     sql: date_diff( current_date(), ${dt_creation_retail_date} , month ) ;;
