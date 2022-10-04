@@ -211,6 +211,19 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: type_client_rcu {
+    type:  string
+    sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
+              then "Retail seul"
+        case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+              then "Web seul"
+        case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+              then "Mixte"
+              end;;
+  }
+
+
   measure: count_email {
     type: count_distinct
     sql: case when ${email_rcu} is not null  then ${id_master} end ;;
