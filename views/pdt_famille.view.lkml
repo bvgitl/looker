@@ -251,6 +251,8 @@ SELECT DISTINCT
     m.CD_Magasin as CD_Magasin,
     m.Latitude,
     m.Longitude,
+    m.Code_postal,
+    m.Ville,
     m2.Nom_TBE as NOM_histo,
     m2.Type_TBE as Typ_histo,
     m2.DATE_OUV as Dte_Ouverture_histo,
@@ -264,6 +266,8 @@ SELECT DISTINCT
     m2.Tranche_age as Anciennete_histo,
     m2.Latitude as Latitude_histo,
     m2.Longitude as Longitude_histo,
+    m2.Code_postal as Code_Postal_histo,
+    m2.Ville as Ville_histo,
     v.CD_Article as Article,
     v.CD_Article_Original AS ArticleOriginal,
     v.Typ_Vente as Typ_Vente,
@@ -272,6 +276,8 @@ SELECT DISTINCT
     v.StatutGoogleSheet,
     mq.LB_MARQUE as Marque,
     f.l_Fournisseur as Fournisseur,
+    a.c_fournisseur as Code_Fournisseur,
+    a.c_Reference_fournisseur  as Ref_Fournisseur,
     s.n_stock as stock,
     w.Nbre_commande as Nbre_commande,
     w.Quantite_commandee as Quantite_commandee,
@@ -638,6 +644,48 @@ FULL JOIN
     type: number
     sql: ${TABLE}.Tarif_Produit_HT ;;
     view_label: "Web"
+  }
+
+  dimension: Code_Fournisseur {
+    type: string
+    sql: ${TABLE}.Code_Fournisseur ;;
+    view_label: "Article"
+    label: "Code Fournisseur"
+  }
+
+  dimension: Ref_Fournisseur {
+    type: string
+    sql: ${TABLE}.Ref_Fournisseur ;;
+    view_label: "Article"
+    label: "Référence Fournisseur"
+  }
+
+  dimension: Ville {
+    type: string
+    sql: ${TABLE}.Ville ;;
+    view_label: "Magasins (actuel)"
+    label: "Ville Magasin"
+  }
+
+  dimension: Code_Postal {
+    type: string
+    sql: ${TABLE}.Code_Postal ;;
+    view_label: "Magasins (actuel)"
+    label: "Code Postal Magasin"
+  }
+
+  dimension: Ville_histo {
+    type: string
+    sql: ${TABLE}.Ville_histo ;;
+    view_label: "Magasins (à date de vente)"
+    label: "Ville histo Magasin"
+  }
+
+  dimension: Code_Postal_histo {
+    type: string
+    sql: ${TABLE}.Code_Postal_histo ;;
+    view_label: "Magasins (à date de vente)"
+    label: "Code Postal histo Magasin"
   }
 
   set: detail {
