@@ -265,6 +265,6 @@ view: ref_campagne {
   }
 
   set: sheet_client {
-    fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client,optin_email]
+    fields: [camp_id,camp_name, dte_open_date,dt_click_date,dt_unsub_date ,dt_bounce_date ,bounce_type, category_id,category_name,customer_id,email_address,type_client,optin_email]
   }
 }
