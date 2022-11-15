@@ -135,7 +135,7 @@ view: suivi_rcu {
                         coalesce( cast(dt_creation_web as date), cast('1970-01-01' as date)),
                         coalesce( cast(dt_optin as date), cast('1970-01-01' as date))
                           )
-          >= DATE_SUB(current_date(), INTERVAL 36 month)  ;;
+          >= DATE_SUB(date_trunc(current_date(),month), INTERVAL 36 month)  ;;
 
   }
 
@@ -193,6 +193,19 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: type_client2 {
+    type: string
+    sql: ${TABLE}.type_client2 ;;
+    drill_fields: [sheet_client*]
+  }
+
+
+  dimension: anciennete_mois_web {
+    type: number
+    sql: date_diff( current_date(), ${dt_creation_web_date} , month ) ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: anciennete_mois {
     type: number
     sql: date_diff( current_date(), ${dt_creation_retail_date} , month ) ;;
@@ -210,6 +223,19 @@ view: suivi_rcu {
     sql: case when date_diff(current_date(), ${dt_last_purchase_date}, month) <= 36 then 1 else 0 end   ;;
     drill_fields: [sheet_client*]
   }
+
+  dimension: type_client_rcu {
+    type:  string
+    sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+                  OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
+              then "Retail seul"
+         when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
+              then "Web seul"
+         when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
+              then "Mixte"
+              end;;
+  }
+
 
   measure: count_email {
     type: count_distinct

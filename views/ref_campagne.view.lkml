@@ -229,25 +229,29 @@ view: ref_campagne {
   measure: taux_bounce{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_bounce}/${count_volume_email_recu}) ;;
+    sql:  case when ${count_volume_email_recu} !=0
+          then (${count_volume_bounce}/${count_volume_email_recu}) end   ;;
   }
 
   measure: taux_desabo{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_desabo}/${count_volume_email_recu}) ;;
+    sql:  case when ${count_volume_email_recu} !=0
+          then  (${count_volume_desabo}/${count_volume_email_recu}) end  ;;
   }
 
   measure: taux_ouvreur{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_open}/${count_volume_email_recu}) ;;
+    sql: case when ${count_volume_email_recu} !=0
+          then (${count_volume_open}/${count_volume_email_recu}) end   ;;
   }
 
   measure: taux_cliqueur{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_click}/${count_volume_email_recu}) ;;
+    sql: case when ${count_volume_email_recu} !=0
+          then (${count_volume_click}/${count_volume_email_recu}) end  ;;
   }
 
   measure: percent_of_column{
@@ -265,6 +269,6 @@ view: ref_campagne {
   }
 
   set: sheet_client {
-    fields: [bounce_type,camp_id,camp_name,category_id,category_name,customer_id,email_address,type_client,optin_email]
+    fields: [camp_id,camp_name, dte_open_date,dt_click_date,dt_unsub_date ,dt_bounce_date ,bounce_type, category_id,category_name,customer_id,email_address,type_client,optin_email]
   }
 }
