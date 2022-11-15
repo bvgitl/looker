@@ -229,25 +229,29 @@ view: ref_campagne {
   measure: taux_bounce{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_bounce}/${count_volume_email_recu}) ;;
+    sql:  case when ${count_volume_email_recu} then (${count_volume_bounce}/${count_volume_email_recu})
+              else null;;
   }
 
   measure: taux_desabo{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_desabo}/${count_volume_email_recu}) ;;
+    sql: case when ${count_volume_email_recu} is not null then (${count_volume_desabo}/${count_volume_email_recu})
+              else null  ;;
   }
 
   measure: taux_ouvreur{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_open}/${count_volume_email_recu}) ;;
+    sql:  case when ${count_volume_email_recu} is not null then (${count_volume_open}/${count_volume_email_recu})
+              else null   ;;
   }
 
   measure: taux_cliqueur{
     type: number
     drill_fields: [sheet_client*]
-    sql:  (${count_volume_click}/${count_volume_email_recu}) ;;
+    sql: case when ${count_volume_email_recu} is not null then  (${count_volume_click}/${count_volume_email_recu})
+              else null  ;;
   }
 
   measure: percent_of_column{
