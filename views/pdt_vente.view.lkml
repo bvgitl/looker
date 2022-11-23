@@ -120,8 +120,8 @@ VenteMag AS
 ),
 Commande AS
 (
- /* SELECT
-    CdMagasin,
+ SELECT
+    CdMagasin as cd_magasin,
     CAST(DATETIME_TRUNC(DATETIME(DateCommande),
         DAY) AS DATE) AS dte_cde,
     COUNT(DISTINCT(CdCommande)) AS Nbre_commande,
@@ -135,8 +135,8 @@ Commande AS
       "fraud",
       "complete")
   GROUP BY 1, 2
-  */
 
+/*
   SELECT
     cd_magasin,
     CAST(DATETIME_TRUNC(DATETIME(dte_commande),
@@ -152,7 +152,7 @@ Commande AS
       "fraud",
       "complete")
   GROUP BY 1, 2
-
+*/
 )
 SELECT DISTINCT
     m.Animateur AS Animateur,
