@@ -81,7 +81,7 @@ INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = 
 
   dimension: Total_Produit_HT {
     type: number
-    sql: ${TABLE}.Tarif_Produit_HT * ${TABLE}.Quantite_commandee ;;
+    sql: ${TABLE}.Tarif_Produit_HT * ${TABLE}.Quantite ;;
     hidden: yes
   }
 
@@ -371,7 +371,7 @@ INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = 
   measure: Prix_Vente_Moyen {
     type: sum
     value_format_name: eur
-    sql: ${Total_Produit_HT} / ${Quantite_commandee} ;;
+    sql: ${Total_Produit_HT} / NULLIF(${Quantite_commandee},0) ;;
     label: "Prix de Vente Moyen"
   }
 
@@ -444,7 +444,7 @@ INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = 
   measure: TauxMargeMoyen {
     type: number
     value_format_name: percent_2
-    sql: ${Marge} / ${ca_ht} ;;
+    sql: ${Marge} / NULLIF(${ca_ht},0) ;;
     label: "Taux Marge Moyen"
   }
 
