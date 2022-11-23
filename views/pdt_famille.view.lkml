@@ -318,15 +318,15 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
 FULL JOIN
 (
     SELECT
-      p.cd_produit as cd_produit,
-      c.cd_magasin as cd_magasin,
-      CAST(DATETIME_TRUNC(DATETIME(c.dte_commande), DAY) AS DATE) AS dte_cde,
-      count(distinct(p.cd_commande)) as Nbre_commande ,
-      sum(p.Quantite_commandee) as Quantite_commandee,
+      p.ProductId as cd_produit,
+      c.CdMagasin as cd_magasin,
+      CAST(DATETIME_TRUNC(DATETIME(c.DateCommande), DAY) AS DATE) AS dte_cde,
+      count(distinct(p.CdCommande)) as Nbre_commande ,
+      sum(p.Quantite) as Quantite_commandee,
       sum(p.Tarif_Produit_HT) as Tarif_Produit_HT
-      FROM `bv-prod.Matillion_Perm_Table.Produit_Commande` p
-      INNER JOIN  `bv-prod.Matillion_Perm_Table.COMMANDES` c
-      ON CAST(p.cd_commande AS STRING) = c.cd_commande
+      FROM `bv-prod.Matillion_Perm_Table.Web_Inter_Produit_Commande` p
+      INNER JOIN  `bv-prod.Matillion_Perm_Table.Web_Inter_Commande` c
+      ON p.CdCommande = c.CdCommande
       group by 1,2,3
 ) w
     ON  w.cd_produit = v.CD_Article
