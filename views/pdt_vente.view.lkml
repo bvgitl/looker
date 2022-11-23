@@ -121,14 +121,14 @@ VenteMag AS
 Commande AS
 (
   SELECT
-    cd_magasin,
-    CAST(DATETIME_TRUNC(DATETIME(dte_commande),
+    CdMagasin,
+    CAST(DATETIME_TRUNC(DATETIME(DateCommande),
         DAY) AS DATE) AS dte_cde,
-    COUNT(DISTINCT(cd_commande)) AS Nbre_commande,
+    COUNT(DISTINCT(CdCommande)) AS Nbre_commande,
     SUM(Tarif_HT_livraison) AS Tarif_HT_livraison,
     SUM(Total_HT) AS Total_HT
   FROM
-    `bv-prod.Matillion_Perm_Table.COMMANDES`
+    `bv-prod.Matillion_Perm_Table.Web_Inter_Commande`
   WHERE
     statut IN ("pending",
       "processing",
@@ -1711,6 +1711,7 @@ LEFT JOIN Commande AS c_sn3
       value_format_name: eur
       type: number
       sql:  ${sum_CA_select_mois}/NULLIF(${sum_nb_jour_select_mois},0) ;;
+      #sql:  ${sum_CA_select_mois}/${sum_nb_jour_select_mois} ;;
       view_label: "Ventes"
       group_label: "Année N"
     }
