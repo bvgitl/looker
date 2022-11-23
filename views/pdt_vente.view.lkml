@@ -120,7 +120,7 @@ VenteMag AS
 ),
 Commande AS
 (
-  SELECT
+ /* SELECT
     CdMagasin,
     CAST(DATETIME_TRUNC(DATETIME(DateCommande),
         DAY) AS DATE) AS dte_cde,
@@ -135,6 +135,24 @@ Commande AS
       "fraud",
       "complete")
   GROUP BY 1, 2
+  */
+
+  SELECT
+    cd_magasin,
+    CAST(DATETIME_TRUNC(DATETIME(dte_commande),
+        DAY) AS DATE) AS dte_cde,
+    COUNT(DISTINCT(cd_commande)) AS Nbre_commande,
+    SUM(Tarif_HT_livraison) AS Tarif_HT_livraison,
+    SUM(Total_HT) AS Total_HT
+  FROM
+    `bv-prod.Matillion_Perm_Table.COMMANDES`
+  WHERE
+    statut IN ("pending",
+      "processing",
+      "fraud",
+      "complete")
+  GROUP BY 1, 2
+
 )
 SELECT DISTINCT
     m.Animateur AS Animateur,
