@@ -144,7 +144,7 @@ explore: web_commandes {
   join: web_clients {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${web_commandes.customer_id} = ${web_clients.customer_id} ;;
+    sql_on: ${web_commandes.Code_Territoire} = ${web_clients.code_territoire} AND ${web_commandes.customer_id} = ${web_clients.customer_id}  ;;
   }
   join: web_articles {
     type: left_outer

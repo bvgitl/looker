@@ -2,74 +2,75 @@ view: web_commandes {
   derived_table: {
     sql:
 SELECT
-  c.customer_id,
-  c.cd_commande,
-  c.Canal_commande,
-  c.Tarif_HT_livraison,
-  c.statut,
-  c.cd_magasin,
+  c.CustomerId,
+  c.CdCommande,
+  c.CanalCommande,
+  c.Tarif_HT_Livraison,
+  c.Statut,
+  c.CdMagasin,
   c.Numero_Commande_Client,
-  c.dte_commande,
-  pc.cd_produit,
-  pc.Quantite_commandee,
+  c.DateCommande,
+  pc.ProductId,
+  pc.Quantite,
   pc.Tarif_Produit_HT,
   pc.Tarif_Produit_TTC,
-  pc.Taux_Marge_Magasin
-FROM Matillion_Perm_Table.COMMANDES c
-INNER JOIN Matillion_Perm_Table.Produit_Commande pc ON c.cd_commande = CAST(pc.cd_commande AS STRING)  ;;
+  pc.Taux_Marge_Magasin,
+  c.CodeTerritoire
+FROM Matillion_Perm_Table.Web_Inter_Commande c
+INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = pc.CdCommande  ;;
   }
   label: "Commande"
 
   dimension: cd_commande {
     type: string
-    sql: ${TABLE}.cd_commande ;;
+    sql: ${TABLE}.CdCommande ;;
     label: "Numéro Commande"
   }
 
   dimension: customer_id {
     type: string
-    sql: ${TABLE}.customer_id ;;
+    sql: ${TABLE}.CustomerId ;;
     label: "Numéro Client"
     hidden: yes
   }
 
   dimension: cd_produit {
     type: string
-    sql: ${TABLE}.cd_produit ;;
+    sql: ${TABLE}.ProductId ;;
     label: "Code Article"
     view_label: "Article"
   }
 
   dimension: Canal_commande {
     type: string
-    sql: ${TABLE}.Canal_commande ;;
+    sql: ${TABLE}.CanalCommande ;;
     label: "Type Livraison"
   }
 
   dimension: Tarif_HT_livraison {
     type: number
-    sql: ${TABLE}.Tarif_HT_livraison ;;
+    sql: ${TABLE}.Tarif_HT_Livraison ;;
     hidden: yes
   }
 
   dimension: statut {
     type: string
-    sql: ${TABLE}.statut ;;
+    sql: ${TABLE}.Statut ;;
     label: "Etat Commande"
   }
 
   dimension: cd_magasin {
     type: string
-    sql: ${TABLE}.cd_magasin ;;
+    sql: ${TABLE}.CdMagasin ;;
     label: "Code Magasin"
     view_label: "Magasin"
   }
 
   dimension: Quantite_commandee {
-    type: number
-    sql: ${TABLE}.Quantite_commandee ;;
-    hidden: yes
-  }
+   type: number
+   sql: ${TABLE}.Quantite ;;
+   hidden: yes
+ }
 
   dimension: Tarif_Produit_HT {
     type: number
@@ -104,6 +105,13 @@ INNER JOIN Matillion_Perm_Table.Produit_Commande pc ON c.cd_commande = CAST(pc.c
     label: "Numéro de Commande du Client"
   }
 
+  dimension: Code_Territoire {
+    type: string
+    sql: ${TABLE}.CodeTerritoire;;
+    label: "Code Territoire"
+    hidden:  yes
+  }
+
   dimension_group: dte_commande {
     type: time
     timeframes: [
@@ -116,7 +124,7 @@ INNER JOIN Matillion_Perm_Table.Produit_Commande pc ON c.cd_commande = CAST(pc.c
     ]
     convert_tz: no
     datatype: timestamp
-    sql: ${TABLE}.dte_commande ;;
+    sql: ${TABLE}.DateCommande ;;
     label: "Date Commande"
   }
 
