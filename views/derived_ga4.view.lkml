@@ -39,6 +39,8 @@ view: derived_ga4 {
         then 'Trigger_Upsell_cartouche'
         when name ='trigger_upsell_ink'
         then 'Trigger_Upsell_cartouche'
+        when name = 'novembre_BLACK-GREEN'
+        then 'Email_Novembre_Black_Friday_201122'
         else name end as name,
 
 
