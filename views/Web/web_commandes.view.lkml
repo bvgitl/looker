@@ -28,7 +28,7 @@ INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = 
   }
 
   dimension: customer_id {
-    type: number
+    type: string
     sql: ${TABLE}.CustomerId ;;
     label: "Numéro Client"
     hidden: yes
