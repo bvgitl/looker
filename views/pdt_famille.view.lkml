@@ -581,9 +581,29 @@ FULL JOIN
 
   dimension: pays_vente {
     type: string
-    sql: ${TABLE}.Territoire ;;
-    label: "Pays"
-    view_label: "Ventes"
+    sql:
+    CASE ${TABLE}.Territoire
+  WHEN 'FR-GUF' THEN 'Guyane'
+  WHEN 'BE' THEN 'Belgique'
+  WHEN 'CM' THEN 'Cameroun'
+  WHEN 'ES' THEN 'Espagne'
+  WHEN 'FR' THEN 'France métropole'
+  WHEN 'FR-LRE' THEN 'La Réunion'
+  WHEN 'FR-MAY' THEN 'Mayotte'
+  WHEN 'FR-MF' THEN 'St Martin'
+  WHEN 'FR-NC' THEN 'Nouvelle Calédonie'
+  WHEN 'FR-GUF' THEN 'Guyane'
+  WHEN 'MQ' THEN 'Martinique'
+  WHEN 'MU' THEN 'Maurice'
+  WHEN 'TN' THEN 'Tunisie'
+  WHEN 'IT' THEN 'Italie'
+  WHEN 'GP' THEN 'Guadeloupe'
+  WHEN 'MT' THEN 'Malte'
+    ELSE ${TABLE}.Territoire
+  END
+;;
+    label: "Territoire"
+    view_label: "Magasins (actuel)"
   }
 
   dimension: qtite {
