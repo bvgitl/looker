@@ -22,13 +22,13 @@ INNER JOIN Matillion_Perm_Table.Web_Inter_Produit_Commande pc ON c.CdCommande = 
   label: "Commande"
 
   dimension: cd_commande {
-    type: string
+    type: number
     sql: ${TABLE}.CdCommande ;;
     label: "Numéro Commande"
   }
 
   dimension: customer_id {
-    type: string
+    type: number
     sql: ${TABLE}.CustomerId ;;
     label: "Numéro Client"
     hidden: yes
