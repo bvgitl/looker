@@ -106,21 +106,22 @@ explore: tract {
 }
 
 explore: article_dwh {
+  join: magasins {
+    type: cross
+    relationship: many_to_many
+  }
   join: tf_vente {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${article_dwh.c_article} = ${tf_vente.cd_article} ;;
+    sql_on: ${article_dwh.c_article} = ${tf_vente.cd_article}
+    AND ${magasins.cd_magasin} = ${tf_vente.cd_magasin};;
   }
   join: article_arbo {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${article_arbo.cd_article}=${tf_vente.cd_article} ;;
+    sql_on: ${article_arbo.cd_article}=${article_dwh.c_article} ;;
   }
-  join: magasins {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${magasins.cd_magasin}=${tf_vente.cd_magasin} ;;
-  }
+
   join: four_dwh {
     type: left_outer
     relationship: many_to_one
@@ -134,7 +135,8 @@ explore: article_dwh {
   join: stock_utd {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${stock_utd.CodeActeur}=${magasins.cd_magasin} AND  ${stock_utd.CodeArticle}=${article_dwh.c_article};;
+    sql_on: ${stock_utd.CodeActeur}=${magasins.cd_magasin}
+    AND  ${stock_utd.CodeArticle}=${article_dwh.c_article};;
   }
 
 }
