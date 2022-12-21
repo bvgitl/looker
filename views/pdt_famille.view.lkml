@@ -761,7 +761,7 @@ FULL JOIN
   }
 
   dimension: origine {
-    type: number
+    type: string
     sql: CASE
           WHEN ${TABLE}.Origine = 5 THEN "France"
           WHEN ${TABLE}.Origine = 6 THEN "Union Européenne"
@@ -772,7 +772,7 @@ FULL JOIN
   }
 
   dimension: statut_article {
-    type: number
+    type: string
     sql: CASE
           WHEN ${TABLE}.Statut_article = 0 THEN "Création"
           WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
