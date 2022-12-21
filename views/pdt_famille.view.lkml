@@ -776,7 +776,7 @@ FULL JOIN
     sql: CASE
           WHEN ${TABLE}.Statut_article = 0 THEN "Création"
           WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
-          WHEN ${TABLE}.Statut_article = 5 THEN "Déférencé"
+          WHEN ${TABLE}.Statut_article = 5 THEN "Déréférencé"
           END;;
     view_label: "Article"
   }
