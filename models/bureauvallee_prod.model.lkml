@@ -161,3 +161,41 @@ explore: web_commandes {
 }
 
 explore:  monitoring {}
+
+explore:  stock_histo{
+  label: "Stock historisé"
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${magasins.cd_magasin} = ${stock_histo.cd_acteur} ;;
+  }
+  join: article_dwh{
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_dwh.c_article}= ${stock_histo.cd_article} ;;
+  }
+  join: article_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_arbo.cd_article}=${article_dwh.c_article} ;;
+  }
+
+  join: four_dwh {
+    view_label: "Fournisseurs"
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${four_dwh.c_fournisseur}=${article_dwh.c_fournisseur} ;;
+  }
+  join: marques {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${marques.cd_marque}=${article_dwh.c_marque} ;;
+  }
+  #join: tf_vente {
+  #  type: left_outer
+  #  relationship: one_to_many
+  #  sql_on: ${tf_vente.cd_article} = ${stock_histo.cd_article}
+  #  AND ${tf_vente.dte_vte_date} = ${stock_histo.date_stock_date}
+  #  AND ${tf_vente.cd_magasin} = ${stock_histo.cd_acteur};;
+  #}
+}
