@@ -105,16 +105,11 @@ explore: tract {
   }
 }
 
-explore: article_dwh {
+explore: article_dwh{
+  label: "Stock actuel"
   join: magasins {
     type: cross
     relationship: many_to_many
-  }
-  join: tf_vente {
-    type: left_outer
-    relationship: many_to_one
-    sql_on: ${article_dwh.c_article} = ${tf_vente.cd_article}
-    AND ${magasins.cd_magasin} = ${tf_vente.cd_magasin};;
   }
   join: article_arbo {
     type: left_outer
