@@ -42,8 +42,16 @@ explore: ref_campagne {
   }
 }
 
+explore: ref_magasin{}
+
 explore: ref_client_cmd {}
-explore: suivi_rcu {}
+explore: suivi_rcu {
+  join: ref_magasin {
+    relationship: one_to_many
+    sql_on: ${ref_magasin.cd_magasin} = ${suivi_rcu.store_code} ;;
+  }
+}
+
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
