@@ -41,7 +41,13 @@ view: derived_ga4 {
         then 'Trigger_Upsell_cartouche'
         when name = 'novembre_BLACK-GREEN'
         then 'Email_Novembre_Black Friday_201122_Email_Novembre_Black Friday_201122_Magasin'
+        when name = 'decembre_NOEL'
+        then 'Email_Novembre_Noel_281122_Magasin_Email_Novembre_Noel_281122_Magasin_Magasin_Horaire1'
+        when name = 'janvier1_TVAofferte'
+        then 'Email_Janvier1_TVA_offerte_020123_V2_Email_Janvier1_TVA_offerte_020123_V2_horaire1'
         else name end as name,
+
+
 
 
         count(distinct session_id) as session,
