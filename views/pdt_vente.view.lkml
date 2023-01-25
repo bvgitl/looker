@@ -805,7 +805,7 @@ LEFT JOIN Commande AS c_sn3
       value_format_name: eur
       label: "CA HT"
       sql: CASE
-            WHEN ${ca_ht} > 0 AND {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN  {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
       view_label: "Ventes"
@@ -841,7 +841,7 @@ LEFT JOIN Commande AS c_sn3
       type: count_distinct
       value_format_name: decimal_0
       sql: CASE
-              WHEN ${ca_ht} <> 0 AND {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+              WHEN ${ca_ht} > 0 AND {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
                 THEN ${dte_vte_date}
           END ;;
       view_label: "Ventes"
