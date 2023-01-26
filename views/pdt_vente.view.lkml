@@ -951,7 +951,7 @@ LEFT JOIN Commande AS c_sn3
   measure: vente_par_magasin {
     label: "Nombre de magasin"
     value_format_name: decimal_0
-    type: count_distinct
+    type: number
     sql:  count_distinct(${cd_magasin}) ;;
     view_label: "Ventes"
     group_label: "Année N"
