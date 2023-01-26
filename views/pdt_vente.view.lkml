@@ -948,6 +948,15 @@ LEFT JOIN Commande AS c_sn3
     group_label: "Année N"
   }
 
+  measure: vente_par_magasin {
+    label: "Nombre de magasin"
+    value_format_name: decimal_0
+    type: count_distinct
+    sql:  count_distinct(${cd_magasin}) ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
 
     ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
 
@@ -1761,15 +1770,6 @@ LEFT JOIN Commande AS c_sn3
       view_label: "Ventes"
       group_label: "Année N"
     }
-
-  measure: vente_par_magasin {
-    label: "Nombre de magasin"
-    value_format_name: decimal_0
-    type: count_distinct
-    sql:  ${cd_magasin} ;;
-    view_label: "Ventes"
-    group_label: "Année N"
-  }
 
     ######### calcul des rapports entre les KPIs à la période n-1 sélectionnée au niveau du filtre  ##########
 
