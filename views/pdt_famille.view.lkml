@@ -1124,6 +1124,20 @@ FULL JOIN
   }
 
 
+  measure: sum_magasin_mois {
+    type: count_distinct
+    value_format_name: decimal_0
+    label: "Nombre de magasin"
+    sql:
+        CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP) {% endcondition %} and ${qtite} != 0 and ${ca_ht} != 0
+            THEN ${cd_magasin}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+  }
+
+
   ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
 
 
