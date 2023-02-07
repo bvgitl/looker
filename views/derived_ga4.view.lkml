@@ -45,6 +45,10 @@ view: derived_ga4 {
         then 'Email_Novembre_Noel_281122_Magasin_Email_Novembre_Noel_281122_Magasin_Magasin_Horaire1'
         when name = 'janvier1_TVAofferte'
         then 'Email_Janvier1_TVA_offerte_020123_V2_Email_Janvier1_TVA_offerte_020123_V2_horaire1'
+        when name = 'janvier2_prixcoutant'
+        then 'Email_Janvier_Prix_coutant_160123_Email_Janvier_Prix_coutant_160123_Magasin'
+        when name = 'fevrier1_prixcoutant'
+        then 'Email_fevrier_prix_coutant_300123'
         else name end as name,
 
 
