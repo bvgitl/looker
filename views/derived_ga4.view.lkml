@@ -53,9 +53,6 @@ view: derived_ga4 {
         then 'SMS_janvier3_PrixCoutant_160123'
         else name end as name,
 
-
-
-
         count(distinct session_id) as session,
         sum(nouvelle_session) as nouvelle_session,
         count(distinct case when session_engaged = '1' then session_id end) as engaged_sessions,
@@ -69,6 +66,8 @@ view: derived_ga4 {
         traffic_source.name,
         case when event_name = 'first_visit' then 1 else 0 end as nouvelle_session,
         case when ecommerce.purchase_revenue > 0 then 1 else 0 end as achat,
+        case when traffic_source.medium in ('CRM-email', 'email-interne','email', 'CRM_email') then 'Email'
+             when traffic_source.medium in ('CRM-sms', 'SMS-interne','SMS', 'CRM_sms') then 'SMS' end as camp_type,
         ecommerce.transaction_id,
         ecommerce.purchase_revenue ,
 
@@ -76,9 +75,8 @@ view: derived_ga4 {
         max((select value.string_value from unnest(event_params) where key = 'session_engaged')) as session_engaged,
 
         from analytics
-        where (traffic_source.medium in ('CRM-email', 'email-interne','email', 'CRM_email')
-        and  traffic_source.source not in ('gevttfe', 'adesrv','beffei'))
-        group by  session_id, traffic_source.name, ecommerce.purchase_revenue, event_name, ecommerce.transaction_id--, event_date -- event_name,traffic_source.name,, user_pseudo_id, ecommerce.transaction_id, ecommerce.purchase_revenue, event_date
+        where traffic_source.medium not in ('gevttfe', 'adesrv','beffei')
+        group by  session_id, traffic_source.name, ecommerce.purchase_revenue, event_name, ecommerce.transaction_id, traffic_source.medium--, event_date -- event_name,traffic_source.name,, user_pseudo_id, ecommerce.transaction_id, ecommerce.purchase_revenue, event_date
         )
 
         group by  name -- event_date--,name --, medium, source_
