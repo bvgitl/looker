@@ -67,7 +67,7 @@ view: derived_ga4 {
         case when event_name = 'first_visit' then 1 else 0 end as nouvelle_session,
         case when ecommerce.purchase_revenue > 0 then 1 else 0 end as achat,
         case when traffic_source.medium in ('CRM-email', 'email-interne','email', 'CRM_email') then 'Email'
-             when traffic_source.medium in ('CRM-sms', 'SMS-interne','SMS', 'CRM_sms') then 'SMS' end as camp_type,
+             when traffic_source.medium in ('CRM-sms', 'SMS-interne','SMS', 'CRM_sms','sms') then 'SMS' end as camp_type,
         ecommerce.transaction_id,
         ecommerce.purchase_revenue ,
 
