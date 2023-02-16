@@ -285,7 +285,7 @@ view: suivi_rcu {
 
   }
 
-  measure: Volume_client {
+  measure: count_master {
     type: count_distinct
     sql: ${id_master} ;;
     drill_fields: [sheet_client*]
