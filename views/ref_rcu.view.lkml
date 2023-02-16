@@ -237,20 +237,20 @@ view: suivi_rcu {
   }
 
 
-  measure: count_email {
+  measure: volume_email {
     type: count_distinct
     sql: case when ${email_rcu} is not null  then ${id_master} end ;;
     drill_fields: [sheet_client*]
   }
 
-  measure: count_telephone {
+  measure: volume_telephone {
     type: count_distinct
     sql: case when( ${cell_phone} is not null or ${phone} is not null ) then ${id_master} end  ;;
     drill_fields: [sheet_client*]
   }
 
 
-  measure: count_contactable {
+  measure: volume_contactable {
     type: count_distinct
     sql: case when (${email_rcu} is not null or ${cell_phone} is not null or ${phone} is not null ) then ${id_master} end  ;;
     drill_fields: [sheet_client*]
@@ -271,27 +271,27 @@ view: suivi_rcu {
 
   }
 
-  measure: count_optin_email {
+  measure: volume_optin_email {
     type: count_distinct
     sql: case when ( ${email_rcu} is not null and ${optin_email} = '1')  then ${id_master} end  ;;
     drill_fields: [sheet_client*]
 
   }
 
-  measure: count_optin_sms {
+  measure: volume_optin_sms {
     type: count_distinct
     sql: case when( ${cell_phone} is not null or ${phone} is not null ) and ${optin_sms} = '1'  then ${id_master} end  ;;
     drill_fields: [sheet_client*]
 
   }
 
-  measure: count_master {
+  measure: Volume_client {
     type: count_distinct
     sql: ${id_master} ;;
     drill_fields: [sheet_client*]
   }
 
-  measure: count_retail_seul{
+  measure: volume_retail_seul{
     type: count_distinct
     sql: case when (${suivi_rcu.dt_creation_web_date} is null AND ${suivi_rcu.dt_creation_retail_date} is not null )
                   OR (${suivi_rcu.dt_creation_web_date} is null AND  ${suivi_rcu.dt_creation_retail_date} is null)
@@ -309,7 +309,7 @@ view: suivi_rcu {
   #   drill_fields: [sheet_client*]
   # }
 
-  measure: count_web_seul{
+  measure: volume_web_seul{
     type: count_distinct
     sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is null )
               then ${id_master}
@@ -317,7 +317,7 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  measure: count_mixt{
+  measure: volume_mixt{
     type: count_distinct
     sql: case when (${suivi_rcu.dt_creation_web_date} is not null AND ${suivi_rcu.dt_creation_retail_date} is not null )
               then ${id_master}
