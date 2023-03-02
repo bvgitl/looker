@@ -7,7 +7,8 @@ WITH Vente AS
         CD_Magasin,
         Dte_Vte,
         Typ_Vente,
-        EXTRACT(YEAR FROM Dte_Vte) AS Year,
+        /*EXTRACT(YEAR FROM Dte_Vte) AS Year,*/
+        CAST(FORMAT_DATE("%G", Dte_Vte) AS INT) AS Year,
         CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
         FORMAT_DATE("%w", Dte_Vte) AS WeekDayNumber,
         SUM(Val_Achat_Gbl) AS Val_Achat_Gbl,
@@ -214,12 +215,11 @@ FROM
 (
     SELECT day FROM UNNEST( GENERATE_DATE_ARRAY(DATE('2018-01-02'), CURRENT_DATE(), INTERVAL 1 DAY) ) AS day
 ) d
-LEFT JOIN Vente v
-INNER JOIN VenteMag mag
+LEFT JOIN Vente v ON  d.day = v.Dte_Vte
+LEFT JOIN VenteMag mag
   ON  mag.CD_Magasin = v.CD_Magasin
   AND mag.Dte_Vte = v.Dte_Vte
   AND v.Typ_Vente = mag.Typ_vente
-ON  d.day = v.Dte_Vte
 LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms1 ON ms1.Annee_N = v.Year AND ms1.Semaine_N = v.WeekNumber
 LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms2 ON ms2.Annee_N = ms1.Annee_N1 AND ms2.Semaine_N = ms1.Semaine_N1
 LEFT JOIN `bv-prod.Matillion_Perm_Table.MAPPING_SEMAINE` ms3 ON ms3.Annee_N = ms2.Annee_N1 AND ms3.Semaine_N = ms2.Semaine_N1

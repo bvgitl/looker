@@ -9,7 +9,8 @@ WITH Vente AS
         Typ_Vente,
         CD_Article,
         CD_Article_Original,
-        EXTRACT(YEAR FROM Dte_Vte) AS Year,
+        /*EXTRACT(YEAR FROM Dte_Vte) AS Year,*/
+        CAST(FORMAT_DATE("%G", Dte_Vte) AS INT) AS Year,
         CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
         FORMAT_DATE("%w", Dte_Vte) AS WeekDayNumber,
         sum(Val_Achat_Gbl) as Val_Achat_Gbl,
@@ -38,8 +39,8 @@ WITH Vente AS
             CODE_ACTEUR as CD_Magasin,
             DTE_VENTE,
             TYP_VENTE,
-            ID_ARTICLE,
-            ID_ARTICLE AS CD_Article_Original,
+            COALESCE(ID_ARTICLE, '0') AS ID_ARTICLE,
+            COALESCE(ID_ARTICLE, '0') AS CD_Article_Original,
             VAL_ACHAT_GBL as Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
@@ -52,8 +53,8 @@ WITH Vente AS
             mf.CodeMagasinActeur AS CD_Magasin,
             mf.DateFichier AS DTE_VENTE,
             0 AS TYP_VENTE,
-            null AS ID_ARTICLE,
-            null AS CD_Article_Original,
+            '0' AS ID_ARTICLE,
+            '0' AS CD_Article_Original,
             null AS Val_Achat_Gbl,
             null AS Qtite,
             null AS ca_ht,
@@ -83,7 +84,8 @@ AllDateVente AS
 (
     SELECT DISTINCT
         mf.DateFichier AS Dte_Vte,
-        EXTRACT(YEAR FROM mf.DateFichier) AS Year,
+        /*EXTRACT(YEAR FROM mf.DateFichier) AS Year,*/
+        CAST(FORMAT_DATE("%G", mf.DateFichier) AS INT) AS Year,
         CAST(FORMAT_DATE("%V", mf.DateFichier) AS INT) AS WeekNumber,
         FORMAT_DATE("%w", mf.DateFichier) AS WeekDayNumber
     FROM `bv-prod.Matillion_Monitoring.MonitoringFichier` mf
