@@ -37,7 +37,7 @@ view: derived_ga4 {
         then 'trigger_je_découvre_univers_bv_part_tc'
         when name ='Triger8Upsell_cartouche' and camp_type ='Email'
         then 'Trigger_Upsell_cartouche'
-        when name ='Trigger_Crossell' and camp_type ='Email'
+        when name ='Trigger_crossell' and camp_type ='Email'
         then 'trigger_cross_sell'
         when name ='trigger_upsell_ink' and camp_type ='Email'
         then 'Trigger_Upsell_cartouche'
