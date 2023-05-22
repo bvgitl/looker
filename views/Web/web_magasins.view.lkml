@@ -17,4 +17,12 @@ view: web_magasins {
     label: "Nom Magasin"
   }
 
+  dimension: Enseigne {
+    type: string
+    primary_key: yes
+    sql: ${TABLE}.Enseigne_nom ;;
+    label: "Enseigne"
+    hidden: yes
+  }
+
 }
