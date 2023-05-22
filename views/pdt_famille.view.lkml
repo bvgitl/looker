@@ -585,7 +585,7 @@ FULL JOIN
 
   dimension: enseigne {
     type: string
-    sql: ${TABLE}.Enseigne_nom ;;
+    sql: ${TABLE}.Enseigne ;;
     view_label: "Magasins (actuel)"
   }
 
