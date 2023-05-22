@@ -303,7 +303,9 @@ SELECT DISTINCT
     v.Val_Achat_Gbl_sn3,
     v.Qtite_sn3,
     v.ca_ht_sn3,
-    v.marge_brute_sn3
+    v.marge_brute_sn3,
+
+    v.Enseigne_nom as Enseigne
 
 FROM AllVente v
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
@@ -579,6 +581,12 @@ FULL JOIN
     type: number
     sql: ${TABLE}.Typ_Vente ;;
     view_label: "Ventes"
+  }
+
+  dimension: enseigne {
+    type: string
+    sql: ${TABLE}.Enseigne_nom ;;
+    view_label: "Magasins (actuel)"
   }
 
   dimension: pays_vente {
