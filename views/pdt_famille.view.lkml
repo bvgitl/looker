@@ -305,7 +305,7 @@ SELECT DISTINCT
     v.ca_ht_sn3,
     v.marge_brute_sn3,
 
-    v.Enseigne_nom as Enseigne
+    m.Enseigne_nom as Enseigne
 
 FROM AllVente v
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
