@@ -72,6 +72,8 @@ explore: pdt_vente {}
 
 explore: pdt_famille {}
 
+explore: pdt_famille_2 {} # Pour data studio
+
 explore: data_quality_ventes_google_sheet {}
 
 explore: sql_runner_query {}
