@@ -729,6 +729,10 @@ AND v.Typ_Vente = 0
           END ;;
     view_label: "Ventes"
     group_label: "Année N"
+    link: {
+      label: "Detail CA par magasin"
+      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille"
+    }
   }
 
   measure: sum_stock_mois {
