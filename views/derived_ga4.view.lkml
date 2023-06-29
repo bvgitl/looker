@@ -15,32 +15,47 @@ view: derived_ga4 {
         )
 
         select
-        case when name = 'Pro2'
+        case when name = 'Pro2' and camp_type ='Email'
         then 'Email_Pro_2_190122'
-        when name = 'fevrier1-part'
+        when name = 'fevrier1-part' and camp_type ='Email'
         then 'Email_Cartouches_PART_020222'
-        when name = 'fevrier1-pro'
+        when name = 'fevrier1-pro' and camp_type ='Email'
         then 'Email_Cartouches_PRO_020222'
-        when name = 'demenagement-Andrezieux'
+        when name = 'demenagement-Andrezieux' and camp_type ='Email'
         then 'Email_Local_Andrezieux_déménagement_271021'
-        when name = 'trigger_reste_engage_PART'
+        when name = 'trigger_reste_engage_PART' and camp_type ='Email'
         then 'trigger_je-reste_engage_PART_120122'
-        when name = 'trigger_reste_engage_PRO'
+        when name = 'trigger_reste_engage_PRO' and camp_type ='Email'
         then 'trigger_je-reste_engage_PRO'
-        when name = 'trigger_mag_informe'
+        when name = 'trigger_mag_informe' and camp_type ='Email'
         then 'trigger_mon_magasin_m_informe_connecte'
-        when name = 'trigger_mag_minforme'
+        when name = 'trigger_mag_minforme' and camp_type ='Email'
         then 'trigger_mon_magasin_m_informe_connecte'
-        when name = 'trigger_1_decouvre_univers_PRO'
+        when name = 'trigger_1_decouvre_univers_PRO' and camp_type ='Email'
         then  'trigger_je_découvre_univers_bv_pros_tc'
-        when name ='trigger_1_decouvre_univers_PART'
+        when name ='trigger_1_decouvre_univers_PART' and camp_type ='Email'
         then 'trigger_je_découvre_univers_bv_part_tc'
-        when name ='Triger8Upsell_cartouche'
+        when name ='Triger8Upsell_cartouche' and camp_type ='Email'
         then 'Trigger_Upsell_cartouche'
-        when name ='trigger_upsell_ink'
+        when name ='Trigger_crossell' and camp_type ='Email'
+        then 'trigger_cross_sell'
+        when name ='trigger_upsell_ink' and camp_type ='Email'
         then 'Trigger_Upsell_cartouche'
+        when name = 'novembre_BLACK-GREEN' and camp_type ='Email'
+        then 'Email_Novembre_Black Friday_201122_Email_Novembre_Black Friday_201122_Magasin'
+        when name = 'decembre_NOEL' and camp_type ='Email'
+        then 'Email_Novembre_Noel_281122_Magasin_Email_Novembre_Noel_281122_Magasin_Magasin_Horaire1'
+        when name = 'janvier1_TVAofferte' and camp_type ='Email'
+        then 'Email_Janvier1_TVA_offerte_020123_V2_Email_Janvier1_TVA_offerte_020123_V2_horaire1'
+        when name = 'janvier2_prixcoutant' and camp_type ='Email'
+        then 'Email_Janvier_Prix_coutant_160123​_Email_Janvier_Prix_coutant_160123​_Magasin'
+        when name = 'fevrier1_prixcoutant' and camp_type ='Email'
+        then 'Email_fevrier_prix_coutant_300123'
+        when name = 'janvier-2' and camp_type ='SMS'
+        then 'SMS_janvier3_PrixCoutant_160123'
+        when name = 'mai2_Impression' and camp_type ='Email'
+        then '150523_OpeNationale_mai2'
         else name end as name,
-
 
         count(distinct session_id) as session,
         sum(nouvelle_session) as nouvelle_session,
@@ -55,6 +70,8 @@ view: derived_ga4 {
         traffic_source.name,
         case when event_name = 'first_visit' then 1 else 0 end as nouvelle_session,
         case when ecommerce.purchase_revenue > 0 then 1 else 0 end as achat,
+        case when traffic_source.medium in ('CRM-email', 'email-interne','email', 'CRM_email') then 'Email'
+             when traffic_source.medium in ('CRM-sms', 'SMS-interne','SMS', 'CRM_sms','sms') then 'SMS' end as camp_type,
         ecommerce.transaction_id,
         ecommerce.purchase_revenue ,
 
@@ -62,9 +79,8 @@ view: derived_ga4 {
         max((select value.string_value from unnest(event_params) where key = 'session_engaged')) as session_engaged,
 
         from analytics
-        where (traffic_source.medium in ('CRM-email', 'email-interne','email', 'CRM_email')
-        and  traffic_source.source not in ('gevttfe', 'adesrv','beffei'))
-        group by  session_id, traffic_source.name, ecommerce.purchase_revenue, event_name, ecommerce.transaction_id--, event_date -- event_name,traffic_source.name,, user_pseudo_id, ecommerce.transaction_id, ecommerce.purchase_revenue, event_date
+        where traffic_source.medium not in ('gevttfe', 'adesrv','beffei')
+        group by  session_id, traffic_source.name, ecommerce.purchase_revenue, event_name, ecommerce.transaction_id, traffic_source.medium--, event_date -- event_name,traffic_source.name,, user_pseudo_id, ecommerce.transaction_id, ecommerce.purchase_revenue, event_date
         )
 
         group by  name -- event_date--,name --, medium, source_

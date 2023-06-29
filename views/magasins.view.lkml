@@ -399,6 +399,11 @@ view: magasins {
     sql_longitude:${longitude} ;;
   }
 
+  dimension: enseigne {
+    type: string
+    sql: ${TABLE}.Enseigne_nom ;;
+  }
+
   measure: count {
     type: count
     drill_fields: []
