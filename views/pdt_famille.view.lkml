@@ -977,7 +977,7 @@ FULL JOIN
     group_label: "Année N"
     link: {
       label: "Detail CA par magasin"
-      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille"
+      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille?qid=xju2CA4ondQbmjq4pd8uQ1"
     }
   }
 
