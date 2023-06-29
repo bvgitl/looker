@@ -976,8 +976,8 @@ FULL JOIN
     view_label: "Ventes"
     group_label: "Année N"
     link: {
-      label: "Detail CA par magasin"
-      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille?qid=xju2CA4ondQbmjq4pd8uQ1"
+      label: "City Metrics Explore"
+      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille?qid=3QkXg9rpz67sQ7zZPDW0Mw&origin_space=23&toggle=fil%2Cvis&vis_type=table"
     }
   }
 
