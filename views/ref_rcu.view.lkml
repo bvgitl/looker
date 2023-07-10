@@ -4,7 +4,9 @@ view: suivi_rcu {
 
   dimension: civilite {
     type: string
-    sql: ${TABLE}.civilite ;;
+    sql: case when ${TABLE}.civilite = 'MS' then 'Mme'
+              when ${TABLE}.civilite = 'anonymousf30bd9e04a' then null
+              else ${TABLE}.civilite end ;;
     drill_fields: [sheet_client*]
   }
 
