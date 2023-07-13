@@ -287,6 +287,14 @@ view: suivi_rcu {
 
   }
 
+  measure: count_optin_total {
+    type: count_distinct
+    sql: case when  ( ${email_rcu} is not null and ${optin_email} = '1') or  ( ( ${cell_phone} is not null or ${phone} is not null ) and ${optin_sms} = '1' ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
+
+  }
+
   measure: count_master {
     type: count_distinct
     sql: ${id_master} ;;
