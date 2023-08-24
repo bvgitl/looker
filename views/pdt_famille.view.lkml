@@ -251,6 +251,7 @@ SELECT DISTINCT
     m.TYP_MAG as TYP_MAG,
     m.Tranche_age as Anciennete,
     m.CD_Magasin as CD_Magasin,
+    m.CD_Logiciel as CD_Logiciel,
     m.Latitude,
     m.Longitude,
     m.Code_postal,
@@ -561,6 +562,13 @@ FULL JOIN
     type: string
     sql: ${TABLE}.CD_Magasin ;;
     view_label: "Magasins (actuel)"
+  }
+
+  dimension: cd_logiciel {
+    type: string
+    sql: ${TABLE}.CD_Logiciel ;;
+    view_label: "Magasins (actuel)"
+    label: "Code Externe Magasin"
   }
 
   dimension: article {
