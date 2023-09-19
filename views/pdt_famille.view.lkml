@@ -1306,7 +1306,7 @@ FULL JOIN
     type: sum
     value_format_name: eur
     sql: CASE
-            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
           END ;;
     view_label: "Ventes"
