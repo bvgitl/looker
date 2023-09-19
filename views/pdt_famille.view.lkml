@@ -1305,7 +1305,7 @@ FULL JOIN
   }
 
 
-  ############ calcul des KPIs à n-1 de la période sélectionnée au niveau du filtre ###############
+  ############ calcul des KPIs à n-2 de la période sélectionnée au niveau du filtre ###############
 
 
 
