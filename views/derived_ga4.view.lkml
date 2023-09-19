@@ -55,6 +55,10 @@ view: derived_ga4 {
         then 'SMS_janvier3_PrixCoutant_160123'
         when name = 'mai2_Impression' and camp_type ='Email'
         then '150523_OpeNationale_mai2'
+        when name = 'smsjuin2rembourse' and camp_type ='SMS'
+        then '26062023_Openationale_sms_juin2rembourse'
+        when name = 'juin-100pc-rembourse' and camp_type = 'Email'
+        then '26062023_Openationale_email_juin2rembourse'
         else name end as name,
 
         count(distinct session_id) as session,

@@ -4,7 +4,9 @@ view: suivi_rcu {
 
   dimension: civilite {
     type: string
-    sql: ${TABLE}.civilite ;;
+    sql: case when ${TABLE}.civilite = 'MS' then 'Mme'
+              when ${TABLE}.civilite = 'anonymousf30bd9e04a' then null
+              else ${TABLE}.civilite end ;;
     drill_fields: [sheet_client*]
   }
 
@@ -282,6 +284,14 @@ view: suivi_rcu {
     type: count_distinct
     sql: case when( ${cell_phone} is not null or ${phone} is not null ) and ${optin_sms} = '1'  then ${id_master} end  ;;
     drill_fields: [sheet_client*]
+
+  }
+
+  measure: count_optin_total {
+    type: count_distinct
+    sql: case when  ( ${email_rcu} is not null and ${optin_email} = '1') or  ( ( ${cell_phone} is not null or ${phone} is not null ) and ${optin_sms} = '1' ) then ${id_master} end  ;;
+    drill_fields: [sheet_client*]
+
 
   }
 
