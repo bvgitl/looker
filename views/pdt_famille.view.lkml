@@ -1437,7 +1437,7 @@ FULL JOIN
     label: "prog CA n-1"
     value_format_name: percent_2
     type: number
-    sql: 1.0 * (${sum_CA_select_mois}-${sum_CA_select_mois_N1})/NULLIF(${sum_CA_select_mois_N1},0);;
+    sql: 1.0 * (${sum_CA_select_mois_N1}-${sum_CA_select_mois_N2})/NULLIF(${sum_CA_select_mois_N2},0);;
     view_label: "Ventes"
     group_label: "Année N-1"
   }
@@ -1446,7 +1446,7 @@ FULL JOIN
     label: "prog Qte n-1"
     value_format_name: percent_2
     type: number
-    sql: 1.0 * (${sum_qte_select_mois}-${sum_qte_select_mois_N1})/NULLIF(${sum_qte_select_mois_N1},0);;
+    sql: 1.0 * (${sum_qte_select_mois_N1}-${sum_qte_select_mois_N2})/NULLIF(${sum_qte_select_mois_N2},0);;
     view_label: "Ventes"
     group_label: "Année N-1"
   }
@@ -1455,7 +1455,7 @@ FULL JOIN
     label: "prog marge n-1"
     value_format_name: percent_2
     type: number
-    sql:  1.0 * (${sum_marge_select_mois}-${sum_marge_select_mois_N1})/NULLIF(${sum_marge_select_mois_N1},0);;
+    sql:  1.0 * (${sum_marge_select_mois_N1}-${sum_marge_select_mois_N2})/NULLIF(${sum_marge_select_mois_N2},0);;
     view_label: "Ventes"
     group_label: "Année N-1"
   }
