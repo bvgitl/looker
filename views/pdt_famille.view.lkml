@@ -282,6 +282,10 @@ SELECT DISTINCT
     a.c_fournisseur as Code_Fournisseur,
     a.c_Reference_fournisseur  as Ref_Fournisseur,
     s.n_stock as stock,
+    s.n_pan as n_pan,
+    s.n_pvc_ht as n_pvc_ht,
+    s.n_tva as n_tva,
+    s.n_pvc as n_pvc,
     w.Nbre_commande as Nbre_commande,
     w.Quantite_commandee as Quantite_commandee,
     w.Tarif_Produit_HT as Tarif_Produit_HT,
@@ -725,6 +729,35 @@ FULL JOIN
     view_label: "Magasins (à date de vente)"
     label: "Code Postal histo Magasin"
   }
+
+  dimension: Prix_Achat_Net {
+    type: number
+    sql: ${TABLE}.n_pan ;;
+    view_label: "Article"
+    label: "Prix Achat Net"
+  }
+
+  dimension: Prix_Vente_HT{
+    type: number
+    sql: ${TABLE}.n_pvc_ht ;;
+    view_label: "Article"
+    label: "Prix Vente HT"
+  }
+
+  dimension: Taux_TVA {
+    type: number
+    sql: ${TABLE}.n_tva ;;
+    view_label: "Article"
+    label: "Taux TVA"
+  }
+
+  dimension: Prix_Vente_TTC {
+    type: number
+    sql: ${TABLE}.n_pvc ;;
+    view_label: "Article"
+    label: "Prix Vente TTC"
+  }
+
 
   set: detail {
     fields: [
