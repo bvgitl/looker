@@ -282,6 +282,7 @@ SELECT DISTINCT
     a.c_fournisseur as Code_Fournisseur,
     a.c_Reference_fournisseur  as Ref_Fournisseur,
     s.n_stock as stock,
+    s.date_modification as date_modification,
     s.n_pan as n_pan,
     s.n_pvc_ht as n_pvc_ht,
     s.n_tva as n_tva,
@@ -319,10 +320,10 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON a.c_Article = v.CD_Art
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
     ON  s.cd_acteur = v.CD_Magasin
     AND CAST(s.cd_article AS STRING) = v.CD_Article
-    AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
+    --AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
     AND v.Typ_Vente = 0
 FULL JOIN
 (
@@ -832,6 +833,19 @@ FULL JOIN
     view_label: "Article"
   }
 
+  dimension_group: date_modification {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.date_modification ;;
+    label: "Date Modifications"
+    view_label: "Stocks"
+  }
 
   dimension_group: dte_ouverture {
     type: time
