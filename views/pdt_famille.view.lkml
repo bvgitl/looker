@@ -236,8 +236,11 @@ SELECT DISTINCT
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
     arb.N4 as Niveau_4,
+    ad.c_noeud as c_N4,
     arb.N3_SousFamille as N3_SS_Famille,
+    left(cast(ad.c_noeud as string) , 4) as c_N3,
     arb.N2_Famille as N2_Famille,
+    left(cast(ad.c_noeud as string) , 2) as c_N2,
     arb.N1_Division as N1_Division,
     m.Nom_TBE as NOM,
     m.Type_TBE as Typ ,
@@ -314,17 +317,27 @@ SELECT DISTINCT
     m.Enseigne as Enseigne
 
 FROM AllVente v
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON a.c_Article = v.CD_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
-LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+    ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2
+    ON v.CD_Magasin = m2.CD_Magasin
+    AND m2.ScdDateDebut <= v.Dte_vte
+    AND v.Dte_vte < m2.ScdDateFin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
+    ON a.c_Article = v.CD_Article
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb
+    ON arb.CodeArticle = v.CD_Article
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
+    ON a.c_Marque = mq.cd_marque
+LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
+    ON   a.c_Fournisseur = f.c_fournisseur
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
     ON  s.cd_acteur = v.CD_Magasin
     AND CAST(s.cd_article AS STRING) = v.CD_Article
     --AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
     AND v.Typ_Vente = 0
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARBO_DWH` ad
+    ON ad.l_noeud = arb.N4
 FULL JOIN
 (
     SELECT
@@ -374,15 +387,33 @@ FULL JOIN
     view_label: "N4"
   }
 
+  dimension: code_N4{
+    type: string
+    sql: ${TABLE}.c_N4 ;;
+    view_label: "N4"
+  }
+
   dimension: n3_ss_famille {
     type: string
     sql: ${TABLE}.N3_SS_Famille ;;
     view_label: "N3"
   }
 
+  dimension: code_ss_famille {
+    type: string
+    sql: ${TABLE}.c_N3 ;;
+    view_label: "N3"
+  }
+
   dimension: n2_famille {
     type: string
     sql: ${TABLE}.N2_Famille ;;
+    view_label: "N2"
+  }
+
+  dimension: code_famille {
+    type: string
+    sql: ${TABLE}.c_N2 ;;
     view_label: "N2"
   }
 
