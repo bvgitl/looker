@@ -878,7 +878,7 @@ FULL JOIN
   dimension_group: dte_vte {
     type: time
     timeframes: [
-      raw, date, week, month, month_name, quarter, year,
+      raw, date, week, week_of_year, month, month_name, quarter, year,
       fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
     ]
     convert_tz: no
