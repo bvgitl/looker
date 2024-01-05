@@ -16,6 +16,7 @@ WITH Vente AS
         sum(Val_Achat_Gbl) as Val_Achat_Gbl,
         sum(Qtite) as Qtite,
         sum(ca_ht) as ca_ht,
+        --sum(ca_net) as ca_ttc,
         sum(marge_brute) as marge_brute,
         MAX(StatutBcp) AS StatutBcp,
         MIN(StatutGoogleSheet) AS StatutGoogleSheet
@@ -30,6 +31,7 @@ WITH Vente AS
             Val_Achat_Gbl,
             Qtite,
             ca_ht,
+            --ca_net,
             marge_brute,
             'BCP reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
@@ -44,6 +46,7 @@ WITH Vente AS
             VAL_ACHAT_GBL as Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
+            --null as ca_net,
             MARGE_BRUTE as marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet renseignée' AS StatutGoogleSheet
@@ -58,6 +61,7 @@ WITH Vente AS
             null AS Val_Achat_Gbl,
             null AS Qtite,
             null AS ca_ht,
+            --null AS ca_net,
             null AS marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
@@ -176,21 +180,25 @@ AllVente AS
         v_sn0.Val_Achat_Gbl as Val_Achat_Gbl,
         v_sn0.Qtite as Qtite,
         v_sn0.ca_ht as ca_ht,
+        --v_sn0.ca_ttc as ca_ttc,
         v_sn0.marge_brute as marge_brute,
 
         v_sn1.Val_Achat_Gbl as Val_Achat_Gbl_sn1,
         v_sn1.Qtite as Qtite_sn1,
         v_sn1.ca_ht as ca_ht_sn1,
+        --v_sn1.ca_ttc as ca_ttc_sn1,
         v_sn1.marge_brute as marge_brute_sn1,
 
         v_sn2.Val_Achat_Gbl as Val_Achat_Gbl_sn2,
         v_sn2.Qtite as Qtite_sn2,
         v_sn2.ca_ht as ca_ht_sn2,
+        --v_sn2.ca_ttc as ca_ttc_sn2,
         v_sn2.marge_brute as marge_brute_sn2,
 
         v_sn3.Val_Achat_Gbl as Val_Achat_Gbl_sn3,
         v_sn3.Qtite as Qtite_sn3,
         v_sn3.ca_ht as ca_ht_sn3,
+        --v_sn3.ca_ttc as ca_ttc_sn3,
         v_sn3.marge_brute as marge_brute_sn3
 
     FROM AllVenteArticle a
@@ -236,11 +244,11 @@ SELECT DISTINCT
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
     arb.N4 as Niveau_4,
-    ad.c_noeud as c_N4,
+    --ad.c_noeud as c_N4,
     arb.N3_SousFamille as N3_SS_Famille,
-    left(cast(ad.c_noeud as string) , 4) as c_N3,
+    --left(cast(ad.c_noeud as string) , 4) as c_N3,
     arb.N2_Famille as N2_Famille,
-    left(cast(ad.c_noeud as string) , 2) as c_N2,
+    --left(cast(ad.c_noeud as string) , 2) as c_N2,
     arb.N1_Division as N1_Division,
     m.Nom_TBE as NOM,
     m.Type_TBE as Typ ,
@@ -297,21 +305,25 @@ SELECT DISTINCT
     v.Val_Achat_Gbl,
     v.Qtite,
     v.ca_ht,
+    --v.ca_ttc,
     v.marge_brute,
 
     v.Val_Achat_Gbl_sn1,
     v.Qtite_sn1,
     v.ca_ht_sn1,
+    --v.ca_ttc_sn1,
     v.marge_brute_sn1,
 
     v.Val_Achat_Gbl_sn2,
     v.Qtite_sn2,
     v.ca_ht_sn2,
+    --v.ca_ttc_sn2,
     v.marge_brute_sn2,
 
     v.Val_Achat_Gbl_sn3,
     v.Qtite_sn3,
     v.ca_ht_sn3,
+    --v.ca_ttc_sn3,
     v.marge_brute_sn3,
 
     m.Enseigne as Enseigne
@@ -387,11 +399,11 @@ FULL JOIN
     view_label: "N4"
   }
 
-  dimension: code_N4{
-    type: string
-    sql: ${TABLE}.c_N4 ;;
-    view_label: "N4"
-  }
+  #dimension: code_N4{
+  #  type: string
+  #  sql: ${TABLE}.c_N4 ;;
+  #  view_label: "N4"
+  #}
 
   dimension: n3_ss_famille {
     type: string
@@ -399,11 +411,11 @@ FULL JOIN
     view_label: "N3"
   }
 
-  dimension: code_ss_famille {
-    type: string
-    sql: ${TABLE}.c_N3 ;;
-    view_label: "N3"
-  }
+  #dimension: code_ss_famille {
+  #  type: string
+  #  sql: ${TABLE}.c_N3 ;;
+  #  view_label: "N3"
+  #}
 
   dimension: n2_famille {
     type: string
@@ -411,11 +423,11 @@ FULL JOIN
     view_label: "N2"
   }
 
-  dimension: code_famille {
-    type: string
-    sql: ${TABLE}.c_N2 ;;
-    view_label: "N2"
-  }
+  #dimension: code_famille {
+  #  type: string
+  #  sql: ${TABLE}.c_N2 ;;
+  #  view_label: "N2"
+  #}
 
   dimension: n1_division {
     type: string
@@ -671,6 +683,12 @@ FULL JOIN
     sql: ${TABLE}.ca_ht ;;
     view_label: "Ventes"
   }
+
+  #dimension: ca_ttc {
+  #  type: number
+  #  sql: ${TABLE}.ca_ttc ;;
+  #  view_label: "Ventes"
+  #}
 
   dimension: marge_brute {
     type: number
