@@ -1085,6 +1085,22 @@ FULL JOIN
     }
   }
 
+  measure: sum_CA_TTC_select_mois {
+    type: sum
+    value_format_name: eur
+    label: "CA TTC"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+    link: {
+      label: "City Metrics Explore"
+      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille?qid=3QkXg9rpz67sQ7zZPDW0Mw&origin_space=23&toggle=fil%2Cvis&vis_type=table"
+    }
+  }
+
   measure: sum_stock_mois {
     type: sum
     value_format_name: eur
@@ -1267,6 +1283,18 @@ FULL JOIN
     sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+  measure: sum_CA_TTC_select_mois_N1 {
+    label: "CA TTC n-1"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
           END ;;
     view_label: "Ventes"
     group_label: "Année N-1"
