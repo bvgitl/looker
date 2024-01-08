@@ -9,6 +9,10 @@ WITH Vente AS
         Typ_Vente,
         CD_Article,
         CD_Article_Original,
+        --CD_Niv_1,
+        --CD_Niv_2,
+        --CD_Niv_3,
+        --concat(CD_Niv_2, CD_Niv_3) as CD_Niv_4,
         /*EXTRACT(YEAR FROM Dte_Vte) AS Year,*/
         CAST(FORMAT_DATE("%G", Dte_Vte) AS INT) AS Year,
         CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
@@ -28,6 +32,9 @@ WITH Vente AS
             Typ_Vente,
             CD_Article,
             CD_Article_Original,
+           -- CD_Niv_1,
+           -- CD_Niv_2,
+           -- CD_Niv_3,
             Val_Achat_Gbl,
             Qtite,
             ca_ht,
@@ -43,6 +50,9 @@ WITH Vente AS
             TYP_VENTE,
             COALESCE(ID_ARTICLE, '0') AS ID_ARTICLE,
             COALESCE(ID_ARTICLE, '0') AS CD_Article_Original,
+            --null as CD_Niv_1,
+           -- null as CD_Niv_2,
+           -- null as CD_Niv_3,
             VAL_ACHAT_GBL as Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
@@ -58,6 +68,9 @@ WITH Vente AS
             0 AS TYP_VENTE,
             '0' AS ID_ARTICLE,
             '0' AS CD_Article_Original,
+            --null as CD_Niv_1,
+            --null as CD_Niv_2,
+            --null as CD_Niv_3,
             null AS Val_Achat_Gbl,
             null AS Qtite,
             null AS ca_ht,
@@ -82,7 +95,7 @@ WITH Vente AS
             AND gs.DTE_VENTE = mf.DateFichier
         )
     )
-    GROUP BY 1,2,3,4,5
+    GROUP BY 1,2,3,4,5,6,7,8
 ),
 AllDateVente AS
 (
@@ -244,10 +257,12 @@ SELECT DISTINCT
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
     arb.N4 as Niveau_4,
-    --ad.c_noeud as c_N4,
+    --CONCAT(v.CD_Niv_3, v.CD_Niv_4) as Code_Niveau4,
     arb.N3_SousFamille as N3_SS_Famille,
+    --v.CD_Niv_3 as Code_SS_Famille,
     --left(cast(ad.c_noeud as string) , 4) as c_N3,
     arb.N2_Famille as N2_Famille,
+    --v.CD_Niv_2 as Code_Famille,
     --left(cast(ad.c_noeud as string) , 2) as c_N2,
     arb.N1_Division as N1_Division,
     m.Nom_TBE as NOM,
@@ -348,8 +363,6 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
     AND CAST(s.cd_article AS STRING) = v.CD_Article
     --AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
     AND v.Typ_Vente = 0
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARBO_DWH` ad
-    ON ad.l_noeud = arb.N4
 FULL JOIN
 (
     SELECT
@@ -401,7 +414,7 @@ FULL JOIN
 
   #dimension: code_N4{
   #  type: string
-  #  sql: ${TABLE}.c_N4 ;;
+  #  sql: ${TABLE}.Code_Niveau4, ;;
   #  view_label: "N4"
   #}
 
@@ -413,7 +426,7 @@ FULL JOIN
 
   #dimension: code_ss_famille {
   #  type: string
-  #  sql: ${TABLE}.c_N3 ;;
+  #  sql: ${TABLE}.Code_SS_Famille, ;;
   #  view_label: "N3"
   #}
 
@@ -425,7 +438,7 @@ FULL JOIN
 
   #dimension: code_famille {
   #  type: string
-  #  sql: ${TABLE}.c_N2 ;;
+  #  sql: ${TABLE}.Code_Famille, ;;
   #  view_label: "N2"
   #}
 
@@ -1300,6 +1313,7 @@ FULL JOIN
     group_label: "Année N-1"
   }
 
+
   measure: sum_marge_select_mois_N1 {
     label: "Marge n-1"
     type: sum
@@ -1440,6 +1454,18 @@ FULL JOIN
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: sum_CA_TTC_select_mois_N2 {
+    label: "CA TTC n-2"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
           END ;;
     view_label: "Ventes"
     group_label: "Année N-2"
