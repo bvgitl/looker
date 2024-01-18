@@ -257,13 +257,14 @@ SELECT DISTINCT
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
     arb.N4 as Niveau_4,
+    ad.c_noeud as Code_Niveau4,
     --CONCAT(v.CD_Niv_3, v.CD_Niv_4) as Code_Niveau4,
     arb.N3_SousFamille as N3_SS_Famille,
     --v.CD_Niv_3 as Code_SS_Famille,
-    --left(cast(ad.c_noeud as string) , 4) as c_N3,
+    left(cast(ad.c_noeud as string) , 4) as Code_SS_Famille,
     arb.N2_Famille as N2_Famille,
     --v.CD_Niv_2 as Code_Famille,
-    --left(cast(ad.c_noeud as string) , 2) as c_N2,
+    left(cast(ad.c_noeud as string) , 2) as Code_Famille,
     arb.N1_Division as N1_Division,
     m.Nom_TBE as NOM,
     m.Type_TBE as Typ ,
@@ -363,6 +364,9 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
     AND CAST(s.cd_article AS STRING) = v.CD_Article
     --AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
     AND v.Typ_Vente = 0
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` ad
+    ON ad.c_article = v.CD_Article
+    AND ad.c_arbre = 1
 FULL JOIN
 (
     SELECT
@@ -412,11 +416,11 @@ FULL JOIN
     view_label: "N4"
   }
 
-  #dimension: code_N4{
-  #  type: string
-  #  sql: ${TABLE}.Code_Niveau4, ;;
-  #  view_label: "N4"
-  #}
+  dimension: code_N4{
+    type: string
+    sql: ${TABLE}.Code_Niveau4 ;;
+    view_label: "N4"
+  }
 
   dimension: n3_ss_famille {
     type: string
@@ -424,11 +428,11 @@ FULL JOIN
     view_label: "N3"
   }
 
-  #dimension: code_ss_famille {
-  #  type: string
-  #  sql: ${TABLE}.Code_SS_Famille, ;;
-  #  view_label: "N3"
-  #}
+  dimension: code_ss_famille {
+    type: string
+    sql: ${TABLE}.Code_SS_Famille ;;
+    view_label: "N3"
+  }
 
   dimension: n2_famille {
     type: string
@@ -436,11 +440,11 @@ FULL JOIN
     view_label: "N2"
   }
 
-  #dimension: code_famille {
-  #  type: string
-  #  sql: ${TABLE}.Code_Famille, ;;
-  #  view_label: "N2"
-  #}
+  dimension: code_famille {
+    type: string
+    sql: ${TABLE}.Code_Famille ;;
+    view_label: "N2"
+  }
 
   dimension: n1_division {
     type: string
