@@ -256,9 +256,14 @@ SELECT DISTINCT
     a.c_Gencode as Gencode,
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
+    a.b_Export_Web as Export_web,
     arb.N4 as Niveau_4,
     ad.c_noeud as Code_Niveau4,
     --CONCAT(v.CD_Niv_3, v.CD_Niv_4) as Code_Niveau4,
+    --CASE
+    --  WHEN v.CD_Article LIKE 'HB%' and v.CD_Article_Original LIKE '8%' THEN a.l_Article_long
+    --  ELSE arb.N3_SousFamille
+    --END as N3_SS_Famille,
     arb.N3_SousFamille as N3_SS_Famille,
     --v.CD_Niv_3 as Code_SS_Famille,
     left(cast(ad.c_noeud as string) , 4) as Code_SS_Famille,
@@ -407,6 +412,12 @@ FULL JOIN
   dimension: gencode {
     type: string
     sql: ${TABLE}.Gencode ;;
+    view_label: "Article"
+  }
+
+  dimension: Export_web {
+    type: string
+    sql: ${TABLE}.Export_web ;;
     view_label: "Article"
   }
 
