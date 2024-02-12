@@ -1,5 +1,5 @@
 view: ref_magasin {
-  sql_table_name: `bv-prod.looker_pg.ref_magasin`
+  sql_table_name: `bv-prod.Matillion_Perm_Table.Magasins`
     ;;
 
   dimension: animateur {
