@@ -260,11 +260,14 @@ SELECT DISTINCT
     arb.N4 as Niveau_4,
     ad.c_noeud as Code_Niveau4,
     --CONCAT(v.CD_Niv_3, v.CD_Niv_4) as Code_Niveau4,
-    --CASE
-    --  WHEN v.CD_Article LIKE 'HB%' and v.CD_Article_Original LIKE '8%' THEN a.l_Article_long
-    --  ELSE arb.N3_SousFamille
-    --END as N3_SS_Famille,
-    arb.N3_SousFamille as N3_SS_Famille,
+    CASE
+      WHEN v.CD_Article LIKE 'HB%'
+        --and v.CD_Article_Original LIKE '8%'
+        AND a.l_Article_long NOT LIKE 'ARTICLE GENERIQUE HORS ARBO SS FAMILLE%'
+        THEN a.l_Article_long
+      ELSE arb.N3_SousFamille
+    END as N3_SS_Famille,
+    --arb.N3_SousFamille as N3_SS_Famille,
     --v.CD_Niv_3 as Code_SS_Famille,
     left(cast(ad.c_noeud as string) , 4) as Code_SS_Famille,
     arb.N2_Famille as N2_Famille,
