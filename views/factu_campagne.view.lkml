@@ -12,7 +12,7 @@ view: Factu_campagne {
 
   dimension: camp_type {
     type: string
-    sql: ${TABLE}.camp_type ;;
+    sql: ${TABLE}.type_campagne ;;
     drill_fields: [sheet_factu*]
     suggest_persist_for: "2 seconds"
   }
