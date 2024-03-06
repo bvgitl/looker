@@ -138,7 +138,7 @@ explore: article_dwh{
     sql_on: ${marques.cd_marque}=${article_dwh.c_marque} ;;
   }
   join: stock_utd {
-    type: left_outer
+    type: inner
     relationship: many_to_one
     sql_on: ${stock_utd.CodeActeur}=${magasins.cd_magasin}
     AND  ${stock_utd.CodeArticle}=${article_dwh.c_article};;
