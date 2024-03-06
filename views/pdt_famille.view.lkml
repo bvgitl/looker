@@ -9,6 +9,10 @@ WITH Vente AS
         Typ_Vente,
         CD_Article,
         CD_Article_Original,
+        --CD_Niv_1,
+        --CD_Niv_2,
+        --CD_Niv_3,
+        --concat(CD_Niv_2, CD_Niv_3) as CD_Niv_4,
         /*EXTRACT(YEAR FROM Dte_Vte) AS Year,*/
         CAST(FORMAT_DATE("%G", Dte_Vte) AS INT) AS Year,
         CAST(FORMAT_DATE("%V", Dte_Vte) AS INT) AS WeekNumber,
@@ -16,6 +20,7 @@ WITH Vente AS
         sum(Val_Achat_Gbl) as Val_Achat_Gbl,
         sum(Qtite) as Qtite,
         sum(ca_ht) as ca_ht,
+        sum(ca_net) as ca_ttc,
         sum(marge_brute) as marge_brute,
         MAX(StatutBcp) AS StatutBcp,
         MIN(StatutGoogleSheet) AS StatutGoogleSheet
@@ -27,9 +32,13 @@ WITH Vente AS
             Typ_Vente,
             CD_Article,
             CD_Article_Original,
+           -- CD_Niv_1,
+           -- CD_Niv_2,
+           -- CD_Niv_3,
             Val_Achat_Gbl,
             Qtite,
             ca_ht,
+            ca_net,
             marge_brute,
             'BCP reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
@@ -41,9 +50,13 @@ WITH Vente AS
             TYP_VENTE,
             COALESCE(ID_ARTICLE, '0') AS ID_ARTICLE,
             COALESCE(ID_ARTICLE, '0') AS CD_Article_Original,
+            --null as CD_Niv_1,
+           -- null as CD_Niv_2,
+           -- null as CD_Niv_3,
             VAL_ACHAT_GBL as Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
+            null as ca_net,
             MARGE_BRUTE as marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet renseignée' AS StatutGoogleSheet
@@ -55,9 +68,13 @@ WITH Vente AS
             0 AS TYP_VENTE,
             '0' AS ID_ARTICLE,
             '0' AS CD_Article_Original,
+            --null as CD_Niv_1,
+            --null as CD_Niv_2,
+            --null as CD_Niv_3,
             null AS Val_Achat_Gbl,
             null AS Qtite,
             null AS ca_ht,
+            null AS ca_net,
             null AS marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
@@ -78,7 +95,7 @@ WITH Vente AS
             AND gs.DTE_VENTE = mf.DateFichier
         )
     )
-    GROUP BY 1,2,3,4,5
+    GROUP BY 1,2,3,4,5,6,7,8
 ),
 AllDateVente AS
 (
@@ -176,21 +193,25 @@ AllVente AS
         v_sn0.Val_Achat_Gbl as Val_Achat_Gbl,
         v_sn0.Qtite as Qtite,
         v_sn0.ca_ht as ca_ht,
+        v_sn0.ca_ttc as ca_ttc,
         v_sn0.marge_brute as marge_brute,
 
         v_sn1.Val_Achat_Gbl as Val_Achat_Gbl_sn1,
         v_sn1.Qtite as Qtite_sn1,
         v_sn1.ca_ht as ca_ht_sn1,
+        v_sn1.ca_ttc as ca_ttc_sn1,
         v_sn1.marge_brute as marge_brute_sn1,
 
         v_sn2.Val_Achat_Gbl as Val_Achat_Gbl_sn2,
         v_sn2.Qtite as Qtite_sn2,
         v_sn2.ca_ht as ca_ht_sn2,
+        v_sn2.ca_ttc as ca_ttc_sn2,
         v_sn2.marge_brute as marge_brute_sn2,
 
         v_sn3.Val_Achat_Gbl as Val_Achat_Gbl_sn3,
         v_sn3.Qtite as Qtite_sn3,
         v_sn3.ca_ht as ca_ht_sn3,
+        v_sn3.ca_ttc as ca_ttc_sn3,
         v_sn3.marge_brute as marge_brute_sn3
 
     FROM AllVenteArticle a
@@ -235,9 +256,23 @@ SELECT DISTINCT
     a.c_Gencode as Gencode,
     a.c_Validite_1 as Statut_article,
     a.c_Origine as Origine,
+    a.b_Export_Web as Export_web,
     arb.N4 as Niveau_4,
-    arb.N3_SousFamille as N3_SS_Famille,
+    ad.c_noeud as Code_Niveau4,
+    --CONCAT(v.CD_Niv_3, v.CD_Niv_4) as Code_Niveau4,
+    CASE
+      WHEN v.CD_Article LIKE 'HB%'
+        --and v.CD_Article_Original LIKE '8%'
+        AND a.l_Article_long NOT LIKE 'ARTICLE GENERIQUE HORS ARBO SS FAMILLE%'
+        THEN a.l_Article_long
+      ELSE arb.N3_SousFamille
+    END as N3_SS_Famille,
+    --arb.N3_SousFamille as N3_SS_Famille,
+    --v.CD_Niv_3 as Code_SS_Famille,
+    left(cast(ad.c_noeud as string) , 4) as Code_SS_Famille,
     arb.N2_Famille as N2_Famille,
+    --v.CD_Niv_2 as Code_Famille,
+    left(cast(ad.c_noeud as string) , 2) as Code_Famille,
     arb.N1_Division as N1_Division,
     m.Nom_TBE as NOM,
     m.Type_TBE as Typ ,
@@ -282,6 +317,11 @@ SELECT DISTINCT
     a.c_fournisseur as Code_Fournisseur,
     a.c_Reference_fournisseur  as Ref_Fournisseur,
     s.n_stock as stock,
+    s.date_modification as date_modification,
+    s.n_pan as n_pan,
+    s.n_pvc_ht as n_pvc_ht,
+    s.n_tva as n_tva,
+    s.n_pvc as n_pvc,
     w.Nbre_commande as Nbre_commande,
     w.Quantite_commandee as Quantite_commandee,
     w.Tarif_Produit_HT as Tarif_Produit_HT,
@@ -289,37 +329,52 @@ SELECT DISTINCT
     v.Val_Achat_Gbl,
     v.Qtite,
     v.ca_ht,
+    v.ca_ttc,
     v.marge_brute,
 
     v.Val_Achat_Gbl_sn1,
     v.Qtite_sn1,
     v.ca_ht_sn1,
+    v.ca_ttc_sn1,
     v.marge_brute_sn1,
 
     v.Val_Achat_Gbl_sn2,
     v.Qtite_sn2,
     v.ca_ht_sn2,
+    v.ca_ttc_sn2,
     v.marge_brute_sn2,
 
     v.Val_Achat_Gbl_sn3,
     v.Qtite_sn3,
     v.ca_ht_sn3,
+    v.ca_ttc_sn3,
     v.marge_brute_sn3,
 
     m.Enseigne as Enseigne
 
 FROM AllVente v
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m ON m.CD_Magasin = v.CD_Magasin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2 ON v.CD_Magasin = m2.CD_Magasin AND m2.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < m2.ScdDateFin
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a ON a.c_Article = v.CD_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb ON arb.CodeArticle = v.CD_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq ON a.c_Marque = mq.cd_marque
-LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f ON   a.c_Fournisseur = f.c_fournisseur
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_Histo` s
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
+    ON m.CD_Magasin = v.CD_Magasin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins_Histo` m2
+    ON v.CD_Magasin = m2.CD_Magasin
+    AND m2.ScdDateDebut <= v.Dte_vte
+    AND v.Dte_vte < m2.ScdDateFin
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
+    ON a.c_Article = v.CD_Article
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb
+    ON arb.CodeArticle = v.CD_Article
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
+    ON a.c_Marque = mq.cd_marque
+LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
+    ON   a.c_Fournisseur = f.c_fournisseur
+LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
     ON  s.cd_acteur = v.CD_Magasin
     AND CAST(s.cd_article AS STRING) = v.CD_Article
-    AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
+    --AND s.ScdDateDebut <= v.Dte_vte AND v.Dte_vte < s.ScdDateFin
     AND v.Typ_Vente = 0
+LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` ad
+    ON ad.c_article = v.CD_Article
+    AND ad.c_arbre = 1
 FULL JOIN
 (
     SELECT
@@ -363,9 +418,21 @@ FULL JOIN
     view_label: "Article"
   }
 
+  dimension: Export_web {
+    type: string
+    sql: ${TABLE}.Export_web ;;
+    view_label: "Article"
+  }
+
   dimension: niveau_4 {
     type: string
     sql: ${TABLE}.Niveau_4 ;;
+    view_label: "N4"
+  }
+
+  dimension: code_N4{
+    type: string
+    sql: ${TABLE}.Code_Niveau4 ;;
     view_label: "N4"
   }
 
@@ -375,9 +442,21 @@ FULL JOIN
     view_label: "N3"
   }
 
+  dimension: code_ss_famille {
+    type: string
+    sql: ${TABLE}.Code_SS_Famille ;;
+    view_label: "N3"
+  }
+
   dimension: n2_famille {
     type: string
     sql: ${TABLE}.N2_Famille ;;
+    view_label: "N2"
+  }
+
+  dimension: code_famille {
+    type: string
+    sql: ${TABLE}.Code_Famille ;;
     view_label: "N2"
   }
 
@@ -636,6 +715,12 @@ FULL JOIN
     view_label: "Ventes"
   }
 
+  dimension: ca_ttc {
+    type: number
+    sql: ${TABLE}.ca_ttc ;;
+    view_label: "Ventes"
+  }
+
   dimension: marge_brute {
     type: number
     sql: ${TABLE}.marge_brute ;;
@@ -726,6 +811,35 @@ FULL JOIN
     label: "Code Postal histo Magasin"
   }
 
+  dimension: Prix_Achat_Net {
+    type: number
+    sql: ${TABLE}.n_pan ;;
+    view_label: "Article"
+    label: "Prix Achat Net"
+  }
+
+  dimension: Prix_Vente_HT{
+    type: number
+    sql: ${TABLE}.n_pvc_ht ;;
+    view_label: "Article"
+    label: "Prix Vente HT"
+  }
+
+  dimension: Taux_TVA {
+    type: number
+    sql: ${TABLE}.n_tva ;;
+    view_label: "Article"
+    label: "Taux TVA"
+  }
+
+  dimension: Prix_Vente_TTC {
+    type: number
+    sql: ${TABLE}.n_pvc ;;
+    view_label: "Article"
+    label: "Prix Vente TTC"
+  }
+
+
   set: detail {
     fields: [
       designation,
@@ -799,6 +913,19 @@ FULL JOIN
     view_label: "Article"
   }
 
+  dimension_group: date_modification {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.date_modification ;;
+    label: "Date Modifications"
+    view_label: "Stocks"
+  }
 
   dimension_group: dte_ouverture {
     type: time
@@ -831,7 +958,7 @@ FULL JOIN
   dimension_group: dte_vte {
     type: time
     timeframes: [
-      raw, date, week, month, month_name, quarter, year,
+      raw, date, week, week_of_year, month, month_name, quarter, year,
       fiscal_month_num, fiscal_quarter, fiscal_quarter_of_year, fiscal_year
     ]
     convert_tz: no
@@ -980,6 +1107,22 @@ FULL JOIN
     sql: CASE
             WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N"
+    link: {
+      label: "City Metrics Explore"
+      url: "https://bureauvallee.cloud.looker.com/embed/explore/bureauvallee_prod/pdt_famille?qid=3QkXg9rpz67sQ7zZPDW0Mw&origin_space=23&toggle=fil%2Cvis&vis_type=table"
+    }
+  }
+
+  measure: sum_CA_TTC_select_mois {
+    type: sum
+    value_format_name: eur
+    label: "CA TTC"
+    sql: CASE
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
           END ;;
     view_label: "Ventes"
     group_label: "Année N"
@@ -1176,6 +1319,19 @@ FULL JOIN
     group_label: "Année N-1"
   }
 
+  measure: sum_CA_TTC_select_mois_N1 {
+    label: "CA TTC n-1"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-1"
+  }
+
+
   measure: sum_marge_select_mois_N1 {
     label: "Marge n-1"
     type: sum
@@ -1316,6 +1472,18 @@ FULL JOIN
     sql: CASE
             WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${ca_ht}
+          END ;;
+    view_label: "Ventes"
+    group_label: "Année N-2"
+  }
+
+  measure: sum_CA_TTC_select_mois_N2 {
+    label: "CA TTC n-2"
+    type: sum
+    value_format_name: eur
+    sql: CASE
+            WHEN {% condition date_filter_2 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
+            THEN ${ca_ttc}
           END ;;
     view_label: "Ventes"
     group_label: "Année N-2"

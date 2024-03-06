@@ -1,5 +1,6 @@
 view: Factu_campagne {
-  sql_table_name: `bv-prod.looker_pg.factu_campagne`
+  #sql_table_name: `bv-prod.looker_pg.factu_campagne`
+  sql_table_name: `bv-prod.CRM_Stats.factu_campagne`
     ;;
 
   dimension: camp_name {
@@ -11,7 +12,7 @@ view: Factu_campagne {
 
   dimension: camp_type {
     type: string
-    sql: ${TABLE}.camp_type ;;
+    sql: ${TABLE}.type_campagne ;;
     drill_fields: [sheet_factu*]
     suggest_persist_for: "2 seconds"
   }
@@ -20,6 +21,11 @@ view: Factu_campagne {
     type: string
     sql: ${TABLE}.customer_id ;;
   }
+
+  #dimension: id_rcu {
+  #  type: string
+  #  sql: ${TABLE}.id_rcu ;;
+  #}
 
   dimension_group: dte_camp {
     type: time
