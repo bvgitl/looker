@@ -897,8 +897,8 @@ LEFT JOIN Commande AS c_sn3
     label: "CA Drive"
     sql: CASE
            WHEN ${cd_magasin} IN ('BV331','BV452')
-           THEN ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
-           ELSE (${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000
+           THEN (${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000
+           ELSE ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
           END ;;
     view_label: "Web"
     group_label: "Année N"
