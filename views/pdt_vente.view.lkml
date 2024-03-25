@@ -895,11 +895,7 @@ LEFT JOIN Commande AS c_sn3
     type: number
     value_format_name: eur
     label: "CA Drive"
-    sql: CASE
-           WHEN ${cd_magasin} IN ('BV331','BV452')
-           THEN (${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000
-           ELSE ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
-          END ;;
+    sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
     view_label: "Web"
     group_label: "Année N"
   }
@@ -1000,7 +996,7 @@ LEFT JOIN Commande AS c_sn3
       sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nb_ticket}
-          END ;;
+           END ;;
       view_label: "Clients"
       group_label: "Année N-1"
     }
