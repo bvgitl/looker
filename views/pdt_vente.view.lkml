@@ -895,11 +895,7 @@ LEFT JOIN Commande AS c_sn3
     type: number
     value_format_name: eur
     label: "CA Drive"
-    sql: CASE
-          WHEN ${cd_magasin} IN ('BV331','BV452')
-          THEN NULLIF(((${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000),0)
-          ELSE ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
-         END ;;
+    sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
     view_label: "Web"
     group_label: "Année N"
   }
