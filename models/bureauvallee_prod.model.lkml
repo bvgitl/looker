@@ -78,6 +78,7 @@ explore: data_quality_ventes_google_sheet {}
 
 explore: sql_runner_query {}
 
+explore: tableau_mensuel_optin {}
 #explore: log_bcp {}
 #explore: log_bcp_landing {}
 
