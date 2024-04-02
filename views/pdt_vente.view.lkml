@@ -603,6 +603,12 @@ LEFT JOIN Commande AS c_sn3
       ]
     }
 
+    filter: cd_mag {
+      label: "CD Magasin"
+      type: string
+      view_label: "CD_magasin"
+    }
+
     filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
       label: "Période n"
       type: date
@@ -896,7 +902,7 @@ LEFT JOIN Commande AS c_sn3
     value_format_name: eur
     label: "CA Drive"
     sql:  CASE
-            WHEN ${cd_magasin} IN ('BV331','BV452')
+            WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
             THEN (${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000
             ELSE ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
            END ;;
@@ -1059,7 +1065,7 @@ LEFT JOIN Commande AS c_sn3
       value_format_name: eur
       label: "CA Drive n-1"
       sql: CASE
-            WHEN ${cd_magasin} IN ('BV331','BV452')
+            WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
             THEN (${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1}) * 8.38 / 1000
             ELSE ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1}
            END ;;
@@ -1204,7 +1210,7 @@ LEFT JOIN Commande AS c_sn3
       value_format_name: eur
       label: "CA Drive n-2"
       sql: CASE
-            WHEN ${cd_magasin} IN ('BV331','BV452')
+             WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
             THEN (${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2}) * 8.38 / 1000
             ELSE ${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2}
            END ;;
