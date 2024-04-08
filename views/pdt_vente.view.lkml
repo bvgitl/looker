@@ -901,11 +901,7 @@ LEFT JOIN Commande AS c_sn3
     type: number
     value_format_name: eur
     label: "CA Drive"
-    sql:  CASE
-            WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
-            THEN (${sum_total_ht_select_mois} + ${sum_livraison_select_mois}) * 8.38 / 1000
-            ELSE ${sum_total_ht_select_mois} + ${sum_livraison_select_mois}
-           END ;;
+    sql:  ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
     view_label: "Web"
     group_label: "Année N"
   }
@@ -1064,11 +1060,7 @@ LEFT JOIN Commande AS c_sn3
       type: number
       value_format_name: eur
       label: "CA Drive n-1"
-      sql: CASE
-            WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
-            THEN (${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1}) * 8.38 / 1000
-            ELSE ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1}
-           END ;;
+      sql: ${sum_total_ht_select_mois_N1} + ${sum_livraison_select_mois_N1} ;;
       view_label: "Web"
       group_label: "Année N-1"
     }
@@ -1209,11 +1201,7 @@ LEFT JOIN Commande AS c_sn3
       type: number
       value_format_name: eur
       label: "CA Drive n-2"
-      sql: CASE
-             WHEN {% condition cd_mag %} IN ('BV331','BV452') {% endcondition %}
-            THEN (${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2}) * 8.38 / 1000
-            ELSE ${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2}
-           END ;;
+      sql: ${sum_total_ht_select_mois_N2} + ${sum_livraison_select_mois_N2} ;;
       view_label: "Web"
       group_label: "Année N-2"
     }
