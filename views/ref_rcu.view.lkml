@@ -10,6 +10,12 @@ view: suivi_rcu {
   #  drill_fields: [sheet_client*]
   #}
 
+  dimension: Carte_Fid {
+    type: string
+    sql: ${TABLE}.loyalty_id ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: Animateur {
     type: string
     sql: ${TABLE}.Animateur ;;
