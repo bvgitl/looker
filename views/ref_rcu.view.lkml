@@ -10,11 +10,6 @@ view: suivi_rcu {
   #  drill_fields: [sheet_client*]
   #}
 
-  dimension: Carte_Fid {
-    type: string
-    sql: ${TABLE}.loyalty_id ;;
-    drill_fields: [sheet_client*]
-  }
 
   dimension: Animateur {
     type: string
@@ -22,6 +17,13 @@ view: suivi_rcu {
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
+
+  dimension: Carte_Fid {
+    type: string
+    sql: ${TABLE}.loyalty_id ;;
+    drill_fields: [sheet_client*]
+  }
+
 
   dimension: customer_id {
     type: string
@@ -41,6 +43,21 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension_group: dt_creation_carte_fid {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: cast(${TABLE}.loyalty_date as DATE) ;;
+    drill_fields: [sheet_client*]
+  }
 
   dimension_group: dt_creation_retail {
     type: time
