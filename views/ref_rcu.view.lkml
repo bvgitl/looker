@@ -198,6 +198,13 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: store_fid {
+    type: string
+    sql: ${TABLE}.store  ;;
+    suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
+  }
+
   dimension: store_code{
     type: string
     sql: ${TABLE}.store_code  ;;
