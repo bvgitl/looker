@@ -262,6 +262,12 @@ view: suivi_rcu {
   }
 
 
+  measure: count_carte_fid {
+    type: count_distinct
+    sql: case when ${Carte_Fid} is not null then ${id_master} end ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count_email {
     type: count_distinct
     sql: case when ${email_rcu} is not null  then ${id_master} end ;;
