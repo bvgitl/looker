@@ -37,6 +37,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: validity_Fid {
+    type: string
+    sql: ${TABLE}.validity ;;
+    drill_fields: [sheet_client*]
+  }
+
   dimension: phone {
     type: string
     sql: ${TABLE}.phone ;;
