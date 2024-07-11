@@ -277,7 +277,7 @@ view: suivi_rcu {
 
   measure: count_carte_fid {
     type: count_distinct
-    sql: case when ${Carte_Fid} is not null then ${id_master} end ;;
+    sql: ${Carte_Fid} ;;
     drill_fields: [sheet_client*]
   }
 
