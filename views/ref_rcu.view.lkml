@@ -281,6 +281,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  measure: count_store_fid {
+    type: count_distinct
+    sql: ${store_fid} ;;
+    drill_fields: [sheet_client*]
+  }
+
   measure: count_email {
     type: count_distinct
     sql: case when ${email_rcu} is not null  then ${id_master} end ;;
