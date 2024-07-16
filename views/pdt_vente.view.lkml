@@ -603,6 +603,12 @@ LEFT JOIN Commande AS c_sn3
       ]
     }
 
+    filter: cd_mag {
+      label: "CD Magasin"
+      type: string
+      view_label: "CD_magasin"
+    }
+
     filter: date_filter {                 ### Choisir la période qu'on souhaite obtenir les résultats###
       label: "Période n"
       type: date
@@ -895,7 +901,7 @@ LEFT JOIN Commande AS c_sn3
     type: number
     value_format_name: eur
     label: "CA Drive"
-    sql: ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
+    sql:  ${sum_total_ht_select_mois} + ${sum_livraison_select_mois} ;;
     view_label: "Web"
     group_label: "Année N"
   }
@@ -996,7 +1002,7 @@ LEFT JOIN Commande AS c_sn3
       sql: CASE
             WHEN {% condition date_filter_1 %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${nb_ticket}
-          END ;;
+           END ;;
       view_label: "Clients"
       group_label: "Année N-1"
     }
