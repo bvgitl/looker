@@ -18,6 +18,13 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: Animateur_Fid {
+    type: string
+    sql: ${TABLE}.Fid_Animateur ;;
+    suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
+  }
+
   dimension: Carte_Fid {
     type: string
     sql: ${TABLE}.loyalty_id ;;
@@ -204,6 +211,13 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
+  dimension: store_code{
+    type: string
+    sql: ${TABLE}.store_code  ;;
+    suggest_persist_for: "2 seconds"
+    drill_fields: [sheet_client*]
+  }
+
   dimension: store_fid {
     type: string
     sql: ${TABLE}.store  ;;
@@ -211,9 +225,9 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: store_code{
+  dimension: store_name_fid {
     type: string
-    sql: ${TABLE}.store_code  ;;
+    sql: ${TABLE}.store_name  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
