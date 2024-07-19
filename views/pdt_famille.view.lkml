@@ -1137,7 +1137,7 @@ FULL JOIN
     value_format_name: decimal_0
     label: "Stock"
     sql: CASE
-            WHEN {% condition date_filter %} CAST(${date_modification_date} AS TIMESTAMP)  {% endcondition %}
+            WHEN {% condition date_filter %} CAST(${dte_vte_date} AS TIMESTAMP)  {% endcondition %}
             THEN ${stock}
           END ;;
     view_label: "Stocks"
