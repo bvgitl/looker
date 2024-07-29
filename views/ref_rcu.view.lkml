@@ -1,5 +1,5 @@
 view: suivi_rcu {
-  sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker`
+  sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker_Fid`
     ;;
 
   #dimension: civilite {
