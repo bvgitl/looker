@@ -52,6 +52,13 @@ explore: suivi_rcu {
   }
 }
 
+explore: suivi_fid {
+  join: ref_magasin {
+    relationship: one_to_many
+    sql_on: ${ref_magasin.cd_magasin} = ${suivi_fid.store_fid} ;;
+  }
+}
+
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
