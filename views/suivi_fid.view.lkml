@@ -49,6 +49,10 @@ view: suivi_fid {
     sql: ${store_fid} ;;
   }
 
+  measure: count_email_fid {
+    type: count_distinct
+    sql: ${email_fid} ;;
+  }
 }
 
 # view: suivi_fid {
