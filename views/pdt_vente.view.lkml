@@ -23,10 +23,10 @@ WITH Vente AS
             CD_Magasin,
             Dte_Vte,
             Typ_Vente,
-            Val_Achat_Gbl,
+            CASE WHEN ABS(marge_brute) > 1000000 THEN 0 ELSE Val_Achat_Gbl END AS Val_Achat_Gbl,
             Qtite,
             ca_ht,
-            marge_brute,
+            CASE WHEN ABS(marge_brute) > 1000000 THEN 0 ELSE marge_brute END AS marge_brute,
             'BCP reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
@@ -35,10 +35,10 @@ WITH Vente AS
             CODE_ACTEUR AS CD_Magasin,
             DTE_VENTE,
             TYP_VENTE,
-            VAL_ACHAT_GBL AS Val_Achat_Gbl,
+            CASE WHEN ABS(MARGE_BRUTE) > 1000000 THEN 0 ELSE VAL_ACHAT_GBL END AS Val_Achat_Gbl,
             QTITE AS Qtite,
             CA_HT AS ca_ht,
-            MARGE_BRUTE AS marge_brute,
+            CASE WHEN ABS(MARGE_BRUTE) > 1000000 THEN 0 ELSE MARGE_BRUTE END AS marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet renseignée' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`

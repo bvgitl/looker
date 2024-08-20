@@ -365,8 +365,7 @@ view: suivi_rcu {
 
   measure: count_retail_seul{
     type: count_distinct
-    sql: case when (${dt_creation_web_date} is null AND ${dt_creation_retail_date} is not null )
-                  OR (${dt_creation_web_date} is null AND  ${dt_creation_retail_date} is null)
+    sql: case when ${dt_creation_web_date} is null AND ${dt_creation_retail_date} is not null
               then ${id_master}
               end ;;
     drill_fields: [sheet_client*]
