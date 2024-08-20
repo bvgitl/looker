@@ -275,7 +275,7 @@ LEFT JOIN Commande AS c_sn3
 
  ;;
 
-      persist_for: "2 hours"
+      persist_for: "1 hours"
     }
 
     measure: count {
