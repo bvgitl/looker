@@ -396,7 +396,7 @@ FULL JOIN
 
  ;;
 
-    persist_for: "2 hours"
+    persist_for: "1 hours"
   }
 
 
