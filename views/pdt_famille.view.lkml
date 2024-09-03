@@ -35,11 +35,11 @@ WITH Vente AS
            -- CD_Niv_1,
            -- CD_Niv_2,
            -- CD_Niv_3,
-            CASE WHEN ABS(marge_brute) > 1000000 THEN 0 ELSE Val_Achat_Gbl END AS Val_Achat_Gbl,
+            CASE WHEN ABS(marge_brute) > 100000 THEN 0 ELSE Val_Achat_Gbl END AS Val_Achat_Gbl,
             Qtite,
             ca_ht,
             ca_net,
-            CASE WHEN ABS(marge_brute) > 1000000 THEN 0 ELSE marge_brute END AS marge_brute,
+            CASE WHEN ABS(marge_brute) > 100000 THEN 0 ELSE marge_brute END AS marge_brute,
             'BCP reçu' AS StatutBcp,
             'GoogleSheet vierge' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
@@ -53,11 +53,11 @@ WITH Vente AS
             --null as CD_Niv_1,
            -- null as CD_Niv_2,
            -- null as CD_Niv_3,
-            CASE WHEN ABS(MARGE_BRUTE) > 1000000 THEN 0 ELSE VAL_ACHAT_GBL END AS Val_Achat_Gbl,
+            CASE WHEN ABS(MARGE_BRUTE) > 100000 THEN 0 ELSE VAL_ACHAT_GBL END AS Val_Achat_Gbl,
             QTITE as Qtite ,
             CA_HT as ca_ht,
             null as ca_net,
-            CASE WHEN ABS(MARGE_BRUTE) > 1000000 THEN 0 ELSE MARGE_BRUTE END AS marge_brute,
+            CASE WHEN ABS(MARGE_BRUTE) > 100000 THEN 0 ELSE MARGE_BRUTE END AS marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet renseignée' AS StatutGoogleSheet
         FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
