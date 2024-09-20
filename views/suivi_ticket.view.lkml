@@ -2,26 +2,23 @@ view: suivi_ticket {
 
   sql_table_name: `bv-dev-305812.Matillion_Perm_Table.Tickets` ;;
 
-  dimension: client_id {
-    primary_key: yes
-    type: number
-    sql: ${TABLE}.customer_id ;;
-  }
-
-  dimension: magasin_id {
-    primary_key: yes
-    type: number
-    sql: ${TABLE}.c_magasin ;;
-  }
-
   dimension: ticket_id {
     primary_key: yes
     type: number
     sql: ${TABLE}.doc_no ;;
   }
 
+  dimension: client_id {
+    type: number
+    sql: ${TABLE}.customer_id ;;
+  }
+
+  dimension: magasin_id {
+    type: number
+    sql: ${TABLE}.c_magasin ;;
+  }
+
   dimension: code_article {
-    primary_key: yes
     type: number
     sql: ${TABLE}.sku ;;
   }

@@ -59,6 +59,8 @@ explore: suivi_fid {
   }
 }
 
+explore: suivi_ticket {}
+
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
