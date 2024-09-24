@@ -42,10 +42,21 @@ view: suivi_ticket {
     sql: ${TABLE}.quantity ;;
   }
 
-  dimension: cd_article {
-    type: string
-    sql: ${TABLE}.CD_Article ;;
+  measure: count_client_id {
+    type: count_distinct
+    sql: ${client_id} ;;
   }
+
+  measure: count_code_article {
+    type: count_distinct
+    sql: ${code_article} ;;
+  }
+
+  measure: count_ticket {
+    type: count_distinct
+    sql: ${ticket_id} ;;
+  }
+
 
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
