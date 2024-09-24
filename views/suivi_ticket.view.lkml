@@ -38,6 +38,15 @@ view: suivi_ticket {
     sql: cast(${TABLE}.doc_date as DATE) ;;
   }
 
+  dimension: qtite {
+    sql: ${TABLE}.quantity ;;
+  }
+
+  dimension: cd_article {
+    type: string
+    sql: ${TABLE}.CD_Article ;;
+  }
+
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
   #
