@@ -153,6 +153,7 @@ SELECT DISTINCT
     m.Tranche_age AS Anciennete,
     m.CD_Magasin AS CD_Magasin,
     m.CD_Logiciel AS CD_Logiciel,
+    m.Editeur,
     m.Latitude,
     m.Longitude,
     m2.Animateur AS Animateur_histo,
@@ -296,6 +297,13 @@ LEFT JOIN Commande AS c_sn3
     sql: ${TABLE}.CD_Logiciel ;;
     view_label: "Magasins (actuel)"
     label: "Code Externe Magasin"
+  }
+
+  dimension: editeur {
+    type: string
+    sql: ${TABLE}.Editeur;;
+    view_label: "Editeur de caisse mag"
+    label: "Editeur mag"
   }
 
     dimension: animateur {
