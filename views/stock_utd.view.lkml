@@ -61,6 +61,14 @@ view: stock_utd {
     label: "Stock"
   }
 
+  measure : StockMax {
+    type: max
+    value_format_name: decimal_0
+    sql: ${n_stock} ;;
+    view_label: "Stock (courant)"
+    label: "Stock Max"
+  }
+
   measure: StockValeur {
     type: sum
     value_format_name: decimal_0
