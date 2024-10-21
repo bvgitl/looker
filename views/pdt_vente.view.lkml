@@ -302,8 +302,8 @@ LEFT JOIN Commande AS c_sn3
   dimension: editeur {
     type: string
     sql: ${TABLE}.Editeur;;
-    view_label: "Editeur de caisse mag"
-    label: "Editeur mag"
+    view_label: "Magasins (actuel)"
+    label: "Editeur"
   }
 
     dimension: animateur {

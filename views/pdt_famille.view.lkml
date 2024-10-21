@@ -350,7 +350,8 @@ SELECT DISTINCT
     v.ca_ttc_sn3,
     v.marge_brute_sn3,
 
-    m.Enseigne as Enseigne
+    m.Enseigne as Enseigne,
+    m.Editeur as Editeur
 
 FROM AllVente v
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Magasins` m
@@ -673,6 +674,12 @@ FULL JOIN
   dimension: enseigne {
     type: string
     sql: ${TABLE}.Enseigne ;;
+    view_label: "Magasins (actuel)"
+  }
+
+  dimension: editeur {
+    type: string
+    sql: ${TABLE}.Editeur ;;
     view_label: "Magasins (actuel)"
   }
 
