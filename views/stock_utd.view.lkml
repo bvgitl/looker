@@ -53,6 +53,14 @@ view: stock_utd {
     sql: ${TABLE}.date_modification ;;
   }
 
+  measure : NbMagStock {
+    type: count_distinct
+    value_format_name: decimal_0
+    sql: ${CodeActeur};;
+    view_label: "Stock (courant)"
+    label: "NbMagasin Stock"
+  }
+
   measure: Stock {
     type: sum
     value_format_name: decimal_0
@@ -69,6 +77,7 @@ view: stock_utd {
     label: "Stock Max"
   }
 
+
   measure: StockValeur {
     type: sum
     value_format_name: decimal_0
@@ -76,6 +85,5 @@ view: stock_utd {
     view_label: "Stock (courant)"
     label: "Stock Valeur"
   }
-
 
 }
