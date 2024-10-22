@@ -1,6 +1,6 @@
 view: suivi_ticket {
 
-  sql_table_name: `bv-dev-305812.Matillion_Perm_Table.Tickets` ;;
+  sql_table_name: `bv-prod.Matillion_Perm_Table.Tickets` ;;
 
   dimension: ticket_id {
     primary_key: yes
