@@ -32,7 +32,7 @@ view: stock_utd {
 
   dimension: n_stock {
     type: number
-    hidden:  yes
+    hidden:  no
     sql: ${TABLE}.n_stock ;;
   }
 
