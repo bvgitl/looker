@@ -38,6 +38,13 @@ view: suivi_ticket {
     sql: cast(${TABLE}.doc_date as DATE) ;;
   }
 
+  dimension: canal_vente {
+    type: string
+    sql: ${TABLE}.sales_channel ;;
+  }
+
+
+
   dimension: qtite {
     sql: ${TABLE}.quantity ;;
   }
