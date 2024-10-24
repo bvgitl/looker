@@ -1,5 +1,5 @@
 view: suivi_rcu {
-  sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker`
+  sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker_all`
     ;;
 
   #dimension: civilite {
@@ -18,19 +18,6 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: Animateur_Fid {
-    type: string
-    sql: ${TABLE}.Fid_Animateur ;;
-    suggest_persist_for: "2 seconds"
-    drill_fields: [sheet_client*]
-  }
-
-  dimension: Carte_Fid {
-    type: string
-    sql: ${TABLE}.loyalty_id ;;
-    drill_fields: [sheet_client*]
-  }
-
 
   dimension: customer_id {
     type: string
@@ -44,33 +31,12 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  dimension: validity_Fid {
-    type: string
-    sql: ${TABLE}.validity ;;
-    drill_fields: [sheet_client*]
-  }
-
   dimension: phone {
     type: string
     sql: ${TABLE}.phone ;;
     drill_fields: [sheet_client*]
   }
 
-  dimension_group: dt_creation_carte_fid {
-    type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    convert_tz: no
-    datatype: date
-    sql: cast(${TABLE}.loyalty_date as DATE) ;;
-    drill_fields: [sheet_client*]
-  }
 
   dimension_group: dt_creation_retail {
     type: time
@@ -194,6 +160,16 @@ view: suivi_rcu {
     sql: ${TABLE}.id_master ;;
   }
 
+  dimension: id_retail {
+    type: string
+    sql: ${TABLE}.id_retail ;;
+  }
+
+  dimension: id_web {
+    type: string
+    sql: ${TABLE}.id_web ;;
+  }
+
   dimension: lastname {
     type: string
     sql: ${TABLE}.lastname ;;
@@ -214,13 +190,6 @@ view: suivi_rcu {
   dimension: store_code{
     type: string
     sql: ${TABLE}.store_code  ;;
-    suggest_persist_for: "2 seconds"
-    drill_fields: [sheet_client*]
-  }
-
-  dimension: store_fid {
-    type: string
-    sql: ${TABLE}.store  ;;
     suggest_persist_for: "2 seconds"
     drill_fields: [sheet_client*]
   }
@@ -286,19 +255,6 @@ view: suivi_rcu {
          when (${dt_creation_web_date} is not null AND ${dt_creation_retail_date} is not null )
               then "Mixte"
               end;;
-  }
-
-
-  measure: count_carte_fid {
-    type: count_distinct
-    sql: ${Carte_Fid} ;;
-    drill_fields: [sheet_client*]
-  }
-
-  measure: count_store_fid {
-    type: count_distinct
-    sql: ${store_fid} ;;
-    drill_fields: [sheet_client*]
   }
 
   measure: count_email {
