@@ -59,7 +59,13 @@ explore: suivi_fid {
   }
 }
 
-explore: suivi_ticket {}
+explore: suivi_ticket {
+  join: suivi_rcu {
+    type:  left_outer
+    relationship: many_to_one
+    sql_on: ${suivi_ticket.client_id} = CONCAT('10000',${suivi_rcu.id_retail}) ;;
+  }
+}
 
 explore: suivi_ga {}
 explore: ref_optin {}
