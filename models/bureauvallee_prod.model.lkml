@@ -63,7 +63,7 @@ explore: suivi_ticket {
   join: suivi_rcu {
     type:  left_outer
     relationship: many_to_one
-    sql_on: LTRIM(LTRIM(CAST(${suivi_ticket.client_id} AS INTEGER),1),0) = ${suivi_rcu.id_retail} ;;
+    sql_on: LTRIM(LTRIM(${suivi_ticket.client_id},'1'),'0') = ${suivi_rcu.id_retail} ;;
   }
 }
 
