@@ -4,7 +4,7 @@ view: suivi_ticket {
 
   dimension: ticket_id {
     primary_key: yes
-    type: number
+    type: string
     sql: ${TABLE}.doc_no ;;
   }
 
