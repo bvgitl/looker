@@ -43,7 +43,15 @@ view: suivi_ticket {
     sql: ${TABLE}.sales_channel ;;
   }
 
+  dimension: prix_vente {
+    type: number
+    sql:  ${TABLE}.app_sales_price_TTC ;;
+  }
 
+  dimension: statut {
+    type:  string
+    sql:  ${TABLE}.item_status ;;
+  }
 
   dimension: qtite {
     sql: ${TABLE}.quantity ;;
