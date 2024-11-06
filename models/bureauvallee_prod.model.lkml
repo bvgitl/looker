@@ -65,6 +65,11 @@ explore: suivi_ticket {
     relationship: many_to_one
     sql_on: LTRIM(LTRIM(CAST(${suivi_ticket.client_id} AS STRING),'1'),'0') = ${suivi_rcu.id_retail} ;;
   }
+  join: article_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_arbo.cd_article}=${suivi_ticket.code_article} ;;
+  }
 }
 
 explore: suivi_ga {}
