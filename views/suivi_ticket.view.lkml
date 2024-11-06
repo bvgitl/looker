@@ -19,7 +19,7 @@ view: suivi_ticket {
   }
 
   dimension: code_article {
-    type: number
+    type: string
     sql: ${TABLE}.sku ;;
   }
 
