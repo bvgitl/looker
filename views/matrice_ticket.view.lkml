@@ -78,6 +78,11 @@ GROUP BY
     persist_for: "1 hours"
   }
 
+  dimension: primary_key {
+    primary_key: yes
+    sql: CONCAT(${TABLE}.CD_Magasin, '~', ${TABLE}.Ticket_Date, '~', ${TABLE}.Sales_Channel, '~', ${TABLE}.N1_Division_A, '~', ${TABLE}.N1_Division_B) ;;
+  }
+
   dimension: CD_Magasin {
     type: string
     sql: ${TABLE}.CD_Magasin ;;
