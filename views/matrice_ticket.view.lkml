@@ -12,7 +12,7 @@ WITH AnalysisAxes AS
   FROM `bv-prod.Matillion_Perm_Table.Tickets` t
   LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arbo ON arbo.CodeArticle = t.CD_Article
   WHERE t.sales_type = 0
-and t.doc_date = '2024-10-22'
+/*and t.doc_date = '2024-10-22'*/
 ),
 CrossAnalysisAxes AS
 (
@@ -39,7 +39,7 @@ TicketsAggregated AS
   FROM `bv-prod.Matillion_Perm_Table.Tickets` t
   LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arbo ON arbo.CodeArticle = t.CD_Article
   WHERE t.sales_type = 0
-and t.doc_date = '2024-10-22'
+/*and t.doc_date = '2024-10-22'*/
 )
 SELECT
   axes.CD_Magasin,
@@ -89,7 +89,7 @@ GROUP BY
   }
 
   dimension: Sales_Channel {
-    type: number
+    type: string
     sql: ${TABLE}.Sales_Channel ;;
   }
 
