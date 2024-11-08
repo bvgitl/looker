@@ -72,6 +72,13 @@ explore: suivi_ticket {
   }
 }
 
+explore: matrice_ticket {
+  join: ref_magasin {
+    relationship: one_to_many
+    sql_on: ${ref_magasin.cd_magasin} = ${matrice_ticket.CD_Magasin} ;;
+  }
+}
+
 explore: suivi_ga {}
 explore: ref_optin {}
 explore: ref_cmd_division {}
