@@ -145,7 +145,7 @@ GROUP BY
 
   measure: Correlation {
     type: number
-    sql: ${Correlation_Numerator} / ${Correlation_Denominator} ;;
+    sql: ${Correlation_Numerator} / NULLIF(${Correlation_Denominator}, 0) ;;
     value_format_name: percent_2
   }
 
