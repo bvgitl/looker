@@ -128,14 +128,14 @@ GROUP BY
     sql: ${TABLE}.Nb_Tickets_AB ;;
   }
 
-  dimension: Nb_Tickets_Comomn {
+  dimension: Nb_Tickets_Common {
     type: number
-    sql: ${TABLE}.Nb_Tickets_Comomn ;;
+    sql: ${TABLE}.Nb_Tickets_Common ;;
   }
 
   measure: Correlation_Numerator {
     type: sum
-    sql: ${Nb_Tickets_Comomn} ;;
+    sql: ${Nb_Tickets_Common} ;;
   }
 
   measure: Correlation_Denominator {
