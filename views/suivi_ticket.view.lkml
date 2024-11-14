@@ -77,7 +77,7 @@ view: suivi_ticket {
     sql: ${magasin_id} ;;
   }
 
-  measure: sum_ticket {
+  measure: avg_ticket {
     type: average
     sql_distinct_key: ${ticket_id} ;;
     sql: SUM(${prix_vente}) ;;
