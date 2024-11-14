@@ -72,6 +72,11 @@ view: suivi_ticket {
     sql: ${ticket_id} ;;
   }
 
+  measure: count_magasin {
+    type: count_distinct
+    sql: ${magasin_id} ;;
+  }
+
 
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
