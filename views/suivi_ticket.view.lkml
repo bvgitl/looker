@@ -74,6 +74,7 @@ view: suivi_ticket {
 
   measure: count_magasin {
     type: count_distinct
+    sql_distinct_key: ${dt_ticket_date} ;;
     sql: ${magasin_id} ;;
   }
 
