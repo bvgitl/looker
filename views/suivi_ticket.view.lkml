@@ -14,7 +14,7 @@ view: suivi_ticket {
   }
 
   dimension: magasin_id {
-    type: number
+    type: string
     sql: ${TABLE}.c_magasin ;;
   }
 
