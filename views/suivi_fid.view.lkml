@@ -1,6 +1,7 @@
 view: suivi_fid {
 
-   sql_table_name: `bv-prod.Cheetah_Export_Vue.WelcomeFid` ;;
+  #sql_table_name: `bv-prod.Cheetah_Export_Vue.WelcomeFid` ;;
+  sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker_Fid` ;;
 
    dimension: userId_fid {
      primary_key: yes
