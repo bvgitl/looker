@@ -3,7 +3,6 @@ view: suivi_ticket {
   sql_table_name: `bv-prod.Matillion_Perm_Table.Tickets` ;;
 
   dimension: ticket_id {
-    primary_key: yes
     type: string
     sql: ${TABLE}.doc_no ;;
   }
@@ -57,6 +56,11 @@ view: suivi_ticket {
     sql: ${TABLE}.quantity ;;
   }
 
+  measure: avg_qtite_par_ticket {
+    label: "Moyenne articles/ticket"
+    sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
+  }
+
   measure: count_client_id {
     type: count_distinct
     sql: ${client_id} ;;
@@ -76,7 +80,6 @@ view: suivi_ticket {
     type: count_distinct
     sql: ${magasin_id} ;;
   }
-
 
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
