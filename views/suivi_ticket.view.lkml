@@ -39,7 +39,7 @@ view: suivi_ticket {
 
   dimension: canal_vente {
     type: string
-    sql: ${TABLE}.sales_channel ;;
+    sql: IF ${TABLE}.sales_channel = 'S' THEN 'Mag' ELSE 'Web';;
   }
 
   dimension: prix_vente {
