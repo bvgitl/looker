@@ -61,6 +61,11 @@ view: suivi_ticket {
     sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
   }
 
+  measure: frequence_client {
+    label : "Frequence même client"
+    sql:  ROUND(${count_ticket}/${count_client_id},2) ;;
+  }
+
   measure: count_client_id {
     type: count_distinct
     sql: ${client_id} ;;
