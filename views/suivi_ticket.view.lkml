@@ -65,7 +65,7 @@ view: suivi_ticket {
     label: "Panier moyen"
     type: average_distinct
     sql_distinct_key: ${ticket_id} ;;
-    sql: $(${prix_vente};;
+    sql: ${prix_vente};;
   }
 
   measure: frequence_client {
