@@ -63,7 +63,7 @@ view: suivi_ticket {
 
   measure: avg_panier {
     label: "Panier moyen"
-    sql: ROUND(SUM(${prix_vente})/SUM(${qtite}),2);;
+    sql: ROUND(SUM(${prix_vente})/${count_ticket},2);;
   }
 
   measure: frequence_client {
