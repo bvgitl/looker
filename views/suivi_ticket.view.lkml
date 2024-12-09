@@ -61,6 +61,13 @@ view: suivi_ticket {
     sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
   }
 
+  measure: avg_panier {
+    label: "Panier moyen"
+    type: average_distinct
+    sql_distinct_key: ${ticket_id} ;;
+    sql: $(${prix_vente};;
+  }
+
   measure: frequence_client {
     label : "Frequence même client"
     sql:  ROUND(${count_ticket}/${count_client_id},2) ;;
