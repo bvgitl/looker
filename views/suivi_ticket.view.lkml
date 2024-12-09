@@ -63,7 +63,7 @@ view: suivi_ticket {
 
   measure: avg_panier {
     label: "Panier moyen"
-    sql: SELECT AVG(${prix_vente}) GROUP BY ${ticket_id};;
+    sql: AVG(${prix_vente}) GROUP BY ${ticket_id};;
   }
 
   measure: frequence_client {
