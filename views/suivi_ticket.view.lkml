@@ -53,6 +53,7 @@ view: suivi_ticket {
   }
 
   dimension: qtite {
+    type: number
     sql: ${TABLE}.quantity ;;
   }
 
