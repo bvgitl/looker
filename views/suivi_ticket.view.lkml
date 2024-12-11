@@ -57,21 +57,6 @@ view: suivi_ticket {
     sql: ${TABLE}.quantity ;;
   }
 
-  measure: avg_qtite_par_ticket {
-    label: "Moyenne articles/ticket"
-    sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
-  }
-
-  measure: avg_panier {
-    label: "Panier moyen"
-    sql: ROUND(SUM(${prix_vente})/${count_ticket},2);;
-  }
-
-  measure: frequence_client {
-    label : "Frequence même client"
-    sql:  ROUND(${count_ticket}/${count_client_id},2) ;;
-  }
-
   measure: count_client_id {
     type: count_distinct
     sql: ${client_id} ;;
@@ -90,6 +75,26 @@ view: suivi_ticket {
   measure: count_magasin {
     type: count_distinct
     sql: ${magasin_id} ;;
+  }
+
+  measure: avg_qtite_par_ticket {
+    label: "Moyenne articles/ticket"
+    sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
+  }
+
+  measure: avg_panier {
+    label: "Panier moyen"
+    sql: ROUND(SUM(${prix_vente})/${count_ticket},2);;
+  }
+
+  measure: avg_ca {
+    label: "CA moyen"
+    sql: ROUND(SUM(${prix_vente})/${count_client_id},2);;
+  }
+
+  measure: frequence_client {
+    label : "Frequence même client"
+    sql:  ROUND(${count_ticket}/${count_client_id},2) ;;
   }
 
   # # You can specify the table name if it's different from the view name:
