@@ -145,7 +145,7 @@ GROUP BY
 
   measure: Correlation_Denominator {
     type: sum
-    sql: ${Nb_Tickets_AB} ;;
+    sql: ${Nb_Tickets_A} ;;
   }
 
   measure: Correlation {
