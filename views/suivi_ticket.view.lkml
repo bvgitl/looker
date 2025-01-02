@@ -97,7 +97,7 @@ view: suivi_ticket {
   measure: sum_ca {
     label: "CA Total"
     type:  number
-    sql: SUM(${prix_vente} ;;
+    sql: SUM(${prix_vente}) ;;
   }
 
   measure: frequence_client {
