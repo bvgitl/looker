@@ -79,7 +79,8 @@ view: suivi_ticket {
 
   measure: avg_qtite_par_ticket {
     label: "Moyenne articles/ticket"
-    sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),0) ;;
+    type:  number
+    sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),1) ;;
   }
 
   measure: avg_panier {
@@ -89,7 +90,14 @@ view: suivi_ticket {
 
   measure: avg_ca {
     label: "CA moyen"
+    type: number
     sql: ROUND(SUM(${prix_vente})/${count_client_id},2);;
+  }
+
+  measure: sum_ca {
+    label: "CA Total"
+    type:  number
+    sql: SUM(${prix_vente} ;;
   }
 
   measure: frequence_client {
