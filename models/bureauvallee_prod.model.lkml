@@ -70,6 +70,11 @@ explore: suivi_ticket {
     relationship: many_to_one
     sql_on: ${article_arbo.cd_article}=${suivi_ticket.code_article} ;;
   }
+  join: article_dwh {
+    type:  left_outer
+    relationship: one_to_one
+    sql_on: ${article_dwh.c_article}=${suivi_ticket.code_article} ;;
+  }
 }
 
 explore: matrice_ticket {
