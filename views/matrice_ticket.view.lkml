@@ -90,7 +90,7 @@ GROUP BY
 
   dimension: Sales_Channel {
     type: string
-    sql: ${TABLE}.Sales_Channel ;;
+    sql: IF(${TABLE}.Sales_Channel = 'S','Mag','Web');;
   }
 
   dimension: N1_Division_A {
