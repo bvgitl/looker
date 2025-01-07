@@ -85,19 +85,19 @@ view: suivi_ticket {
 
   measure: avg_panier {
     label: "Panier moyen"
-    sql: ROUND(SUM(${prix_vente})/${count_ticket},2);;
+    sql: ROUND(SUM(${prix_vente})/${count_ticket},1);;
   }
 
   measure: avg_ca {
     label: "CA moyen"
     type: number
-    sql: ROUND(SUM(${prix_vente})/${count_client_id},2);;
+    sql: ROUND(SUM(${prix_vente})/${count_client_id},1);;
   }
 
   measure: sum_ca {
     label: "CA Total"
     type:  number
-    sql: ROUND(SUM(${prix_vente}),2) ;;
+    sql: ROUND(SUM(${prix_vente}),0) ;;
   }
 
   measure: frequence_client {
