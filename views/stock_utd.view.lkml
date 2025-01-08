@@ -36,6 +36,12 @@ view: stock_utd {
     sql: ${TABLE}.n_stock ;;
   }
 
+  dimension: Detention {
+    type: number
+    hidden:  yes
+    sql: CASE WHEN ${n_stock} > 0 THEN 1 ELSE 0 END ;;
+  }
+
   dimension_group: DateModification {
     type: time
     view_label: "Stock (courant)"
@@ -84,6 +90,13 @@ view: stock_utd {
     sql: ${n_stock} * ${article_dwh.n_prix_achat_net} ;;
     view_label: "Stock (courant)"
     label: "Stock Valeur"
+  }
+
+  measure: TauxDetention {
+    type: sum_distinct
+    sql_distinct_key: ${CodeActeur} ;;
+    sql:  ${Detention} ;;
+
   }
 
 }
