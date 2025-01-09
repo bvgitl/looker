@@ -42,9 +42,14 @@ view: suivi_ticket {
     sql: IF(${TABLE}.sales_channel = 'S','Mag','Web');;
   }
 
-  dimension: prix_vente {
+  dimension: prix_vente_TTC {
     type: number
     sql:  ${TABLE}.app_sales_price_TTC ;;
+  }
+
+  dimension: prix_vente_HT {
+    type: number
+    sql:  ${TABLE}.app_sales_price_HT ;;
   }
 
   dimension: statut {
@@ -83,21 +88,38 @@ view: suivi_ticket {
     sql: ROUND(SUM(${qtite})/NULLIF(${count_ticket},0),1) ;;
   }
 
-  measure: avg_panier {
+  measure: avg_panier_TTC {
     label: "Panier moyen"
-    sql: ROUND(SUM(${prix_vente})/${count_ticket},1);;
+    sql: ROUND(SUM(${prix_vente_TTC})/${count_ticket},1);;
   }
 
-  measure: avg_ca {
+  measure: avg_panier_HT {
+    label: "Panier moyen"
+    sql: ROUND(SUM(${prix_vente_HT})/${count_ticket},1);;
+  }
+
+  measure: avg_ca_TTC {
     label: "CA moyen"
     type: number
-    sql: ROUND(SUM(${prix_vente})/${count_client_id},1);;
+    sql: ROUND(SUM(${prix_vente_TTC})/${count_client_id},1);;
   }
 
-  measure: sum_ca {
+  measure: avg_ca_HT {
+    label: "CA moyen"
+    type: number
+    sql: ROUND(SUM(${prix_vente_HT})/${count_client_id},1);;
+  }
+
+  measure: sum_ca_TTC {
     label: "CA Total"
     type:  number
-    sql: ROUND(SUM(${prix_vente}),0) ;;
+    sql: ROUND(SUM(${prix_vente_TTC}),0) ;;
+  }
+
+  measure: sum_ca_HT {
+    label: "CA Total"
+    type:  number
+    sql: ROUND(SUM(${prix_vente_HT}),0) ;;
   }
 
   measure: frequence_client {
