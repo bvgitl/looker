@@ -89,35 +89,35 @@ view: suivi_ticket {
   }
 
   measure: avg_panier_TTC {
-    label: "Panier moyen"
+    label: "Panier moyen TTC"
     sql: ROUND(SUM(${prix_vente_TTC})/${count_ticket},1);;
   }
 
   measure: avg_panier_HT {
-    label: "Panier moyen"
+    label: "Panier moyen HT"
     sql: ROUND(SUM(${prix_vente_HT})/${count_ticket},1);;
   }
 
   measure: avg_ca_TTC {
-    label: "CA moyen"
+    label: "CA moyen TTC"
     type: number
     sql: ROUND(SUM(${prix_vente_TTC})/${count_client_id},1);;
   }
 
   measure: avg_ca_HT {
-    label: "CA moyen"
+    label: "CA moyen HT"
     type: number
     sql: ROUND(SUM(${prix_vente_HT})/${count_client_id},1);;
   }
 
   measure: sum_ca_TTC {
-    label: "CA Total"
+    label: "CA Total TTC"
     type:  number
     sql: ROUND(SUM(${prix_vente_TTC}),0) ;;
   }
 
   measure: sum_ca_HT {
-    label: "CA Total"
+    label: "CA Total HT"
     type:  number
     sql: ROUND(SUM(${prix_vente_HT}),0) ;;
   }
