@@ -45,6 +45,7 @@ explore: ref_campagne {
 explore: ref_magasin{}
 
 explore: ref_client_cmd {}
+
 explore: suivi_rcu {
   join: ref_magasin {
     relationship: one_to_many
@@ -77,8 +78,8 @@ explore: suivi_ticket {
   }
   join: suivi_fid {
     type: left_outer
-    relationship : many_to_one
-    sql_on: ${suivi_fid.email_fid}=${suivi_rcu.email_rcu} ;;
+    relationship: many_to_one
+    sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_fid.id_retail} ;;
   }
 }
 

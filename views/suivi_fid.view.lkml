@@ -11,7 +11,7 @@ view: suivi_fid {
 
   dimension: validity_fid {
     type: string
-    sql: sql: IF(${TABLE}.validity = '1','Oui','Non') ;;
+    sql: sql: IF(${TABLE}.validity = 1,'Oui','Non') ;;
   }
 
   dimension: store_fid {
@@ -22,6 +22,11 @@ view: suivi_fid {
   dimension: email_fid {
     type: string
     sql: ${TABLE}.email ;;
+  }
+
+  dimension: id_retail {
+    type: string
+    sql: ${TABLE}.id_retail ;;
   }
 
   #
