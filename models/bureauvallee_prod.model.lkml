@@ -61,7 +61,7 @@ explore: suivi_fid {
 
 explore: suivi_ticket {
   join: suivi_rcu {
-    type:  left_outer
+    type: left_outer
     relationship: many_to_one
     sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_rcu.id_retail} ;;
   }
@@ -71,9 +71,14 @@ explore: suivi_ticket {
     sql_on: ${article_arbo.cd_article}=${suivi_ticket.code_article} ;;
   }
   join: article_dwh {
-    type:  left_outer
+    type: left_outer
     relationship: one_to_one
     sql_on: ${article_dwh.c_article}=${suivi_ticket.code_article} ;;
+  }
+  join: suivi_fid {
+    type: left_outer
+    relationship : many_to_one
+    sql_on: ${suivi_fid.email_fid}=${suivi_rcu.email_rcu} ;;
   }
 }
 
