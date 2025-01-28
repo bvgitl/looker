@@ -76,10 +76,10 @@ explore: suivi_ticket {
     relationship: one_to_one
     sql_on: ${article_dwh.c_article}=${suivi_ticket.code_article} ;;
   }
-  join: suivi_fid {
+  join: suivi_fid_email {
     type: left_outer
     relationship: many_to_one
-    sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_fid.id_retail} ;;
+    sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_fid_email.id_retail} ;;
   }
 }
 

@@ -1,13 +1,13 @@
-view: suivi_fid {
+view: suivi_fid_email {
 
-  sql_table_name: `bv-prod.Cheetah_Export_Vue.WelcomeFid` ;;
+  sql_table_name: `bv-prod.Cheetah_Export_Vue.WelcomeFid_Email` ;;
   #sql_table_name: `bv-prod.CRM_Stats.Suivi_RCU_Looker_Fid` ;;
 
-   dimension: userId_fid {
-     primary_key: yes
-     type: number
-     sql: ${TABLE}.loyalty_id ;;
-   }
+  dimension: userId_fid {
+    primary_key: yes
+    type: number
+    sql: ${TABLE}.loyalty_id ;;
+  }
 
   dimension: validity_fid {
     type: string
@@ -24,6 +24,10 @@ view: suivi_fid {
     sql: ${TABLE}.email ;;
   }
 
+  dimension: id_retail {
+    type: string
+    sql: ${TABLE}.id_retail ;;
+  }
 
   #
   dimension_group: dt_creation_carte_fid {
