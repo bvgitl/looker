@@ -11,7 +11,7 @@ view: suivi_fid {
 
   dimension: validity_fid {
     type: string
-    sql: ${TABLE}.validity ;;
+    sql: sql: IF(${TABLE}.validity = '1','Oui','Non') ;;
   }
 
   dimension: store_fid {
