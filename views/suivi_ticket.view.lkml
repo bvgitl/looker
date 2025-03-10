@@ -8,7 +8,7 @@ view: suivi_ticket {
   }
 
   dimension: client_id {
-    type: number
+    type: string
     sql: ${TABLE}.customer_id ;;
   }
 
