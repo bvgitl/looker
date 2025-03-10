@@ -64,7 +64,8 @@ explore: suivi_ticket {
   join: suivi_rcu {
     type: left_outer
     relationship: many_to_one
-    sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_rcu.id_retail} ;;
+    #sql_on: CAST((CAST(${suivi_ticket.client_id} AS INTEGER) - 1000000000) AS STRING) = ${suivi_rcu.id_retail} ;;
+    sql_on: CAST((CAST(${suivi_ticket.client_id}  = ${suivi_rcu.id_retail} ;;
   }
   join: article_arbo {
     type: left_outer
