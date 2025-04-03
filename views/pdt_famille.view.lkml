@@ -312,7 +312,7 @@ SELECT DISTINCT
     v.Dte_Vte as Dte_Vte,
     v.StatutBcp,
     v.StatutGoogleSheet,
-    mq.LB_MARQUE as Marque,
+    mq.l_fabricant as Marque,
     f.l_Fournisseur as Fournisseur,
     a.c_fournisseur as Code_Fournisseur,
     a.c_Reference_fournisseur  as Ref_Fournisseur,
@@ -364,8 +364,8 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
     ON a.c_Article = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb
     ON arb.CodeArticle = v.CD_Article
-LEFT JOIN `bv-prod.Matillion_Perm_Table.Marques` mq
-    ON a.c_Marque = mq.cd_marque
+LEFT JOIN `bv-prod.cor.fabricant` mq
+    ON a.c_Marque = mq.c_fabricant
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
     ON   a.c_Fournisseur = f.c_fournisseur
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
