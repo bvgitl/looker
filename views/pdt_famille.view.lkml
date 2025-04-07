@@ -364,7 +364,7 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_DWH` a
     ON a.c_Article = v.CD_Article
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb
     ON arb.CodeArticle = v.CD_Article
-LEFT JOIN `bv-prod.cor.fabricant` mq
+LEFT JOIN `bv-prod.cor.fabricant_pdt` mq
     ON a.c_Marque = mq.c_fabricant
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
     ON   a.c_Fournisseur = f.c_fournisseur
