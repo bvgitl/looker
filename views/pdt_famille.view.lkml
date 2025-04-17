@@ -7,7 +7,7 @@ WITH Vente AS
         CD_Magasin,
         Dte_Vte,
         Typ_Vente,
-        CD_Article,
+        CASE WHEN CD_Article = 0 THEN CONCAT('HB',CONCAT(CD_Niv_2,CD_Niv_3)) ELSE CD_Article END AS CD_Article,
         CD_Article_Original,
         --CD_Niv_1,
         --CD_Niv_2,
