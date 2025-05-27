@@ -174,6 +174,12 @@ view: tf_vente {
     drill_fields: [sheet_ca*]
   }
 
+  measure: sum_qtite {
+    label: "Qtite"
+    type: sum
+    sql: ${qtite} ;;
+  }
+
   measure: Nb_Lignes_tx_Marge {
     label: "Nbre de lignes tx Marge >1"
     type: count_distinct
