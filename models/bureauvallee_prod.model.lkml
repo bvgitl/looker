@@ -82,6 +82,11 @@ explore: suivi_ticket {
     relationship: many_to_one
     sql_on: ${suivi_ticket.client_id}=${suivi_fid_email.id_retail};;
   }
+  join: magasins {
+    type:  left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin} = ${suivi_ticket.magasin_id} ;;
+  }
 }
 
 explore: matrice_ticket {
