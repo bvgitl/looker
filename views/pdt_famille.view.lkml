@@ -1036,7 +1036,7 @@ FULL JOIN
 
   dimension: Groupe_Region {
     sql: CASE
-            WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW", "IDF", "RS") THEN "France Metro"
+            WHEN ${region} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW", "RW", "IDF", "RS") THEN "France Metro"
             WHEN ${region} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
     label: "Groupe Région"
@@ -1062,7 +1062,7 @@ FULL JOIN
 
   dimension: Groupe_Region_histo {
     sql: CASE
-            WHEN ${region_histo} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW", "IDF", "RS") THEN "France Metro"
+            WHEN ${region_histo} IN ("RN","RNE", "RNW", "RRA", "RSE", "RSW", "RW", "IDF", "RS") THEN "France Metro"
             WHEN ${region_histo} IN ("BE", "CAM", "ESP", "IT", "MAL", "MAU", "TOM", "TUN") THEN "International"
           END ;;
     label: "Groupe Région (histo)"
