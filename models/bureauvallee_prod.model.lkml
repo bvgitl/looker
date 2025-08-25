@@ -77,10 +77,10 @@ explore: suivi_ticket {
     relationship: one_to_one
     sql_on: ${article_dwh.c_article}=${suivi_ticket.code_article} ;;
   }
-  join: suivi_fid_email {
+  join: suivi_fid {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${suivi_ticket.client_id}=${suivi_fid_email.id_retail};;
+    sql_on: ${suivi_ticket.client_id}=${suivi_fid.userId_fid};;
   }
   join: magasins {
     type:  left_outer
