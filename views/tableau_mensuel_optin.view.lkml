@@ -104,6 +104,11 @@ view: tableau_mensuel_optin {
     sql: ${TABLE}.nb_email_retail ;;
   }
 
+  dimension: nb_loyalty_cards {
+    type: number
+    sql: ${TABLE}.nb_loyalty_cards ;;
+  }
+
   dimension: pc_email_optin_raw {
     type: number
     sql: ${TABLE}.pc_email_optin_raw ;;
@@ -127,28 +132,28 @@ view: tableau_mensuel_optin {
   set: detail {
     fields: [
         storecode,
-	nom,
-	format,
-	tranche_age,
-	typ_mag,
-	animateur,
-	region,
-	nb_clients_mag,
-	nb_email_mag,
-	nb_email_mag_optin,
-	nb_email_mag_optin_prof,
-	nb_email_mag_optin_vide_prof,
-	nb_email_mag_optin_part,
-	nb_sms_mag,
-	nb_sms_mag_optin,
-	nb_sms_mag_optin_prof,
-	nb_sms_mag_optin_vide_prof,
-	nb_sms_mag_optin_part,
-	nb_email_retail,
-	pc_email_optin_raw,
-	pc_email_optin_net,
-	pc_sms_optin_raw,
-	pc_sms_optin_net
+  nom,
+  format,
+  tranche_age,
+  typ_mag,
+  animateur,
+  region,
+  nb_clients_mag,
+  nb_email_mag,
+  nb_email_mag_optin,
+  nb_email_mag_optin_prof,
+  nb_email_mag_optin_vide_prof,
+  nb_email_mag_optin_part,
+  nb_sms_mag,
+  nb_sms_mag_optin,
+  nb_sms_mag_optin_prof,
+  nb_sms_mag_optin_vide_prof,
+  nb_sms_mag_optin_part,
+  nb_email_retail,
+  pc_email_optin_raw,
+  pc_email_optin_net,
+  pc_sms_optin_raw,
+  pc_sms_optin_net
     ]
   }
 }
