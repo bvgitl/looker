@@ -366,6 +366,7 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` arb
     ON arb.CodeArticle = v.CD_Article
 LEFT JOIN `bv-prod.cor.fabricant_pdt` mq
     ON a.c_Marque = mq.c_fabricant
+    AND mq.d_fin = '9999-12-31T23:59:59.999000' AND mq.c_locale = 'fr'
 LEFT JOIN `bv-prod.Matillion_Perm_Table.FOUR_DWH` f
     ON   a.c_Fournisseur = f.c_fournisseur
 LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
