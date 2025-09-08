@@ -80,7 +80,7 @@ explore: suivi_ticket {
   join: suivi_fid {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${suivi_ticket.client_id}=${suivi_fid.userId_fid};;
+    sql_on: ${suivi_rcu.email_rcu}=${suivi_fid.email_fid};;
   }
   join: magasins {
     type:  left_outer
