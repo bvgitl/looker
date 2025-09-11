@@ -113,13 +113,13 @@ view: suivi_ticket {
   measure: sum_ca_TTC {
     label: "CA Total TTC"
     type:  number
-    sql: ROUND(SUM(${prix_vente_TTC}),0) ;;
+    sql: ROUND(SUM(${prix_vente_TTC}),2) ;;
   }
 
   measure: sum_ca_HT {
     label: "CA Total HT"
     type:  number
-    sql: ROUND(SUM(${prix_vente_HT}),0) ;;
+    sql: ROUND(SUM(${prix_vente_HT}),2) ;;
   }
 
   measure: frequence_client {
