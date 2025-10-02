@@ -247,12 +247,12 @@ view: suivi_rcu {
 
   dimension: type_client_rcu {
     type:  string
-    sql: case when (${dt_creation_web_date} is null AND ${dt_creation_retail_date} is not null )
-                  OR (${dt_creation_web_date} is null AND  ${dt_creation_retail_date} is null)
+    sql: case when (coalesce(${id_web},'')='' AND coalesce(${id_retail},'')<>'')
+                  OR (coalesce(${id_web},'')='' AND  coalesce(${id_retail},'')='')
               then "Retail seul"
-         when (${dt_creation_web_date} is not null AND ${dt_creation_retail_date} is null )
+         when coalesce(${id_web},'')<>'' AND coalesce(${id_retail},'')=''
               then "Web seul"
-         when (${dt_creation_web_date} is not null AND ${dt_creation_retail_date} is not null )
+         when coalesce(${id_web},'')<>'' AND coalesce(${id_retail},'')<>''
               then "Mixte"
               end;;
   }
