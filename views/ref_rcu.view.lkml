@@ -170,6 +170,11 @@ view: suivi_rcu {
     sql: ${TABLE}.id_web ;;
   }
 
+  dimension: id_wallet {
+    type: string
+    sql: ${TABLE}.id_wallet ;;
+  }
+
   dimension: lastname {
     type: string
     sql: ${TABLE}.lastname ;;
