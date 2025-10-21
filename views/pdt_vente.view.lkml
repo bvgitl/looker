@@ -134,7 +134,8 @@ Commande AS
     statut IN ("pending",
       "processing",
       "fraud",
-      "partial_refund")
+      "partial_refund",
+      "pending_mandate")
   GROUP BY 1, 2
 
 )
