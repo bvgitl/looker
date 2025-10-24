@@ -114,6 +114,19 @@ map_layer: my_map {
 
 explore: pdt_vente {}
 
+explore: ventes_archives {
+  join: magasins {
+    type:  left_outer
+    relationship: one_to_one
+    sql_on: ${magasins.cd_magasin} = ${ventes_archives.cd_magasin} ;;
+  }
+  join: article_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_arbo.cd_article}=${ventes_archives.code_article} ;;
+  }
+}
+
 explore: pdt_famille {}
 
 explore: pdt_famille_2 {} # Pour data studio
