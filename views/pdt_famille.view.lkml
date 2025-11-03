@@ -60,7 +60,7 @@ WITH Vente AS
             CASE WHEN ABS(MARGE_BRUTE) > 100000 THEN 0 ELSE MARGE_BRUTE END AS marge_brute,
             'BCP non reçu' AS StatutBcp,
             'GoogleSheet renseignée' AS StatutGoogleSheet
-        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET`
+        FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET_3ans`
         UNION ALL
         SELECT
             mf.CodeMagasinActeur AS CD_Magasin,
@@ -90,7 +90,7 @@ WITH Vente AS
         AND NOT EXISTS
         (
             SELECT *
-            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET` gs
+            FROM `bv-prod.Matillion_Perm_Table.DATA_QUALITY_VENTES_GOOGLE_SHEET_3ans` gs
             WHERE gs.CODE_ACTEUR = mf.CodeMagasinActeur
             AND gs.DTE_VENTE = mf.DateFichier
         )
