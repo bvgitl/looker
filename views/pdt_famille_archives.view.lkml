@@ -42,7 +42,7 @@ view: pdt_famille_archives {
                 CASE WHEN ABS(marge_brute) > 100000 THEN 0 ELSE marge_brute END AS marge_brute,
                 'BCP reçu' AS StatutBcp,
                 'GoogleSheet vierge' AS StatutGoogleSheet
-            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE`
+            FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_ARCHIVES`
             UNION ALL
             SELECT
                 CODE_ACTEUR as CD_Magasin,
@@ -83,7 +83,7 @@ view: pdt_famille_archives {
             AND NOT EXISTS
             (
                 SELECT *
-                FROM `bv-prod.Matillion_Perm_Table.TF_VENTE` tf
+                FROM `bv-prod.Matillion_Perm_Table.TF_VENTE_ARCHIVES` tf
                 WHERE tf.CD_Magasin = mf.CodeMagasinActeur
                 AND tf.Dte_Vte = mf.DateFichier
             )
