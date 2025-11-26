@@ -916,7 +916,10 @@ FULL JOIN
     sql: CASE
           WHEN ${TABLE}.Statut_article = 0 THEN "Création"
           WHEN ${TABLE}.Statut_article = 1 THEN "Actif"
+          WHEN ${TABLE}.Statut_article = 2 THEN "Actif Non Réappro"
           WHEN ${TABLE}.Statut_article = 5 THEN "Déréférencé"
+          WHEN ${TABLE}.Statut_article = 7 THEN "Liquidation"
+          WHEN ${TABLE}.Statut_article = 8 THEN "Obsolete"
           END;;
     view_label: "Article"
   }
