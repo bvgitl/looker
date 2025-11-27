@@ -37,6 +37,13 @@ view: ref_magasin {
     sql: ${TABLE}.TYP_MAG ;;
   }
 
+  dimension: emplacement {
+    type:  location
+    sql_longitude: ${TABLE}.Longitude;;
+    sql_latitude: ${TABLE}.Latitude;;
+
+  }
+
   measure: count {
     type: count
     drill_fields: []
