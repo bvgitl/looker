@@ -127,21 +127,6 @@ view: suivi_ticket {
     sql:  ROUND(${count_ticket}/${count_client_id},2) ;;
   }
 
-  measure: sum_ca_ht_valid_fid_oui {
-    label: "CA Total HT (Fid valid = Oui)"
-    type: number
-    sql: ROUND(
-      SUM(
-        CASE
-          WHEN ${suivi_fid.validity_fid} = "oui" THEN ${prix_vente_HT}
-          ELSE 0
-        END
-      ),
-      2
-    ) ;;
-    value_format_name: eur
-  }
-
   # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
   #
