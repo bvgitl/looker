@@ -1,6 +1,7 @@
 view: Factu_campagne {
   #sql_table_name: `bv-prod.looker_pg.factu_campagne`
-  sql_table_name: `bv-prod.CRM_Stats.factu_campagne`
+  #sql_table_name: `bv-prod.CRM_Stats.factu_campagne`
+  sql_table_name: `bv-prod.CRM_Stats.factu_campagne_CRM` -- A mettre en prod si validé par la suite
     ;;
 
   dimension: camp_name {
