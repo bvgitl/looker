@@ -219,11 +219,11 @@ view: suivi_rcu {
     drill_fields: [sheet_client*]
   }
 
-  #dimension: type_client2 {
-  #  type: string
-  #  sql: ${TABLE}.type_client2 ;;
-  #  drill_fields: [sheet_client*]
-  #}
+  dimension: type_client_2 {
+    type: string
+    sql: ${TABLE}.type_client2 ;;
+    drill_fields: [sheet_client*]
+  }
 
 
   dimension: anciennete_mois_web {
