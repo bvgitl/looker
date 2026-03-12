@@ -312,7 +312,7 @@ SELECT DISTINCT
     v.Dte_Vte as Dte_Vte,
     v.StatutBcp,
     v.StatutGoogleSheet,
-    mq.l_fabricant as Marque,
+    mq.l_fabricant as Fabricant,
     f.l_Fournisseur as Fournisseur,
     a.c_fournisseur as Code_Fournisseur,
     a.c_Reference_fournisseur  as Ref_Fournisseur,
@@ -741,10 +741,10 @@ FULL JOIN
     view_label: "Ventes"
   }
 
-  dimension: marque {
+  dimension: fabricant {
     type: string
-    sql: ${TABLE}.Marque ;;
-    view_label: "Marque"
+    sql: ${TABLE}.Fabricant ;;
+    view_label: "Fabricant"
   }
 
   dimension: fournisseur {
@@ -874,7 +874,7 @@ FULL JOIN
       qtite,
       ca_ht,
       marge_brute,
-      marque,
+      fabricant,
       fournisseur,
       stock
     ]
