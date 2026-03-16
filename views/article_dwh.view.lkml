@@ -92,7 +92,7 @@ view: article_dwh {
     sql: ${TABLE}.c_Gencode ;;
   }
 
-  dimension: c_marque {
+  dimension: c_fabricant {
     type: string
     sql: ${TABLE}.c_Marque ;;
   }

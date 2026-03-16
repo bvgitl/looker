@@ -182,7 +182,7 @@ explore: article_dwh{
   join: marques {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${marques.cd_marque}=${article_dwh.c_marque} ;;
+    sql_on: ${marques.cd_fabricant}=${article_dwh.c_fabricant} ;;
   }
   join: stock_utd {
     type: left_outer
@@ -246,7 +246,7 @@ explore:  stock_histo{
   join: marques {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${marques.cd_marque}=${article_dwh.c_marque} ;;
+    sql_on: ${marques.cd_fabricant}=${article_dwh.c_fabricant} ;;
   }
   #join: tf_vente {
   #  type: left_outer
