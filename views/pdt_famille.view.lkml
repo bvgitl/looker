@@ -379,7 +379,7 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` ad
     ON ad.c_article = v.CD_Article
     AND ad.c_arbre = 1
 LEFT JOIN `bv-prod.cor.article` mar
-    ON mar.c_article = v.CD_Article
+    ON CAST(mar.c_article AS STRING) = v.CD_Article
     AND mar.c_territoire = m.Pays
 FULL JOIN
 (
