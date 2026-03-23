@@ -312,6 +312,7 @@ SELECT DISTINCT
     v.Dte_Vte as Dte_Vte,
     v.StatutBcp,
     v.StatutGoogleSheet,
+    mar.l_marque as Marque
     mq.l_fabricant as Fabricant,
     f.l_Fournisseur as Fournisseur,
     a.c_fournisseur as Code_Fournisseur,
@@ -377,6 +378,9 @@ LEFT JOIN `bv-prod.Matillion_Perm_Table.Stock_DWH_UTD` s
 LEFT JOIN `bv-prod.Matillion_Perm_Table.ART_ARBO_DWH` ad
     ON ad.c_article = v.CD_Article
     AND ad.c_arbre = 1
+LEFT JOIN `bv-prod.cor.article` mar
+    ON mar.c_article = v.CD_Article
+    AND mar.c_territoire = m.Pays
 FULL JOIN
 (
     SELECT
@@ -739,6 +743,12 @@ FULL JOIN
     type: number
     sql: ${TABLE}.Val_Achat_Gbl ;;
     view_label: "Ventes"
+  }
+
+  dimension: marque {
+    type: string
+    sql: ${TABLE}.Marque ;;
+    view_label: "Marque"
   }
 
   dimension: fabricant {
