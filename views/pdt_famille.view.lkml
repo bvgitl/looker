@@ -312,7 +312,7 @@ SELECT DISTINCT
     v.Dte_Vte as Dte_Vte,
     v.StatutBcp,
     v.StatutGoogleSheet,
-    mar.l_marque as Marque
+    mar.l_marque as Marque,
     mq.l_fabricant as Fabricant,
     f.l_Fournisseur as Fournisseur,
     a.c_fournisseur as Code_Fournisseur,
