@@ -116,6 +116,12 @@ view: suivi_ticket {
     sql: ROUND(SUM(${prix_vente_TTC}),2) ;;
   }
 
+  measure: sum_qtity {
+    label: " Qtity"
+    type: number
+    sql: SUM(${qtite}) ;;
+  }
+
   measure: sum_ca_HT {
     label: "CA Total HT"
     type:  number
