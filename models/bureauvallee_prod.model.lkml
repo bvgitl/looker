@@ -54,6 +54,8 @@ explore: suivi_rcu {
 }
 
 explore: suivi_fid {
+  sql_always_where: ${suivi_fid.userId_fid} like '0243%' ;;
+
   join: ref_magasin {
     relationship: one_to_many
     sql_on: ${ref_magasin.cd_magasin} = ${suivi_fid.store_fid} ;;
