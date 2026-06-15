@@ -19,6 +19,11 @@ view: suivi_fid {
     sql: ${TABLE}.store ;;
   }
 
+  dimension: canal_vente {
+    type: string
+    sql:  IF(REGEXP_CONTAINS(${TABLE}.loyalty_id,'02430[0-9]{3}99[0-9]+'), 'Web', 'Mag') ;;
+  }
+
   dimension: email_fid {
     type: string
     sql: ${TABLE}.email ;;
