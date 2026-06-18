@@ -42,6 +42,13 @@ explore: ref_campagne {
   }
 }
 
+explore: engagement {
+  join: operation {
+    relationship: one_to_many
+    sql_on: ${engagement.c_campagne} = ${operation.c_campagne} ;;
+  }
+}
+
 explore: ref_magasin{}
 
 explore: ref_client_cmd {}
