@@ -69,7 +69,14 @@ explore: suivi_fid {
   }
 }
 
+explore: tickets {}
+
 explore: suivi_ticket {
+  join: tickets {
+    type: inner
+    relationship: one_to_one
+    sql_on: ${suivi_ticket.ticket_id} = ${tickets.doc_no} ;;
+  }
   join: suivi_rcu {
     type: left_outer
     relationship: many_to_one
