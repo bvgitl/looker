@@ -69,7 +69,13 @@ explore: suivi_fid {
   }
 }
 
-explore: tickets {}
+explore: tickets {
+  join: article_arbo {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${article_arbo.cd_article}=${tickets.cd_article} ;;
+  }
+}
 
 explore: suivi_ticket {
   join: tickets {

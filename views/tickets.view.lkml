@@ -113,4 +113,8 @@ view: tickets {
   measure: count {
     type: count
   }
+  measure: count_tickets {
+    type: count_distinct
+    sql: ${TABLE}.doc_no ;;
+  }
 }
