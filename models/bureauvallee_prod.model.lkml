@@ -42,6 +42,13 @@ explore: ref_campagne {
   }
 }
 
+explore: article {
+  join: article_fournisseur {
+    relationship: one_to_many
+    sql_on: ${article.c_article} = ${article_fournisseur.c_article} AND ${article.c_territoire} = ${article_fournisseur.c_territoire} ;;
+  }
+}
+
 explore: engagement {
   join: operation {
     relationship: one_to_many
