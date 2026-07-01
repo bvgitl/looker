@@ -77,6 +77,12 @@ explore: suivi_fid {
 }
 
 explore: tickets {
+  join: tickets_2 {
+    from: tickets
+    type: inner
+    relationship: many_to_many
+    sql_on: ${tickets_2.cd_article}=${tickets.cd_article} ;;
+  }
   join: article_arbo {
     type: left_outer
     relationship: many_to_one
