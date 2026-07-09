@@ -96,6 +96,8 @@ explore: tickets {
   }
 }
 
+explore: distribution_familles {}
+
 explore: suivi_ticket {
   join: suivi_rcu {
     type: left_outer
