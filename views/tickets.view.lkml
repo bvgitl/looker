@@ -117,4 +117,9 @@ view: tickets {
     type: count_distinct
     sql: ${TABLE}.doc_no ;;
   }
+
+  measure: count_Niv_3 {
+    type: count_distinct
+    sql: ${cd_niv_3} ;;
+  }
 }
