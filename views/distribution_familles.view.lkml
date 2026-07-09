@@ -10,7 +10,7 @@ view: distribution_familles {
       LEFT JOIN `bv-prod.Matillion_Perm_Table.ARTICLE_ARBORESCENCE` AS article_arbo_2
         ON article_arbo_2.CodeArticle = tickets_2.CD_Article
       WHERE {% condition filtre_niv3 %}    tickets.CD_Niv_3  {% endcondition %}
-        AND {% condition filtre_date %}    tickets.doc_date  {% endcondition %}
+        AND {% condition filtre_date %}    TIMESTAMP(tickets.doc_date)  {% endcondition %}
         AND {% condition filtre_magasin %} tickets.c_magasin {% endcondition %}
         AND (
           article_arbo_2.N3_SousFamille IN (
