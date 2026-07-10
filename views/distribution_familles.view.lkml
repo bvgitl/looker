@@ -19,7 +19,7 @@ view: distribution_familles {
             'LOGICIELS','NETTOYAGE MATÉRIEL','SOURIS ET TAPIS',
             'WEBCAM ET CAMÉRAS IP','PRISES PARASURTENSEURS ET ONDULEURS',
             'SWITCHS ROUTEURS ET HUB','SAUVEGARDE')
-          OR article_arbo_2.N4 IN ('Sacs a dos ordinateur','Serviettes et Sacoches')
+          OR article_arbo_2.N4 IN ('Sacs a dos ordinateur','Serviettes et Sacoches', 'Prestation informatique')
           OR tickets_2.CD_Niv_3 = tickets.CD_Niv_3
         )
       GROUP BY 1 ;;
