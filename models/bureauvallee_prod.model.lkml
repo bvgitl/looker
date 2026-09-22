@@ -94,6 +94,11 @@ explore: tickets {
     relationship: many_to_one
     sql_on: ${article_arbo_2.cd_article}=${tickets_2.cd_article} ;;
   }
+  join: magasins {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${magasins.cd_magasin}=${tickets.c_magasin} AND ${magasins.ferme} = 0 ;;
+  }
 }
 
 explore: distribution_familles {}
