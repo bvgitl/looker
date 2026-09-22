@@ -97,7 +97,7 @@ explore: tickets {
   join: magasins {
     type: left_outer
     relationship: many_to_one
-    sql_on: ${magasins.cd_magasin}=${tickets.c_magasin} AND ${magasins.ferme} = 0 ;;
+    sql_on: ${magasins.cd_magasin}=${tickets.c_magasin} AND ${magasins.ferme} = '0' ;;
   }
 }
 
