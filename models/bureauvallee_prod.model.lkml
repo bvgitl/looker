@@ -67,6 +67,17 @@ explore: suivi_rcu {
   }
 }
 
+explore: suivi_achats_cmd {
+  join: suivi_achats_recept {
+    relationship: one_to_many
+    sql_on: ${suivi_achats_cmd.numcde} = ${suivi_achats_recept.numcde} ;;
+  }
+  join: suivi_achats_retour {
+    relationship: one_to_many
+    sql_on: ${suivi_achats_cmd.codefour} = ${suivi_achats_retour.codefour} and ${suivi_achats_cmd.codemag} = ${suivi_achats_retour.codemag} ;;
+  }
+}
+
 explore: suivi_fid {
   sql_always_where: ${suivi_fid.userId_fid} like '0243%' ;;
 
