@@ -69,7 +69,7 @@ explore: suivi_rcu {
 
 explore: suivi_achats_cmd {
   join: suivi_achats_recept {
-    relationship: one_to_many
+    relationship: one_to_one
     sql_on: ${suivi_achats_cmd.numcde} = ${suivi_achats_recept.numcde} ;;
   }
   join: suivi_achats_retour {
