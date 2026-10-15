@@ -63,4 +63,12 @@ view: suivi_achats_cmd {
   measure: count {
     type: count
   }
+  measure: sum_montantHT {
+    type :  sum
+    sql: ${cde_total_ht_aprremises} ;;
+  }
+  measure: sum_qte {
+    type :  sum
+    sql: ${cde_qte} ;;
+  }
 }

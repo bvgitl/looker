@@ -89,4 +89,12 @@ view: suivi_achats_retour {
   measure: count {
     type: count
   }
+  measure: sum_montantHT {
+    type :  sum
+    sql: ${reclig_mtt_ht_aprremise} ;;
+  }
+  measure: sum_qte {
+    type :  sum
+    sql: ${reclig_qte} ;;
+  }
 }
