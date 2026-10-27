@@ -65,7 +65,7 @@ view: suivi_achats_cmd {
   }
   measure: sum_montantHT {
     type :  sum
-    sql: ${cde_total_ht_aprremises} ;;
+    sql: ROUND(${cde_total_ht_aprremises},2) ;;
   }
   measure: sum_qte {
     type :  sum

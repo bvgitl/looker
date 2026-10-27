@@ -91,7 +91,7 @@ view: suivi_achats_recept {
   }
   measure: sum_montantHT {
     type :  sum
-    sql: ${reclig_mtt_ht_aprremise} ;;
+    sql: ROUND(${reclig_mtt_ht_aprremise},2) ;;
   }
   measure: sum_qte {
     type :  sum
