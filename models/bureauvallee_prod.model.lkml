@@ -72,10 +72,6 @@ explore: suivi_achats_cmd {
     relationship: one_to_one
     sql_on: ${suivi_achats_cmd.numcde} = ${suivi_achats_recept.numcde} ;;
   }
-  join: suivi_achats_retour {
-    relationship: one_to_many
-    sql_on: ${suivi_achats_cmd.codefour} = ${suivi_achats_retour.codefour} and ${suivi_achats_cmd.codemag} = ${suivi_achats_retour.codemag} ;;
-  }
 }
 
 explore: suivi_fid {
