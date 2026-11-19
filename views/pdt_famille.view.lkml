@@ -402,7 +402,7 @@ FULL JOIN
 
  ;;
 
-    persist_for: "1 hours"
+    persist_for: "14 hours"
   }
 
 
