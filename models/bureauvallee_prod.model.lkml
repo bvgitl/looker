@@ -8,11 +8,13 @@ fiscal_month_offset: 3
 datagroup: bv_vente_datagroup {
  # sql_trigger: SELECT count(*) FROM TF_VENTE ;;
   max_cache_age: "24 hour"
+  sql_trigger:  SELECT CURRENT_DATE() ;;
 }
 
 datagroup: bv_vente_digitale_datagroup {
   # sql_trigger: SELECT count(*) FROM commandes ;;
   max_cache_age: "24 hour"
+  sql_trigger:  SELECT CURRENT_DATE() ;;
 }
 
 persist_with: bv_vente_datagroup
